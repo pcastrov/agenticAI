@@ -14,9 +14,11 @@ Todo el paquete vive dentro de `.agents/`; su documentación está en `.agents/s
 
 ## Instalación en un proyecto
 
-1. Copia la carpeta `.agents/` de este paquete a la raíz del proyecto (si el proyecto ya tiene `.agents/`, combina las carpetas; el paquete no pisa archivos propios del stack). Es lo único que se copia: el paquete no tiene archivos fuera de `.agents/`.
-2. Edita `.agents/sdd-kit.md` si este paquete vive en otra ruta o URL (`source`).
-3. Indica a tu agente que lea `.agents/rules/global-sdd.md` y que los comandos están en `.agents/commands/` (invócalos por nombre: `init`, `sdd`, `retrofit`, etc.).
+Origen público del paquete: [github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI).
+
+1. Obtén el paquete (clona el repo o descarga el ZIP) y copia la carpeta `.agents/` a la raíz del proyecto (si el proyecto ya tiene `.agents/`, combina las carpetas; el paquete no pisa archivos propios del stack). Es lo único que se copia al proyecto: el flujo vive dentro de `.agents/`.
+2. Comprueba que `.agents/sdd-kit.md` tenga `source: https://github.com/pcastrov/agenticAI` (o una ruta local si trabajas contra un clone en disco).
+3. Indica a tu agente que lea `.agents/rules/global-sdd.md` y que los comandos están en `.agents/commands/`.
 4. Ejecuta `/init` (o pide seguir `.agents/commands/init.md`):
    - **Proyecto existente**: detecta el stack desde los manifiestos y pregunta solo lo ambiguo.
    - **Proyecto nuevo**: hace una entrevista corta (lenguaje, framework, BD, tests, linter, UI, despliegue) con valores por defecto.
@@ -24,7 +26,7 @@ Todo el paquete vive dentro de `.agents/`; su documentación está en `.agents/s
 5. Si el proyecto ya tiene código, ejecuta `/retrofit` para documentarlo en `specs/`.
 6. Para cualquier cambio, usa `/sdd`.
 
-Para actualizar un proyecto a una versión nueva del paquete: `/sdd-update`.
+Para actualizar un proyecto a una versión nueva del paquete: `/sdd-update` (lee `source`; si es la URL del repo, clona temporalmente y compara).
 
 ---
 
@@ -179,7 +181,7 @@ El QA revisa en el diff que no se hayan tocado tests sin justificación.
 | `/validation-trace` | Trazabilidad HU ↔ RF ↔ arquitectura ↔ tests |
 | `/validation-properties` | Validación y generación de propiedades de corrección |
 | `/sdd-archive` | Cierre manual de iteración hacia `history.md` |
-| `/sdd-update` | Actualiza el flujo de un proyecto desde este paquete |
+| `/sdd-update` | Actualiza el flujo desde `source` (URL pública o ruta local) |
 
 ---
 
@@ -224,7 +226,7 @@ Lista usada por `/sdd-update` para saber qué archivos le pertenecen (todo lo de
 
 ## Qué NO va en este paquete
 
-Herramientas, skills de terceros o configuración propios de un stack (p. ej. Laravel Boost, skills de Flutter/Dart, auditores de seguridad de un framework, linters, comandos de setup de entorno, config MCP del host). No van dentro del paquete SDD; se instalan en cada proyecto.
+Herramientas, skills de terceros o configuración propios de un stack (p. ej. Laravel Boost, skills de Flutter/Dart, auditores de seguridad de un framework, linters, comandos de setup de entorno, `.agents/mcp.json`). No van dentro del paquete SDD; se instalan en cada proyecto.
 
 Con Laravel, `/init` y `/retrofit` proponen e instalan **Laravel Boost** por defecto (paquete Composer + MCP con Search Docs + guidelines/skills). En el retrofit, Boost sirve para leer esquema, modelos y docs reales. Otros stacks: solo sugiere. El Perfil técnico referencia lo instalado (p. ej. `security_audit_skill`, `lint`).
 

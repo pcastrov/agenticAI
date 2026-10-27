@@ -14,8 +14,10 @@ Todo el paquete vive dentro de `.cursor/`; su documentación está en `.cursor/s
 
 ## Instalación en un proyecto
 
-1. Copia la carpeta `.cursor/` de este paquete a la raíz del proyecto (si el proyecto ya tiene `.cursor/`, combina las carpetas; el paquete no pisa archivos propios del stack). Es lo único que se copia: el paquete no tiene archivos fuera de `.cursor/`.
-2. Edita `.cursor/sdd-kit.md` si este paquete vive en otra ruta o URL (`source`).
+Origen público del paquete: [github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI).
+
+1. Obtén el paquete (clona el repo o descarga el ZIP) y copia la carpeta `.cursor/` a la raíz del proyecto (si el proyecto ya tiene `.cursor/`, combina las carpetas; el paquete no pisa archivos propios del stack). Es lo único que se copia al proyecto: el flujo vive dentro de `.cursor/`.
+2. Comprueba que `.cursor/sdd-kit.md` tenga `source: https://github.com/pcastrov/agenticAI` (o una ruta local si trabajas contra un clone en disco).
 3. Ejecuta `/init`:
    - **Proyecto existente**: detecta el stack desde los manifiestos y pregunta solo lo ambiguo.
    - **Proyecto nuevo**: hace una entrevista corta (lenguaje, framework, BD, tests, linter, UI, despliegue) con valores por defecto.
@@ -23,7 +25,7 @@ Todo el paquete vive dentro de `.cursor/`; su documentación está en `.cursor/s
 4. Si el proyecto ya tiene código, ejecuta `/retrofit` para documentarlo en `specs/`.
 5. Para cualquier cambio, usa `/sdd`.
 
-Para actualizar un proyecto a una versión nueva del paquete: `/sdd-update`.
+Para actualizar un proyecto a una versión nueva del paquete: `/sdd-update` (lee `source`; si es la URL del repo, clona temporalmente y compara).
 
 ---
 
@@ -178,7 +180,7 @@ El QA revisa en el diff que no se hayan tocado tests sin justificación.
 | `/validation-trace` | Trazabilidad HU ↔ RF ↔ arquitectura ↔ tests |
 | `/validation-properties` | Validación y generación de propiedades de corrección |
 | `/sdd-archive` | Cierre manual de iteración hacia `history.md` |
-| `/sdd-update` | Actualiza el flujo de un proyecto desde este paquete |
+| `/sdd-update` | Actualiza el flujo desde `source` (URL pública o ruta local) |
 
 ---
 

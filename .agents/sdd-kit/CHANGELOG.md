@@ -4,6 +4,19 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 3.3.1 — 2026-10-27
+
+Origen público del paquete y `/sdd-update` desde URL de Git.
+
+### Cambiado
+- **`source` por defecto**: `https://github.com/pcastrov/agenticAI` (repositorio público del kit).
+- **`/sdd-update`**: resuelve `source` como ruta local o como URL de Git (`git clone --depth 1` a una carpeta temporal); actualiza también el `source` en `sdd-kit.md` al terminar.
+
+### Migración desde 3.3.0
+En cada proyecto, edita `.agents/sdd-kit.md` (o `.cursor/sdd-kit.md`) y pon `source: https://github.com/pcastrov/agenticAI`, o ejecuta `/sdd-update` indicando esa URL.
+
+---
+
 ## 3.3.0 — 2026-10-26
 
 Revisión de simplicidad DRY / KISS / YAGNI en planificación, implementación y QA.
