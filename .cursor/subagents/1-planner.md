@@ -12,9 +12,10 @@ Para mantener un consumo eficiente de tokens, consulta las plantillas **únicame
 - **Para `plan.md`**: `.cursor/skills/sdd-docs-generator/references/plan-template.md`
 - **Para `tasks.md`**: `.cursor/skills/sdd-docs-generator/references/tasks-template.md`
 - **Para `history.md`**: `.cursor/skills/sdd-docs-generator/references/history-template.md`
-- **Para `diagramas/HU-x-negocio.puml`**: `.cursor/skills/sdd-docs-generator/references/sequence-business-template.puml`
-- **Para `diagramas/HU-x-tecnico.puml`**: `.cursor/skills/sdd-docs-generator/references/sequence-technical-template.puml`
+- **Para `diagramas/HU-x-negocio.md`**: `.cursor/skills/sdd-docs-generator/references/sequence-business-template.md`
+- **Para `diagramas/HU-x-tecnico.md`**: `.cursor/skills/sdd-docs-generator/references/sequence-technical-template.md`
 - **Reglas de calidad de requisitos (5 atributos, tipos, MoSCoW, RN)**: sección "Calidad de los Requisitos" de `.cursor/skills/sdd-docs-generator/SKILL.md`
+- **Convenciones del stack (solo MODO 2)**: `.cursor/skills/stack-conventions/SKILL.md` y únicamente las referencias listadas en la clave `conventions` del Perfil técnico
 
 ---
 
@@ -39,7 +40,7 @@ Antes de responder o generar archivos:
    - Cumple los 5 atributos de calidad (claro, útil, comprobable, trazable, actualizado) de `SKILL.md`.
    - Crea `RN-x` solo cuando lo justifique la regla de `SKILL.md`; si no, la regla va dentro del RF.
    - Completa **Restricciones** y **Datos e Integraciones Externas** (si no aplican, indícalo explícitamente).
-   - Genera un **diagrama de secuencia de negocio** por historia en `specs/NNN-[id-nombre-modulo]/diagramas/HU-x-negocio.puml` según `sequence-business-template.puml`.
+   - Genera un **diagrama de secuencia de negocio** por historia en `specs/NNN-[id-nombre-modulo]/diagramas/HU-x-negocio.md` según `sequence-business-template.md`.
    - Incluye la sección de **Propiedades de Corrección** (Property-Based Testing).
    - Incluye la sección de **Decisiones de Diseño** con justificación y alternativas descartadas.
    - Incluye la tabla de **Trazabilidad HU ↔ RF ↔ Tests**.
@@ -48,15 +49,23 @@ Antes de responder o generar archivos:
 
 ### MODO 2: Planificación Técnica y Tareas (`plan.md` y `tasks.md`)
 1. Parte exclusivamente de una `spec.md` previamente aprobada por el usuario.
-2. **`plan.md`**: Lee `plan-template.md` y genera el diseño técnico usando el Perfil técnico:
+2. **Revisión de Simplicidad (DRY / KISS / YAGNI)**, antes de diseñar y **una sola vez por iteración** (alcance, criterios y formato en `global-sdd.md`, sección 2.2):
+   - **DRY**: busca solo en `## Código Compartido` de `AGENTS.md` y en la estructura vigente del módulo (código propio, sin otros módulos ni vendor) funciones, clases, consultas, validaciones o componentes que ya resuelvan parte de cada `RF-x`. Lo que encuentres se **propone** en la sección 1.1 de `plan.md`; el usuario lo aprueba con el plan.
+   - **KISS**: elige el diseño más simple que cumple los RF; cada capa o abstracción nueva necesita un motivo en **Decisiones Técnicas**.
+   - **YAGNI**: no planifiques archivos, parámetros ni configuraciones que ningún `RF-x` pendiente pida.
+   - Si la tarea necesita algo que suena genérico y no está en el catálogo, pregunta si existe algo compartido.
+   - Si reutilizar o simplificar exige modificar código existente, o detectas duplicación en código existente del módulo, **no lo incluyas en el plan por tu cuenta**: formula una `CONSULTA DE SIMPLICIDAD` y 🛑 **DETENTE Y ESPERA** la respuesta antes de escribir `plan.md`.
+3. **`plan.md`**: Lee `plan-template.md` y genera el diseño técnico usando el Perfil técnico:
+   - **Reutilización**: lo existente que se reutiliza y las consultas de simplicidad resueltas (con la decisión del usuario).
    - Estructura vigente del módulo y archivos a crear/modificar (rutas según `structure`).
+   - Capas, ubicación y tipo de cada archivo según las guías de `conventions` y las **Convenciones** de `AGENTS.md` (ej. lógica en `app/Actions/...` y no en el controlador; validación en `FormRequest` o en el esquema de Filament; ViewModel y Repository en Flutter). Si el diseño se aparta de una regla "Debe", justifícalo en **Decisiones Técnicas**.
    - Contratos (APIs, eventos, modelo de datos, pseudocódigo de algoritmos principales).
    - Decisiones técnicas justificadas (incluyendo la alternativa descartada).
    - Tabla de **Trazabilidad Arquitectónica** (archivo ↔ RF).
    - Tabla de **Mapeo de Propiedades ↔ Tests**.
    - Estrategia de tests con el runner de la clave `test`, incluyendo un test por cada criterio `CA-x.y`.
-   - Un **diagrama de secuencia técnico** por historia afectada en `diagramas/HU-x-tecnico.puml` según `sequence-technical-template.puml`, con los mismos casos límite del diagrama de negocio.
-3. **`tasks.md`**: Lee `tasks-template.md` y genera la lista de tareas:
+   - Un **diagrama de secuencia técnico** por historia afectada en `diagramas/HU-x-tecnico.md` según `sequence-technical-template.md`, con los mismos casos límite del diagrama de negocio.
+4. **`tasks.md`**: Lee `tasks-template.md` y genera la lista de tareas:
    - Ordenadas por dependencia lógica (máximo 10 tareas por iteración).
    - Con checkboxes sin marcar (`- [ ]`).
    - Cada tarea incluye **Prioridad** (`blocker` / `required` / `optional` / `nice-to-have`), **Propiedades validadas**, **Tests asociados**, su `RF-x` y la línea `Hecho cuando: [Criterio verificable]`.
@@ -99,14 +108,15 @@ Se ejecuta tras `VEREDICTO: APROBADO` (FASE 8 de `/sdd`) o con `/sdd-archive`.
    - HU cuyos RF estén todos cerrados (con sus criterios `CA-x.y`).
    - RN que ya no apliquen a ningún RF pendiente.
    - Decisiones y secciones de `plan.md` que solo aplicaban a esos RF.
-   - Diagramas `.puml` modificados en la iteración (no se mueven: solo se registra qué cambió).
+   - Diagramas de `diagramas/` modificados en la iteración (no se mueven: solo se registra qué cambió).
 3. Agrega al final de `history.md` una nueva entrada `## Iteración N — AAAA-MM-DD — [Título]` según `history-template.md` (crea el archivo si no existe). Copia el texto completo, sin resumir los RF.
 4. En los documentos activos:
    - `spec.md`: quita el detalle de los RF cerrados y agrega una línea por cada uno en `## 0. Ya implementado`; quita las HU y RN archivadas.
    - `plan.md`: quita las secciones archivadas; actualiza la tabla de estructura vigente si cambió.
    - `tasks.md`: quita las tareas `- [x]`.
 5. Verifica que ningún ID se haya perdido: todo ID quitado de los activos debe aparecer en `history.md`.
-6. Muestra al usuario qué se archivó y el nuevo tamaño de los documentos activos.
+6. Si la iteración creó código propio genérico, útil para otros módulos (base, clase abstracta, helper), propón agregarlo a `## Código Compartido` de `AGENTS.md` y espera la aprobación del usuario.
+7. Muestra al usuario qué se archivó y el nuevo tamaño de los documentos activos.
 
 ---
 

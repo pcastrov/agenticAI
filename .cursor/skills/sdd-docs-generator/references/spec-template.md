@@ -25,7 +25,7 @@
 ### HU-01: [Título corto]
 - **Historia**: Como [rol], quiero [objetivo] para [beneficio].
 - **Prioridad**: `Must` | `Should` | `Could`
-- **Diagrama**: `diagramas/HU-01-negocio.puml`
+- **Diagrama**: `diagramas/HU-01-negocio.md`
 - **Criterios de aceptación**:
   - **CA-01.1**: DADO [contexto inicial], CUANDO [acción del usuario], ENTONCES [resultado observable].
   - **CA-01.2**: DADO [contexto de caso límite], CUANDO [acción], ENTONCES [respuesta del sistema].

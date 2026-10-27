@@ -6,9 +6,25 @@ Este comando analiza una base de código existente para generar masivamente la d
 
 Invocando las reglas de `@1-planner.md`, primero lee el bloque `## Perfil técnico` de `AGENTS.md` (si no existe, ejecuta `/init` antes). Luego analiza la aplicación recorriendo las carpetas de `structure` (persistencia, modelos/entidades, servicios, controladores/endpoints, interfaz, autorización, rutas) y ejecuta la ingeniería inversa siguiendo estos pasos:
 
+### 0. Herramientas del stack (antes de mapear)
+Si `conventions` incluye `laravel` (o el framework es Laravel) y `laravel/boost` **no** está instalado:
+1. Propón instalar Laravel Boost (mismo flujo que el PASO 5 de `/init`: `composer require laravel/boost --dev`, `boost.json` con Cursor/MCP/guidelines, `php artisan boost:install`).
+2. 🛑 **DETENTE Y ESPERA** la aprobación del usuario.
+3. Tras aprobar e instalar, pide activar el MCP `laravel-boost` en Cursor si aún no está activo.
+
+Si Boost **ya** está instalado (o acaba de instalarse), úsalo durante el retrofit:
+- **Application Info** / **Database Schema**: modelos, paquetes y esquema reales, para no inventar tablas ni relaciones.
+- **Database Query** (solo lectura): confirmar datos o conteos cuando haga falta para entender un flujo.
+- **Search Docs**: firmar APIs de Laravel/Filament/Livewire/Pest con la documentación de la versión instalada.
+- **Last Error** / **Read Log Entries**: si el proyecto no arranca limpio, anotar la falla en la deuda técnica.
+
+No ejecutes mutaciones de BD ni cambies código de la aplicación durante el retrofit: solo lees e instalas herramientas de agente si el usuario lo aprobó.
+
 ### 1. Mapeo e Identificación de Módulos
 - Agrupa la lógica del proyecto en módulos de negocio.
 - Asigna a cada módulo una carpeta en `specs/NNN-[id-nombre-modulo]/` (empezando por `001-`).
+- Identifica el **código propio compartido** entre módulos (clases abstractas, bases, traits, helpers o componentes que usan dos o más módulos; nada del framework ni de las exclusiones "DRY en este stack") y propón agregarlo a `## Código Compartido` de `AGENTS.md`. No lo escribas sin aprobación.
+- Registra en la deuda técnica de cada módulo las reglas de negocio duplicadas que detectes (sin corregirlas), según "Qué cuenta como duplicación" de `global-sdd.md`, sección 2.2.
 
 ### 2. `history.md` de cada módulo (lo que ya existe)
 - Crea `history.md` con la entrada `## Iteración 1 — AAAA-MM-DD — Retrofit` según `history-template.md`.
@@ -22,14 +38,14 @@ Invocando las reglas de `@1-planner.md`, primero lee el bloque `## Perfil técni
 - Contexto, usuarios, historias vigentes, reglas de negocio vigentes, RNF, restricciones, datos e integraciones externas, casos límite y fuera de alcance (Won't) vigentes del módulo.
 - Sección de **Propiedades de Corrección** (Property-Based Testing) para los RF críticos.
 - Sección de **Trazabilidad RF ↔ Tests** para lo pendiente.
-- Sección final `## Dudas, Ambigüedades y Deuda Técnica Detectada` con inconsistencias o fallas encontradas, incluyendo los RF a los que no se les pudo asociar una `HU-x` y las prioridades MoSCoW que el usuario debe confirmar.
+- Sección final `## Dudas, Ambigüedades y Deuda Técnica Detectada` con inconsistencias o fallas encontradas, las desviaciones de las reglas "Debe" de las guías de `conventions` (ej. lógica en controladores, N+1, validación inline; sin corregirlas), incluyendo los RF a los que no se les pudo asociar una `HU-x` y las prioridades MoSCoW que el usuario debe confirmar.
 
 ### 4. `plan.md` de cada módulo
 - Tabla breve de la **estructura vigente** del módulo (capas y archivos clave).
 - Arquitectura y mitigaciones de lo pendiente, con **Trazabilidad Arquitectónica** (archivo ↔ RF) y **Mapeo de Propiedades ↔ Tests**.
 
 ### 5. Diagramas de cada módulo
-- En `specs/NNN-[id-nombre-modulo]/diagramas/`, un diagrama de negocio (`HU-x-negocio.puml`) y uno técnico (`HU-x-tecnico.puml`) por cada flujo principal, según las plantillas `.puml` de la skill. Describen el comportamiento real del código, incluidos los casos límite que maneja.
+- En `specs/NNN-[id-nombre-modulo]/diagramas/`, un diagrama de negocio (`HU-x-negocio.md`) y uno técnico (`HU-x-tecnico.md`) por cada flujo principal, según las plantillas `sequence-*-template.md` de la skill. Describen el comportamiento real del código, incluidos los casos límite que maneja.
 
 ### 6. `tasks.md` de cada módulo
 - Solo tareas `- [ ]`: lo que falta construir o probar (tests faltantes, validaciones, políticas de acceso no creadas, deuda).

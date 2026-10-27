@@ -4,7 +4,7 @@ Flujo de trabajo portátil para que agentes de IA (Cursor) desarrollen software 
 
 Es **agnóstico de lenguaje y framework**: funciona igual en Laravel, Python, Node, Go o cualquier otro stack. Lo único que cambia entre proyectos es el bloque `## Perfil técnico` de `AGENTS.md`, que genera `/init`.
 
-Inspirado en el flujo de specs de [Kiro](https://kiro.dev/docs/specs/) (requisitos EARS, diseño, tareas y propiedades de corrección), adaptado a subagentes de Cursor.
+Inspirado en el flujo de specs de distintas metodologías (requisitos EARS, diseño, tareas y propiedades de corrección), adaptado a subagentes de Cursor.
 
 Versión actual: ver la primera entrada de [CHANGELOG.md](CHANGELOG.md).
 
@@ -52,7 +52,40 @@ Los subagentes nunca asumen un comando o framework: leen estas claves de `AGENTS
 - **structure**: código en `app/`; tests en `tests/`
 - **ui_check**: no aplica
 - **security_audit_skill**: no configurado
+- **conventions**: fastapi
 ```
+
+### Convenciones por stack
+
+La skill `stack-conventions` contiene una guía de código idiomático por framework: `laravel`, `filament`, `nativephp`, `django`, `fastapi` y `flutter`. Cada regla es **Debe** (si se incumple, el QA bloquea) o **Preferir** (solo sugerencia), y cada guía termina con su **Verificación Automática** (linters y tests de arquitectura).
+
+Las guías se usan de dos formas:
+- **En el flujo SDD**: el planner, el implementador y el QA leen solo las guías de la clave `conventions`.
+- **Como regla automática**: `/init` copia esas guías a `.cursor/rules/stack-[nombre].mdc`, y Cursor las adjunta al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca.
+
+Orden de prioridad: `docs/constitution.md`, luego **Convenciones** de `AGENTS.md` (lo propio del proyecto), luego las guías y por último los Principios Generales. Las guías aplican al código nuevo o modificado; alinear código viejo se propone como tarea.
+
+### Simplicidad: DRY, KISS y YAGNI
+
+Para evitar duplicación y sobreingeniería, los tres subagentes revisan:
+- **DRY**: si ya existe una función, clase, consulta, validación o componente que haga lo mismo.
+- **KISS**: si hay capas o abstracciones que el requisito no necesita.
+- **YAGNI**: si hay algo que ningún `RF-x` pide hoy.
+
+Quién lo revisa y cuándo:
+- **`1-planner`**: busca una sola vez por iteración, al diseñar `plan.md`. Lo que propone reutilizar queda en la sección "1.1 Reutilización y Simplicidad" y lo apruebas junto con el plan.
+- **`2-implementer`**: no vuelve a buscar. Usa lo aprobado en el plan y consulta si encuentra algo más.
+- **`3-qa-reviewer`**: lo revisa en la validación de arquitectura (MODO 3) y de código (MODO 2).
+
+**Todo es sugerencia.** Ningún agente une, extrae, reutiliza ni modifica código por su cuenta, porque el código puede ser así a propósito. Cada hallazgo es una `CONSULTA DE SIMPLICIDAD` con el principio, las opciones ("mejorarlo así" o "dejarlo igual") y su impacto, y el agente espera tu decisión. En QA estas consultas no bloquean el veredicto. Si decides dejarlo igual, el motivo se anota en `AGENTS.md` o `MEMORY.md` para no volver a preguntarlo.
+
+**Alcance acotado.** Nunca se recorre todo el proyecto. Solo se busca en dos zonas:
+- el catálogo `## Código Compartido` de `AGENTS.md`, con bases y helpers propios que usan varios módulos (lo crean `/init` y `/retrofit`);
+- los archivos del módulo activo.
+
+Solo cuenta el código propio: archivos versionados en las carpetas de `structure`, sin `vendor/`, código generado ni las exclusiones de cada stack. Si algo genérico no está en el catálogo, el agente pregunta en vez de buscarlo.
+
+**Qué no es duplicación.** El código declarativo del framework que se parece entre módulos (por ejemplo, la tabla de Clientes y la de Vendedores en Filament) es normal. Lo que se consulta es la misma regla de negocio o el mismo método en dos lugares. Un bloque propio repetido solo se propone extraer a partir de su tercera aparición. Cada guía de `stack-conventions` tiene su sección "DRY en este stack". Detalle completo en `global-sdd.md`, sección 2.2.
 
 ---
 
@@ -65,11 +98,11 @@ specs/NNN-[id-nombre-modulo]/
 ├── tasks.md    # Solo tareas pendientes: prioridad, propiedades validadas, tests asociados, "Hecho cuando"
 ├── history.md  # Histórico append-only de iteraciones cerradas
 └── diagramas/
-    ├── HU-01-negocio.puml   # Secuencia para cualquier persona (va con spec.md)
-    └── HU-01-tecnico.puml   # Secuencia por capas y archivos (va con plan.md)
+    ├── HU-01-negocio.md   # Secuencia para cualquier persona (va con spec.md)
+    └── HU-01-tecnico.md   # Secuencia por capas y archivos (va con plan.md)
 ```
 
-### Diagramas de secuencia (PlantUML)
+### Diagramas de secuencia (Mermaid)
 
 Cada historia tiene dos diagramas del mismo flujo:
 
@@ -78,7 +111,9 @@ Cada historia tiene dos diagramas del mismo flujo:
 
 Los diagramas describen el **flujo vigente**: se actualizan en su lugar y no se archivan; `history.md` solo registra qué cambió.
 
-**Para visualizarlos** en Cursor o VS Code, instala la extensión [PlantUML](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml), abre un `.puml` y pulsa `Alt+D`. Para exportar a PNG o SVG, usa el comando "PlantUML: Export Current Diagram". Los diagramas de secuencia solo necesitan Java instalado; si no lo tienes, configura `plantuml.render` como `PlantUMLServer` en los ajustes de la extensión.
+Cada diagrama es un archivo Markdown con un bloque ` ```mermaid ` (`sequenceDiagram`).
+
+**Para visualizarlos** en Cursor o VS Code, abre el `.md` y usa la vista previa de Markdown (`Ctrl+Shift+V`, o `Ctrl+K` `V` para abrirla al lado). No requiere extensiones ni Java. GitHub y GitLab también los dibujan al abrir el archivo.
 
 ### Documentos activos vs histórico
 
@@ -175,13 +210,24 @@ Lista usada por `/sdd-update` para saber qué archivos le pertenecen (todo lo de
 .cursor/skills/sdd-docs-generator/references/plan-template.md
 .cursor/skills/sdd-docs-generator/references/tasks-template.md
 .cursor/skills/sdd-docs-generator/references/history-template.md
-.cursor/skills/sdd-docs-generator/references/sequence-business-template.puml
-.cursor/skills/sdd-docs-generator/references/sequence-technical-template.puml
+.cursor/skills/sdd-docs-generator/references/sequence-business-template.md
+.cursor/skills/sdd-docs-generator/references/sequence-technical-template.md
+.cursor/skills/stack-conventions/SKILL.md
+.cursor/skills/stack-conventions/references/laravel.md
+.cursor/skills/stack-conventions/references/filament.md
+.cursor/skills/stack-conventions/references/nativephp.md
+.cursor/skills/stack-conventions/references/django.md
+.cursor/skills/stack-conventions/references/fastapi.md
+.cursor/skills/stack-conventions/references/flutter.md
 ```
 
 ## Qué NO va en este paquete
 
-Skills, comandos o configuración propios de un stack (p. ej. Laravel Boost, auditores de seguridad de un framework, comandos de setup de entorno, `mcp.json`). Se instalan en cada proyecto según su stack; `/init` los sugiere y el Perfil técnico los referencia (p. ej. `security_audit_skill`).
+Herramientas, skills de terceros o configuración propios de un stack (p. ej. Laravel Boost, skills de Flutter/Dart, auditores de seguridad de un framework, linters, comandos de setup de entorno, `.cursor/mcp.json`). No van dentro del paquete SDD; se instalan en cada proyecto.
+
+Con Laravel, `/init` y `/retrofit` proponen e instalan **Laravel Boost** por defecto (paquete Composer + MCP con Search Docs + guidelines/skills). En el retrofit, Boost sirve para leer esquema, modelos y docs reales. Otros stacks: solo sugiere. El Perfil técnico referencia lo instalado (p. ej. `security_audit_skill`, `lint`).
+
+Las **guías de convenciones** (`stack-conventions`) sí van en el paquete: son texto, se cargan solo si están en `conventions` y las reglas `stack-*.mdc` que genera `/init` son del proyecto.
 
 ## Cómo evolucionar el paquete
 

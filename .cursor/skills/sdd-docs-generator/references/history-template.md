@@ -25,8 +25,8 @@
 - **RN-01**: [Regla] — Origen: [área / documento]. Aplicó en: `RF-01`.
 
 ### Diagramas actualizados
-- `diagramas/HU-01-negocio.puml`: [qué cambió, ej. agrega RF-02 y el caso límite de pago rechazado].
-- `diagramas/HU-01-tecnico.puml`: [qué cambió].
+- `diagramas/HU-01-negocio.md`: [qué cambió, ej. agrega RF-02 y el caso límite de pago rechazado].
+- `diagramas/HU-01-tecnico.md`: [qué cambió].
 
 ### Propiedades
 - **P1**: [Propiedad] — Test: `[ruta]`

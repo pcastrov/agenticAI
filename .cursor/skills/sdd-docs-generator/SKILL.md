@@ -1,10 +1,15 @@
+---
+name: sdd-docs-generator
+description: Plantillas y reglas de formato para la documentación SDD en specs/ (spec.md, plan.md, tasks.md, history.md y diagramas de secuencia PlantUML). Usar al crear o editar cualquier archivo dentro de specs/NNN-modulo/.
+---
+
 # SDD Docs Generator Skill
 
 ## Descripción
 Skill encargada de proveer las plantillas estándar y guías de formato para la documentación de Spec-Driven Development (SDD). Es agnóstica de lenguaje y framework: los detalles del stack se toman del bloque `## Perfil técnico` de `AGENTS.md`.
 
 ## Cuándo Usar Esta Skill
-Actívala cuando necesites estructurar, redactar o formatear cualquier archivo dentro de `specs/NNN-[id-nombre-modulo]/` (`spec.md`, `plan.md`, `tasks.md`, `history.md` y `diagramas/*.puml`).
+Actívala cuando necesites estructurar, redactar o formatear cualquier archivo dentro de `specs/NNN-[id-nombre-modulo]/` (`spec.md`, `plan.md`, `tasks.md`, `history.md` y `diagramas/*.md`).
 
 ---
 
@@ -22,10 +27,12 @@ Según el documento que se vaya a generar o editar, lee únicamente el archivo c
    - Solo tareas pendientes, cada una con `RF-x`, prioridad, propiedades, tests y "Hecho cuando".
 4. **Histórico (`history.md`)**: `references/history-template.md`.
    - Una entrada por iteración cerrada.
-5. **Diagrama de secuencia de negocio (`diagramas/HU-x-negocio.puml`)**: `references/sequence-business-template.puml`.
+5. **Diagrama de secuencia de negocio (`diagramas/HU-x-negocio.md`)**: `references/sequence-business-template.md`.
    - Se genera junto con `spec.md`, uno por historia. Actores, "Sistema" como caja negra y sistemas externos; sin detalles técnicos.
-6. **Diagrama de secuencia técnico (`diagramas/HU-x-tecnico.puml`)**: `references/sequence-technical-template.puml`.
+6. **Diagrama de secuencia técnico (`diagramas/HU-x-tecnico.md`)**: `references/sequence-technical-template.md`.
    - Se genera junto con `plan.md`, uno por historia. Desglosa el diagrama de negocio en las capas del plan.
+
+Los diagramas son archivos Markdown con un bloque ` ```mermaid ` (`sequenceDiagram`). Se visualizan con la vista previa de Markdown de Cursor o VS Code, sin extensiones.
 
 ---
 
@@ -34,7 +41,7 @@ Según el documento que se vaya a generar o editar, lee únicamente el archivo c
 - **Documentos activos livianos**: `spec.md`, `plan.md` y `tasks.md` solo contienen lo pendiente (más el índice `Ya implementado` de `spec.md`).
 - **Mover, nunca borrar**: Lo completado se mueve a `history.md` al cerrar la iteración; no se elimina ni se reescribe una iteración ya archivada.
 - **IDs estables**: Numeración de `HU`, `RF`, `RN`, `P`, `T` y `S` continúa desde el máximo histórico; nunca se reutiliza un ID. Los criterios `CA-x.y` se numeran dentro de su historia.
-- **Diagramas vigentes**: Los `.puml` describen el flujo actual completo (incluyendo lo ya implementado). Se actualizan en su lugar y no se archivan; `history.md` solo registra qué cambió en cada iteración.
+- **Diagramas vigentes**: Los diagramas de `diagramas/` describen el flujo actual completo (incluyendo lo ya implementado). Se actualizan en su lugar y no se archivan; `history.md` solo registra qué cambió en cada iteración.
 
 ## Calidad de los Requisitos
 Todo `RF-x` debe ser:

@@ -19,6 +19,17 @@
 | Autorización | [políticas, guards, middleware] |
 | Tests | [carpetas de tests según `structure`] |
 
+## 1.1 Reutilización y Simplicidad (DRY / KISS / YAGNI)
+*(Propuesta de reutilización: se aprueba junto con este plan. Solo se busca en `## Código Compartido` de `AGENTS.md` y en la estructura vigente del módulo; nunca en otros módulos ni en código del framework. Si no hay nada, escribe "Sin código reutilizable identificado".)*
+
+| Existente | Zona | Ubicación | Se reutiliza para |
+|-----------|------|-----------|-------------------|
+| `[función / clase / componente]` | Código Compartido / Módulo | `[ruta]` | RF-03 |
+
+| Consulta | Principio | Decisión del usuario |
+|----------|-----------|----------------------|
+| [Qué se detectó] | DRY / KISS / YAGNI | Mejorar (en tarea Tx) / Dejar igual: [motivo] |
+
 ## 2. Archivos a crear/modificar (RF pendientes)
 - **Nuevos**:
   - `[ruta según convención del proyecto]` -> [Propósito] (`RF-03`)
@@ -48,11 +59,11 @@ operacion(entrada):
 ```
 
 ## 5. Diagramas de Secuencia Técnicos
-*(Uno por historia afectada, basado en `references/sequence-technical-template.puml`. Desglosa el diagrama de negocio de la misma HU en las capas de este plan. Se actualiza en su lugar; no se archiva)*
+*(Uno por historia afectada, basado en `references/sequence-technical-template.md`. Desglosa el diagrama de negocio de la misma HU en las capas de este plan. Se actualiza en su lugar; no se archiva)*
 
 | Diagrama | HU | RF que cubre |
 |----------|----|--------------|
-| `diagramas/HU-01-tecnico.puml` | HU-01 | RF-03, RF-04 |
+| `diagramas/HU-01-tecnico.md` | HU-01 | RF-03, RF-04 |
 
 ## 6. Decisiones Técnicas Justificadas
 - **Decisión 1**: [Descripción]

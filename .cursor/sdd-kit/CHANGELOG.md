@@ -4,6 +4,50 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 3.3.0 — 2026-10-26
+
+Revisión de simplicidad DRY / KISS / YAGNI en planificación, implementación y QA.
+
+### Agregado
+- **`global-sdd.md` sección 2.2**: define DRY, KISS y YAGNI, y además:
+  - **Todo es sugerencia**: ningún agente une, extrae, reutiliza ni modifica código por iniciativa propia; todo hallazgo se consulta.
+  - **Formato `CONSULTA DE SIMPLICIDAD`**: principio, dónde, qué se detectó, opción de mejora con impacto y opción "dejarlo igual".
+  - **Alcance de búsqueda**: solo `## Código Compartido` de `AGENTS.md` y el módulo activo, nunca otros módulos. Solo código propio: versionado, dentro de `structure`, sin generados ni exclusiones del stack. Si algo genérico no está en el catálogo, se pregunta.
+  - **Qué cuenta como duplicación**: conocimiento duplicado sí; el código declarativo del framework que se parece entre módulos no. Regla de tres para extraer bloques propios.
+- **`## Código Compartido` en `AGENTS.md`**: catálogo de código propio reutilizable entre módulos. Lo crea `/init` (PASO 7) y lo propone `/retrofit` (mapeo de módulos). `1-planner` MODO 6 y el QA proponen agregar lo genérico nuevo.
+- **`1-planner` MODO 2**: revisión de simplicidad una vez por iteración, antes de diseñar.
+- **`plan-template.md`**: sección "1.1 Reutilización y Simplicidad" con la zona de origen de cada elemento y las consultas resueltas.
+- **`2-implementer` PASO 4 y MODO C**: sin búsqueda nueva; parte del plan y consulta antes de reutilizar algo no previsto. El reporte final incluye lo reutilizado y las consultas.
+- **`3-qa-reviewer` MODO 2 y 3**: revisión DRY / KISS / YAGNI acotada a las dos zonas, con una nueva sección "Consultas de Simplicidad" en el veredicto. No bloquea: decide el usuario.
+- **`stack-conventions`**: principio general 8 y sección **DRY en este stack** en cada guía, con la duplicación aceptable del framework, los hallazgos típicos y las carpetas excluidas.
+- **`/retrofit`**: las reglas de negocio duplicadas se registran como deuda técnica, sin corregirlas.
+
+### Migración desde 3.2.0
+Sin cambios en la estructura de `specs/`.
+1. Agrega `## Código Compartido` a `AGENTS.md`. Puede hacerlo `/init`, que detecta candidatos y te los pide confirmar.
+2. Los `plan.md` existentes reciben la sección "1.1 Reutilización y Simplicidad" la próxima vez que `1-planner` los actualice.
+3. `/sdd-update` refresca las reglas `stack-*.mdc` con la nueva sección "DRY en este stack".
+
+---
+
+## 3.2.0 — 2026-10-26
+
+Diagramas de secuencia en Mermaid en lugar de PlantUML.
+
+### Cambiado
+- **Diagramas de secuencia en Mermaid**: `diagramas/HU-x-negocio.md` y `diagramas/HU-x-tecnico.md` son archivos Markdown con un bloque ` ```mermaid ` (`sequenceDiagram`). Se visualizan con la vista previa de Markdown de Cursor o VS Code, sin la extensión PlantUML ni Java, y GitHub/GitLab los dibujan directamente. Se actualizaron la skill `sdd-docs-generator`, las plantillas de spec, plan e historia, `global-sdd.md`, `1-planner`, `3-qa-reviewer`, `/retrofit` y el README.
+- **`/sdd-update`**: borra los archivos que salieron del paquete si el proyecto no los personalizó.
+
+### Eliminado
+- `references/sequence-business-template.puml` y `references/sequence-technical-template.puml`, reemplazados por `sequence-business-template.md` y `sequence-technical-template.md`.
+
+### Migración desde 3.1.0
+Por cada `diagramas/HU-x-*.puml` existente en `specs/` (se puede pedir a `@1-planner.md`):
+1. Crear `HU-x-*.md` con el mismo flujo según la plantilla Mermaid correspondiente: `A -> B : msg` pasa a `A->>B: msg`, `A --> B : msg` a `A-->>B: msg`; `alt`/`else`/`end` y `autonumber` se mantienen; `title` pasa a encabezado `#` del Markdown; `boundary`, `control` y `database` pasan a `participant ID as Etiqueta` (el rol va en la etiqueta); `\n` en etiquetas pasa a `<br/>`.
+2. Borrar el `.puml` y actualizar las referencias en `spec.md`, `plan.md` y `history.md` del módulo (las entradas ya archivadas de `history.md` no se reescriben).
+
+---
+
 ## 3.1.0 — 2026-10-24
 
 Calidad de requisitos y diagramas de secuencia PlantUML.
@@ -20,6 +64,10 @@ Calidad de requisitos y diagramas de secuencia PlantUML.
 - **Integridad de los tests** (`global-sdd.md` 2.1 y `2-implementer`): prohibido modificar, borrar, saltar o debilitar un test existente para que pase, salvo cambio de spec aprobado o aprobación explícita del usuario. Todo bug se corrige primero con un test que lo reproduce.
 - **Protocolo ante Tests Fallidos** en `2-implementer`: Reporte de Fallo (test, qué falló, dónde, tipo, causa probable con evidencia, propuesta) y criterios para decidir entre corregir ahora, nueva tarea con test de regresión o pasar por SDD.
 - **`2-implementer` MODO C (Cambio Directo)**: ejecuta los cambios que no merecen spec; se detiene y propone SDD si el cambio crece.
+- **Skill `stack-conventions`**: Principios Generales agnósticos y guías idiomáticas por framework (`laravel`, `filament` para Filament 5.x, `nativephp`, `django`, `fastapi`, `flutter`), con reglas de nivel **Debe** (bloqueante en QA) o **Preferir** (sugerencia) y una sección de Verificación Automática (Pint, Larastan, tests de arquitectura de Pest, ruff, mypy, import-linter, `flutter analyze`). Se cargan de forma perezosa según la nueva clave `conventions` del Perfil técnico.
+- **Reglas del stack**: `/init` (PASO 5.1) copia las guías elegidas a `.cursor/rules/stack-[nombre].mdc` (frontmatter con `globs`) para que Cursor las adjunte automáticamente al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca si no se personalizaron.
+- **Integración**: `1-planner` MODO 2 ubica capas y archivos según las guías; `2-implementer` las aplica y reporta desviaciones; `3-qa-reviewer` revisa idiomaticidad del diff (MODO 2) y del plan (MODO 3); `/retrofit` registra desviaciones como deuda técnica.
+- **`/init` y `/retrofit` + Laravel Boost**: si el stack es Laravel, proponen e instalan por defecto `laravel/boost` (`composer require` + `boost:install` con `boost.json` para Cursor/MCP/guidelines). Incluye MCP **Search Docs**. En `/retrofit`, si Boost no está, se detiene a pedirlo antes de mapear; si está, usa Application Info, Database Schema, Search Docs y logs para la ingeniería inversa (solo lectura). Coexiste con SDD: Boost solo escribe el bloque `<laravel-boost-guidelines>` en `AGENTS.md`. Otros stacks siguen en modo "sugerir".
 - **QA MODO 2**: detecta en el diff tests modificados o debilitados sin justificación (hallazgo bloqueante); los hallazgos incluyen test que falla, causa probable y tipo.
 
 ### Cambiado
@@ -34,6 +82,8 @@ Calidad de requisitos y diagramas de secuencia PlantUML.
 
 ### Migración desde 3.0.0
 `/sdd-update` copia `.cursor/sdd-kit/README.md` y `.cursor/sdd-kit/CHANGELOG.md` al proyecto. No toca el `README.md` ni el `CHANGELOG.md` de la raíz del proyecto: si alguna vez se copiaron ahí los del paquete, bórralos a mano.
+
+Ejecuta `/init` para agregar la clave `conventions` al Perfil técnico y generar las reglas `stack-*.mdc`. Sin la clave, solo aplican los Principios Generales de `stack-conventions`.
 
 La adopción de los nuevos requisitos no es obligatoria. Los módulos existentes siguen funcionando; al tocar un módulo con `1-planner` MODO 3, se agregan `HU-x`, MoSCoW y diagramas a los RF pendientes afectados. Para adoptarlo de una vez en un módulo, pide a `@1-planner.md`:
 1. Agrupar los RF pendientes en `HU-x` con criterios `CA-x.y` y asignarles MoSCoW.
@@ -80,7 +130,7 @@ Para cada módulo en `specs/` (se puede pedir a `@1-planner.md`):
 
 ## 2.0.0 — 2025-01-22
 
-Integración de mejoras inspiradas en el flujo de specs de Kiro sobre el SDD existente.
+Integración de mejoras inspiradas en el flujo de specs de distintas metodologías sobre el SDD existente.
 
 ### Agregado
 - **`spec-template.md`**: secciones de Propiedades de Corrección (Property-Based Testing), Decisiones de Diseño (justificación y alternativas descartadas), Trazabilidad RF ↔ Tests y Criterios de Finalización ampliados.

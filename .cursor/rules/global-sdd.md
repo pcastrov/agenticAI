@@ -19,13 +19,62 @@ Ante CUALQUIER solicitud de cambio, corrección de errores (bugfix), nueva funci
 - Todo fallo genera un **Reporte de Fallo** (qué falló, dónde, causa probable con evidencia y propuesta) según `@2-implementer.md`. La propuesta es corregir ahora (solo si es pequeño y dentro del alcance de la tarea), crear una tarea con test de regresión, o pasar por SDD; el usuario decide salvo en el primer caso.
 - Todo bug de comportamiento se corrige primero con un test que lo reproduce.
 
+## 2.2 Simplicidad: DRY, KISS y YAGNI
+Se revisan al planificar (`@1-planner.md`), al implementar (`@2-implementer.md`) y en QA (`@3-qa-reviewer.md`):
+- **DRY (Don't Repeat Yourself)**: antes de crear una función, clase, consulta, regla de validación o componente, revisa si ya existe algo propio que lo haga. Una misma regla de negocio vive en un solo lugar.
+- **KISS (Keep It Simple, Stupid)**: la solución más simple que cumple el `RF-x`. Sin capas, patrones o abstracciones que el requisito no necesita.
+- **YAGNI (You Aren't Gonna Need It)**: nada que ninguna tarea o `RF-x` pida hoy: ni parámetros, opciones o configuraciones "por si acaso", ni generalizaciones para usos futuros.
+
+### Todo es sugerencia
+- 🚫 **PROHIBIDO unir, mover, extraer, reutilizar o modificar código por iniciativa propia para aplicar estos principios**, sea código nuevo o existente. El código que parece mejorable puede ser así a propósito (requisito, compatibilidad, rendimiento, decisión del equipo).
+- Todo hallazgo es una `CONSULTA DE SIMPLICIDAD` y solo se aplica tras el "sí" del usuario. La reutilización propuesta por `1-planner` en `plan.md` se aprueba junto con el plan.
+- La duda no se resuelve suponiendo: si no queda claro por qué el código es así, se pregunta.
+- Si el usuario decide dejarlo igual y da un motivo, regístralo en **Convenciones** de `AGENTS.md` o en `MEMORY.md` para no volver a preguntar lo mismo.
+
+### Alcance de búsqueda
+Nunca se recorre todo el proyecto. Solo se revisan dos zonas:
+1. **Código Compartido**: las entradas de la sección `## Código Compartido` de `AGENTS.md` (bases, clases abstractas, helpers propios que usan varios módulos).
+2. **Módulo activo**: los archivos de la sección "Estructura vigente del módulo" de su `plan.md` y los que toca la tarea.
+
+- Los demás módulos no se revisan.
+- Si la tarea necesita algo que suena genérico (PDF, exportar, notificar, subir archivos) y no está en el catálogo, no busques en todo el proyecto: pregunta al usuario si existe algo compartido. Si existe, propón agregarlo a `## Código Compartido`.
+
+**Solo código propio**, en este orden:
+1. Archivos versionados (`git ls-files`): deja fuera `vendor/`, `node_modules/`, `.venv/`, `build/`, `.dart_tool/` y todo lo de `.gitignore`.
+2. Dentro de las carpetas de código de la clave `structure`.
+3. Sin las exclusiones del stack (sección "DRY en este stack" de cada guía de `conventions`) ni archivos marcados "GENERATED" / "DO NOT EDIT".
+4. Si hay duda de si algo es propio o del framework, pregunta y anota la respuesta en **Convenciones** de `AGENTS.md`.
+
+### Qué cuenta como duplicación
+DRY trata de **conocimiento duplicado**, no de código que se parece.
+- **Es hallazgo** (aunque aparezca dos veces): la misma regla de negocio, cálculo o validación con lógica en dos lugares; un método propio que hace lo mismo que otro existente; infraestructura propia reimplementada (ej. otro generador de PDF existiendo una base de reportes).
+- **No es hallazgo**:
+  - Código declarativo del framework que se parece entre módulos (tablas, formularios, columnas, filtros, rutas, migraciones, serializers, schemas, layout de widgets): cada módulo define el suyo.
+  - Boilerplate generado por el framework (`make:*`, `startapp`, scaffolding).
+  - Código parecido de dominios distintos que puede evolucionar por separado.
+- **Regla de tres**: un bloque propio y no declarativo que se repite solo se consulta para extraerlo a partir de su **tercera** aparición. Con dos no se propone abstracción (KISS / YAGNI).
+
+Formato de consulta (una por hallazgo, y espera la respuesta):
+
+```
+CONSULTA DE SIMPLICIDAD — [DRY | KISS | YAGNI]
+- Dónde: [ruta/al/archivo:línea] (y [ruta:línea] de lo existente, si aplica)
+- Qué detecté: [descripción breve; ej. "calcularTotal() ya existe en OrderService y hace lo mismo"]
+- Según [DRY | KISS | YAGNI], podría ser:
+  A) [Opción de mejora] — Impacto: [archivos / tests / RF afectados]
+  B) Dejarlo igual — [posible razón por la que hoy es así]
+- ¿Lo mejoramos o lo dejamos igual?
+```
+
+Si el usuario elige mejorar: dentro del alcance de la tarea actual, se aplica en la misma tarea; fuera de ese alcance, se propone como tarea nueva (`1-planner`) o pasa por `/sdd`.
+
 ## 3. Idioma y Comunicación
 - **Comunicación**: Toda la interacción con el usuario (preguntas, resúmenes, reportes) debe ser en **ESPAÑOL**.
 - **Documentación**: Todos los archivos dentro de `specs/` deben redactarse en **ESPAÑOL**.
 - **Código Fuente**: Nombres de variables, funciones, clases y comentarios siguen el estándar del proyecto (definido en `docs/constitution.md`).
 
 ## 4. Fuentes de Contexto (Trinidad)
-- **`AGENTS.md`**: Hechos del proyecto (stack, versiones, estructura, comandos, convenciones). Contiene el bloque `## Perfil técnico`.
+- **`AGENTS.md`**: Hechos del proyecto (stack, versiones, estructura, comandos, convenciones). Contiene el bloque `## Perfil técnico` y la sección `## Código Compartido` (catálogo de código propio reutilizable entre módulos).
 - **`docs/constitution.md`**: Principios no negociables. Ningún diseño o implementación puede violarlos; ante conflicto, la constitución prevalece.
 - **`MEMORY.md`**: Estado actual, decisiones y aprendizajes.
 
@@ -45,8 +94,10 @@ Los subagentes no asumen ningún lenguaje, framework ni comando. Toman los datos
 | `structure` | Carpetas de código y de tests |
 | `ui_check` | Cómo verificar cambios visuales (si aplica) |
 | `security_audit_skill` | Skill de auditoría de seguridad del stack (opcional) |
+| `conventions` | Guías de la skill `stack-conventions` que aplican (ej. `laravel, filament`) |
 
-- Si una clave necesaria falta o dice `no configurado`, el subagente **se detiene y pregunta**; nunca la inventa.
+- Si una clave necesaria falta o dice `no configurado`, el subagente **se detiene y pregunta**; nunca la inventa. Excepción: si `conventions` no está configurada, se aplican solo los Principios Generales de `stack-conventions`.
+- **Convenciones de código**: prioridad `docs/constitution.md` > **Convenciones** de `AGENTS.md` > guías de `conventions` > Principios Generales. Aplican al código nuevo o modificado; una refactorización para alinearse se propone como tarea, no se hace por iniciativa propia. `/init` activa cada guía como regla automática en `.cursor/rules/stack-[nombre].mdc`.
 - El bloque se genera o actualiza con `/init`.
 
 ## 6. Estructura Obligatoria de Módulos (Specs)
@@ -57,12 +108,12 @@ specs/NNN-[id-nombre-modulo]/
 ├── plan.md     # Cómo: estructura vigente + arquitectura de RF pendientes, trazabilidad RF ↔ archivo, decisiones técnicas
 ├── tasks.md    # Paso a paso: solo tareas pendientes con prioridad, propiedades y tests asociados
 ├── history.md  # Histórico append-only de iteraciones cerradas (HU, RF, decisiones, arquitectura y tareas completadas)
-└── diagramas/  # Diagramas de secuencia PlantUML vigentes por historia
-    ├── HU-01-negocio.puml   # Para cualquier persona: actores, Sistema y sistemas externos (va con spec.md)
-    └── HU-01-tecnico.puml   # Para desarrollo: capas y archivos del plan (va con plan.md)
+└── diagramas/  # Diagramas de secuencia Mermaid (Markdown) vigentes por historia
+    ├── HU-01-negocio.md   # Para cualquier persona: actores, Sistema y sistemas externos (va con spec.md)
+    └── HU-01-tecnico.md   # Para desarrollo: capas y archivos del plan (va con plan.md)
 ```
 
-- **Diagramas vigentes**: los `.puml` describen el flujo actual completo; se actualizan en su lugar y no se archivan. `history.md` solo registra qué cambió.
+- **Diagramas vigentes**: los diagramas de `diagramas/` describen el flujo actual completo; se actualizan en su lugar y no se archivan. `history.md` solo registra qué cambió.
 
 ## 7. Documentos Activos vs Histórico
 - **Regla de lectura**: Los agentes leen solo `spec.md`, `plan.md` y `tasks.md`. `history.md` se consulta únicamente si:

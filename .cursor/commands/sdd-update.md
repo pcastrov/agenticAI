@@ -11,6 +11,8 @@ Actualiza los archivos del flujo SDD de este proyecto desde el paquete `sdd-kit`
    - **Sin cambios locales**: se puede reemplazar directamente.
    - **Con cambios locales** (el proyecto lo personalizó): muestra el diff y pregunta si se reemplaza, se fusiona o se conserva.
    - **Nuevos en el paquete**: se copian.
+   - **Eliminados del paquete**: archivos que estaban en la lista de la versión instalada y ya no están en la nueva (el `CHANGELOG.md` los menciona). Si el proyecto no los personalizó, se borran; si sí, muestra el diff y pregunta.
+   - **Reglas del stack** (`.cursor/rules/stack-[nombre].mdc`): no están en la lista del paquete porque las genera `/init`. Compáralas con su guía `.cursor/skills/stack-conventions/references/[nombre].md` del paquete; si el proyecto no las personalizó, propón refrescarlas; si difieren, muestra el diff y pregunta.
 5. Nunca toques archivos que no pertenecen al paquete (skills, comandos o reglas del stack del proyecto), ni `specs/`, `AGENTS.md`, `MEMORY.md`, `docs/constitution.md` o el `README.md` / `CHANGELOG.md` de la raíz del proyecto (son del proyecto, no del paquete).
 6. Si el `CHANGELOG.md` del paquete indica una migración de specs (ej. introducción de `history.md`), describe los pasos y ofrece ejecutarlos con `@1-planner.md`.
 7. 🛑 **DETENTE Y ESPERA**: Muestra el resumen (versión actual → nueva, archivos a reemplazar, conflictos) y pide confirmación antes de escribir.

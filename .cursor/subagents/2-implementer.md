@@ -14,7 +14,8 @@ Antes de escribir una sola línea de código:
 2. Lee el bloque `## Perfil técnico` de `AGENTS.md`: usarás sus claves `test`, `test_single`, `lint`, `structure` y `ui_check`. Si falta una clave necesaria, detente y pregunta.
 3. Identifica el módulo activo dentro de `specs/NNN-[id-nombre-modulo]/`.
 4. Lee silenciosamente `spec.md`, `plan.md` y `tasks.md` de ese módulo. **No leas `history.md` completo.**
-5. Si la tarea referencia un ID que no está en los documentos activos (p. ej. un RF marcado en `Ya implementado`), búscalo por ID en `history.md` y lee solo esa entrada.
+5. Lee `.cursor/skills/stack-conventions/SKILL.md` y solo las referencias de la clave `conventions` (si no está configurada, aplica los Principios Generales). Respeta además las **Convenciones** de `AGENTS.md`, que tienen prioridad.
+6. Si la tarea referencia un ID que no está en los documentos activos (p. ej. un RF marcado en `Ya implementado`), búscalo por ID en `history.md` y lee solo esa entrada.
 
 ---
 
@@ -36,9 +37,15 @@ Antes de escribir una sola línea de código:
 3. **VERIFICA**: La prueba cubre al menos una propiedad de corrección de la spec.
 
 ### PASO 4: Código de Aplicación (TDD - Green Phase)
+0. **Revisión de Simplicidad (DRY / KISS / YAGNI)** antes de escribir (alcance, criterios y formato en `global-sdd.md`, sección 2.2):
+   - **Sin búsqueda nueva**: la búsqueda ya la hizo `1-planner`. Parte de la sección 1.1 "Reutilización y Simplicidad" de `plan.md`, de `## Código Compartido` de `AGENTS.md` y de los archivos que toca la tarea. No recorras otros módulos.
+   - **DRY**: usa lo que la sección 1.1 aprobó. Si notas algo reutilizable que no está en el plan, consulta antes de usarlo.
+   - **KISS / YAGNI**: escribe solo lo que la tarea pide, de la forma más simple; sin parámetros, opciones ni abstracciones "por si acaso".
+   - Si encuentras algo reutilizable fuera del plan, si reutilizar exige modificar código existente, o si detectas duplicación en código existente relacionado: 🛑 **DETENTE**, formula una `CONSULTA DE SIMPLICIDAD` y espera la respuesta. **Nunca unes, extraes, reutilizas ni modificas código por iniciativa propia para aplicar estos principios.**
 1. Escribe o modifica el código fuente estrictamente necesario para hacer pasar la prueba creada en el PASO 3.
 2. Alinea el diseño exacto a los modelos, contratos o funciones descritas en `plan.md`.
 3. Mantén el código limpio, tipado y legible; sigue los patrones de los archivos vecinos.
+   - Cumple las reglas "Debe" de las guías de `conventions` en todo código nuevo o modificado. No refactorices código existente que no toca la tarea solo para alinearlo: si lo detectas, menciónalo en el reporte final como propuesta de tarea.
 4. **Verificación Visual (si aplica)**: Si la tarea involucra cambios de interfaz, verifícalos según `ui_check` (navegador, DevTools, vistas móviles).
 
 ### PASO 5: Verificación y Ejecución de Pruebas
@@ -69,7 +76,7 @@ Antes de escribir una sola línea de código:
 ### MODO C: Cambio Directo (sin spec)
 Solo cuando `/sdd` clasificó la petición como cambio directo y el usuario lo aprobó:
 1. Si es un bug de comportamiento, escribe primero el test que lo reproduce (rojo).
-2. Aplica el cambio mínimo y ejecuta la suite con `test` (y `lint`). Si algo falla, aplica el **Protocolo ante Tests Fallidos**.
+2. Aplica el cambio mínimo (con la misma **Revisión de Simplicidad** del PASO 4) y ejecuta la suite con `test` (y `lint`). Si algo falla, aplica el **Protocolo ante Tests Fallidos**.
 3. Si durante el cambio descubres que afecta un `RF-x`, un `CA-x.y`, un contrato o más archivos de los previstos, 🛑 **DETENTE**: informa que ya no es un cambio directo y propone pasar por SDD.
 4. Reporta archivos modificados y resultado de la suite.
 
@@ -112,4 +119,6 @@ Al terminar la implementación de la tarea, entrega siempre este reporte en espa
 3. **Resultado del Test Suite**: Salida/estado de la suite de pruebas en verde, o los Reportes de Fallo pendientes de decisión.
    - **Tests existentes modificados**: "Ninguno" o la lista con la aprobación que lo justifica.
 4. **Decisiones no cubiertas en el plan**: Cualquier decisión técnica menor que tuviste que tomar y que no estaba detallada en `plan.md`.
+   - **Desviaciones de convenciones**: "Ninguna" o cada regla "Debe" que no se cumplió, con su justificación.
+   - **Simplicidad**: qué código existente se reutilizó y las consultas DRY / KISS / YAGNI hechas con la decisión del usuario (o "Ninguna").
 5. **Verificación de Propiedades**: Qué propiedad(es) de corrección validó esta tarea.
