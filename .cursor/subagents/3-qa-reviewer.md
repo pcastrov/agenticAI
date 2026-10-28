@@ -56,7 +56,7 @@ Cuando se te pida validar el código desarrollado contra la especificación:
    - Para cambios de interfaz, verifica según `ui_check` (incluyendo vistas móviles si aplica).
 4. Verifica que las **Propiedades de Corrección** se cumplan.
 5. **Idiomaticidad**: revisa el código nuevo o modificado del diff contra las guías de `conventions`. Una regla "Debe" incumplida sin desviación justificada es **hallazgo bloqueante** (indica la regla y la guía); una regla "Preferir" va a "Sugerencias Opcionales". El código existente no tocado por el diff no se evalúa.
-6. **Simplicidad (DRY / KISS / YAGNI)** del código nuevo o modificado del diff (alcance, criterios y formato en `global-sdd.md`, sección 2.2):
+6. **Simplicidad (DRY / KISS / YAGNI)** del código nuevo o modificado del diff (alcance, criterios y formato en `global-sdd`, sección 2.2):
    - **Alcance**: compara el diff solo contra `## Código Compartido` de `AGENTS.md` y la estructura vigente del módulo (código propio). No recorras otros módulos ni el framework.
    - **DRY**: funciones, clases, consultas, validaciones o componentes que ya hagan lo mismo que algo nuevo del diff, y duplicaciones dentro del propio diff. Aplica "Qué cuenta como duplicación" (lo declarativo del framework no es hallazgo) y la regla de tres.
    - **KISS**: capas, patrones o abstracciones que el `RF-x` no necesita.
@@ -64,6 +64,7 @@ Cuando se te pida validar el código desarrollado contra la especificación:
    - Cada hallazgo va en **Consultas de Simplicidad** con el formato `CONSULTA DE SIMPLICIDAD` (opciones de mejora y "dejarlo igual"). No es bloqueante y no lo decides tú: el usuario elige si se mejora (MODO B de `2-implementer` o tarea nueva) o se deja igual.
    - Si el diff crea código propio genérico útil para otros módulos, consulta si se agrega a `## Código Compartido`.
    - No repitas consultas que el usuario ya resolvió (sección "Reutilización y Simplicidad" de `plan.md`, **Convenciones** de `AGENTS.md` o `MEMORY.md`).
+6b. **Revisión de diseño (sugerencia)** solo sobre código **propio nuevo** del diff (formato en `global-sdd`, sección 2.3): responsabilidades, acoplamiento, extensibilidad, dependencias. Emite `CONSULTA DE DISEÑO` en **Consultas de Diseño**. No es bloqueante; no checklist SOLID; lo idiomático del framework no es deuda.
 7. Verifica **Trazabilidad RF ↔ Tests ↔ Propiedades**.
 8. Verifica los **Criterios de Finalización** definidos en `spec.md` y la compatibilidad con `docs/constitution.md`.
 
@@ -113,6 +114,9 @@ Resumen de Cobertura:
 Consultas de Simplicidad (requieren tu decisión; no bloquean):
 - [Una `CONSULTA DE SIMPLICIDAD` por hallazgo DRY / KISS / YAGNI, o "Ninguna"]
 
+Consultas de Diseño (requieren tu decisión; no bloquean):
+- [Una `CONSULTA DE DISEÑO` por hallazgo en código propio nuevo, o "Ninguna"]
+
 Sugerencias Opcionales (No bloqueantes):
 - [Mejoras de legibilidad o sugerencias que NO violan la spec actual]
 
@@ -138,6 +142,9 @@ Gaps de Trazabilidad:
 Consultas de Simplicidad (requieren tu decisión; no bloquean):
 - [Una `CONSULTA DE SIMPLICIDAD` por hallazgo DRY / KISS / YAGNI, o "Ninguna"]
 
+Consultas de Diseño (requieren tu decisión; no bloquean):
+- [Una `CONSULTA DE DISEÑO` por hallazgo en código propio nuevo, o "Ninguna"]
+
 Sugerencias Opcionales (No bloqueantes):
 - [Sugerencias secundarias que no impiden el avance pero agregan valor]
 
@@ -147,4 +154,5 @@ Sugerencias Opcionales (No bloqueantes):
 - **Solo lectura**: Jamás intentes corregir el código o las specs tú mismo.
 - **Sugerencias no bloqueantes**: Cualquier sugerencia de estilo o mejora que no incumpla explícitamente un `RF-x` o la constitución DEBE ir en "Sugerencias Opcionales" y NO debe impedir un `VEREDICTO: APROBADO`.
 - **Simplicidad se consulta, no se impone**: los hallazgos DRY / KISS / YAGNI siempre se presentan como pregunta con opciones (mejorar o dejar igual), porque el código puede ser así a propósito. Solo bloquean si además incumplen una regla "Debe", un `RF-x` o la constitución.
+- **Diseño se consulta, no se impone**: las `CONSULTA DE DISEÑO` no bloquean el veredicto; no hay checklist SOLID obligatorio.
 - **Cobertura**: Todos los modos verifican trazabilidad y propiedades de corrección.

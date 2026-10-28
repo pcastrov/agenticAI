@@ -4,6 +4,27 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 3.4.0 — 2026-10-28
+
+Dos regímenes (integridad de tests obligatoria vs revisión de diseño sugerida), `global-sdd` always-on y proyección en AGENTS/constitution.
+
+### Agregado
+- **`global-sdd` sección 2.3**: revisión de diseño como sugerencia (`CONSULTA DE DISEÑO`) al crear código propio; sin checklist SOLID; sin refactor automático; lo idiomático del framework no es deuda.
+- **Proyección en `/init`**: constitution con integridad de tests + revisión de diseño; `AGENTS.md` con bloques operativos `## Integridad de tests` y `## Revisión de diseño`.
+- **`/sdd-update`**: tras sincronizar el paquete, verifica proyección AGENTS/constitution y propone bloques faltantes sin borrar dominio.
+- **Subagentes**: planner y QA pueden emitir `CONSULTA DE DISEÑO` (no bloqueante); implementer exige cierre post-reporte (fix | tarea escrita | SDD).
+
+### Cambiado
+- **`global-sdd.md`**: frontmatter con `alwaysApply: true` (hosts que lo soporten). En el paquete Cursor el archivo equivalente es `global-sdd.mdc`.
+- **§2.1 Integridad de tests**: cierre obligatorio tras Reporte de Fallo; prohibido ignorar el rojo.
+- **`stack-conventions`**: principio Preferir de revisión de diseño al crear código propio (principios 1–2 no son checklist SOLID global).
+
+### Migración desde 3.3.1
+1. Ejecuta `/sdd-update` (actualiza `global-sdd.md` con frontmatter; en proyectos Cursor el rename es a `global-sdd.mdc`).
+2. Completa en `docs/constitution.md` y `AGENTS.md` los bloques de integridad de tests y revisión de diseño si faltan (el update los propone; no borra dominio del proyecto).
+
+---
+
 ## 3.3.1 — 2026-10-27
 
 Origen público del paquete y `/sdd-update` desde URL de Git.

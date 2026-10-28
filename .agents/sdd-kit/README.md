@@ -88,7 +88,13 @@ Quién lo revisa y cuándo:
 
 Solo cuenta el código propio: archivos versionados en las carpetas de `structure`, sin `vendor/`, código generado ni las exclusiones de cada stack. Si algo genérico no está en el catálogo, el agente pregunta en vez de buscarlo.
 
-**Qué no es duplicación.** El código declarativo del framework que se parece entre módulos (por ejemplo, la tabla de Clientes y la de Vendedores en Filament) es normal. Lo que se consulta es la misma regla de negocio o el mismo método en dos lugares. Un bloque propio repetido solo se propone extraer a partir de su tercera aparición. Cada guía de `stack-conventions` tiene su sección "DRY en este stack". Detalle completo en `global-sdd.md`, sección 2.2.
+**Qué no es duplicación.** El código declarativo del framework que se parece entre módulos (por ejemplo, la tabla de Clientes y la de Vendedores en Filament) es normal. Lo que se consulta es la misma regla de negocio o el mismo método en dos lugares. Un bloque propio repetido solo se propone extraer a partir de su tercera aparición. Cada guía de `stack-conventions` tiene su sección "DRY en este stack". Detalle completo en `global-sdd`, sección 2.2.
+
+### Revisión de diseño (sugerencia)
+
+Al **crear código propio** (servicios, policies, helpers, etc.), planner / implementer / QA pueden emitir una `CONSULTA DE DISEÑO` (dónde, qué vi, sugerencia + impacto, alternativa dejar igual). No es checklist SOLID ni re-auditoría de lo idiomático del framework. Nadie refactoriza por iniciativa propia; en QA no bloquea. Detalle en `global-sdd`, sección 2.3. `/init` proyecta este régimen (y el de integridad de tests) a `AGENTS.md` y `docs/constitution.md`; `/sdd-update` verifica que sigan presentes.
+
+La regla global del flujo (`rules/global-sdd.md`) lleva frontmatter `alwaysApply: true` para hosts que lo soporten.
 
 ---
 
@@ -141,12 +147,12 @@ Cada fase se detiene a pedir aprobación del usuario antes de avanzar.
 
 **Antes de la fase 1**, `/sdd` evalúa si la petición merece especificación. Si es un cambio pequeño que no toca requisitos, reglas de negocio ni contratos (typo, estilos, un bug que viola un RF ya existente), lo dice con su justificación y propone un **cambio directo** (`2-implementer` MODO C), sin spec. El usuario decide.
 
-**Tests que fallan**: nunca se modifica ni se debilita un test existente para que pase. Cada fallo produce un Reporte de Fallo con qué falló, dónde, causa probable con evidencia y una propuesta:
-- Corregir ahora, solo si es pequeño y está dentro de la tarea.
-- Nueva tarea con test de regresión.
-- Pasar por SDD.
+**Tests que fallan (obligatorio)**: nunca se modifica ni se debilita un test existente para que pase. Cada fallo produce un Reporte de Fallo y el rojo **siempre** queda cerrado con uno de:
+- Corregir código ahora, solo si es pequeño y está dentro de la tarea.
+- Tarea escrita en `tasks.md` (con test de regresión cuando aplique).
+- Abrir o ajustar SDD.
 
-El QA revisa en el diff que no se hayan tocado tests sin justificación.
+Nunca se ignora el rojo. Crear tests nuevos (TDD) sí está permitido. El QA revisa en el diff que no se hayan tocado tests sin justificación.
 
 | Subagente | Rol | Escribe en |
 |-----------|-----|------------|
