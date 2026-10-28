@@ -49,12 +49,13 @@ Antes de responder o generar archivos:
 
 ### MODO 2: Planificación Técnica y Tareas (`plan.md` y `tasks.md`)
 1. Parte exclusivamente de una `spec.md` previamente aprobada por el usuario.
-2. **Revisión de Simplicidad (DRY / KISS / YAGNI)**, antes de diseñar y **una sola vez por iteración** (alcance, criterios y formato en `global-sdd.md`, sección 2.2):
+2. **Revisión de Simplicidad (DRY / KISS / YAGNI)**, antes de diseñar y **una sola vez por iteración** (alcance, criterios y formato en `global-sdd`, sección 2.2):
    - **DRY**: busca solo en `## Código Compartido` de `AGENTS.md` y en la estructura vigente del módulo (código propio, sin otros módulos ni vendor) funciones, clases, consultas, validaciones o componentes que ya resuelvan parte de cada `RF-x`. Lo que encuentres se **propone** en la sección 1.1 de `plan.md`; el usuario lo aprueba con el plan.
    - **KISS**: elige el diseño más simple que cumple los RF; cada capa o abstracción nueva necesita un motivo en **Decisiones Técnicas**.
    - **YAGNI**: no planifiques archivos, parámetros ni configuraciones que ningún `RF-x` pendiente pida.
    - Si la tarea necesita algo que suena genérico y no está en el catálogo, pregunta si existe algo compartido.
    - Si reutilizar o simplificar exige modificar código existente, o detectas duplicación en código existente del módulo, **no lo incluyas en el plan por tu cuenta**: formula una `CONSULTA DE SIMPLICIDAD` y 🛑 **DETENTE Y ESPERA** la respuesta antes de escribir `plan.md`.
+2b. **Revisión de diseño (sugerencia)** al planear **código propio nuevo** (servicios, policies, helpers, etc.; formato en `global-sdd`, sección 2.3): si ves mejora de responsabilidades, acoplamiento, extensibilidad o dependencias, emite `CONSULTA DE DISEÑO` (no bloqueante; no checklist SOLID). Lo idiomático del framework no se trata como deuda. 🚫 No rediseñes por iniciativa propia; espera la decisión del usuario.
 3. **`plan.md`**: Lee `plan-template.md` y genera el diseño técnico usando el Perfil técnico:
    - **Reutilización**: lo existente que se reutiliza y las consultas de simplicidad resueltas (con la decisión del usuario).
    - Estructura vigente del módulo y archivos a crear/modificar (rutas según `structure`).

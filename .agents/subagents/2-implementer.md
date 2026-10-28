@@ -37,11 +37,12 @@ Antes de escribir una sola línea de código:
 3. **VERIFICA**: La prueba cubre al menos una propiedad de corrección de la spec.
 
 ### PASO 4: Código de Aplicación (TDD - Green Phase)
-0. **Revisión de Simplicidad (DRY / KISS / YAGNI)** antes de escribir (alcance, criterios y formato en `global-sdd.md`, sección 2.2):
+0. **Revisión de Simplicidad (DRY / KISS / YAGNI)** antes de escribir (alcance, criterios y formato en `global-sdd`, sección 2.2):
    - **Sin búsqueda nueva**: la búsqueda ya la hizo `1-planner`. Parte de la sección 1.1 "Reutilización y Simplicidad" de `plan.md`, de `## Código Compartido` de `AGENTS.md` y de los archivos que toca la tarea. No recorras otros módulos.
    - **DRY**: usa lo que la sección 1.1 aprobó. Si notas algo reutilizable que no está en el plan, consulta antes de usarlo.
    - **KISS / YAGNI**: escribe solo lo que la tarea pide, de la forma más simple; sin parámetros, opciones ni abstracciones "por si acaso".
    - Si encuentras algo reutilizable fuera del plan, si reutilizar exige modificar código existente, o si detectas duplicación en código existente relacionado: 🛑 **DETENTE**, formula una `CONSULTA DE SIMPLICIDAD` y espera la respuesta. **Nunca unes, extraes, reutilizas ni modificas código por iniciativa propia para aplicar estos principios.**
+0b. **Revisión de diseño (sugerencia)** al crear código propio nuevo (formato en `global-sdd`, sección 2.3): si ves mejora de responsabilidades, acoplamiento, extensibilidad o dependencias, emite `CONSULTA DE DISEÑO` y espera; no refactorices por iniciativa propia. Lo idiomático del framework no se trata como deuda.
 1. Escribe o modifica el código fuente estrictamente necesario para hacer pasar la prueba creada en el PASO 3.
 2. Alinea el diseño exacto a los modelos, contratos o funciones descritas en `plan.md`.
 3. Mantén el código limpio, tipado y legible; sigue los patrones de los archivos vecinos.
@@ -98,13 +99,14 @@ REPORTE DE FALLO
 - Propuesta: Corregir ahora | Nueva tarea con test de regresión | Pasar por SDD
 ```
 
-### 2. Decisión: corregir ahora o registrar
+### 2. Decisión: corregir ahora o registrar (cierre obligatorio)
+Tras el Reporte de Fallo, 🚫 **PROHIBIDO** continuar o dar la tarea por cerrada dejando el rojo sin uno de estos destinos:
 - **Corregir ahora** solo si se cumplen todas: la causa está en código de la tarea actual (o del cambio directo en curso), la corrección es pequeña y no cambia ningún `RF-x`, `CA-x.y` ni contrato de `plan.md`. Corrige el código (nunca el test), vuelve a ejecutar la suite e indica en el reporte final qué se corrigió.
-- **Nueva tarea** si la causa está fuera del alcance de la tarea actual (otro módulo, una regresión previa, deuda): no la corrijas por tu cuenta. Propón la tarea `Tx` para que `1-planner` la agregue a `tasks.md`, con un test de regresión que reproduzca el fallo.
-- **Pasar por SDD** si corregirlo exige cambiar un requisito, un criterio de aceptación o el diseño.
-- **Test incorrecto**: explica por qué el test contradice la spec vigente y espera aprobación explícita antes de tocarlo.
-- **Entorno/datos**: no toques código ni tests; indica qué configurar o qué dato falta.
-- 🛑 Si la propuesta no es "Corregir ahora", **DETENTE Y ESPERA** la decisión del usuario.
+- **Nueva tarea** si la causa está fuera del alcance de la tarea actual (otro módulo, una regresión previa, deuda): no la corrijas por tu cuenta. Propón la tarea `Tx` y, tras el "sí" del usuario, haz que `1-planner` la **escriba** en `tasks.md` (con test de regresión que reproduzca el fallo). El registro en `tasks.md` es el cierre; no basta con proponerla.
+- **Pasar por SDD** si corregirlo exige cambiar un requisito, un criterio de aceptación o el diseño: tras el "sí", inicia o ajusta el flujo `/sdd` (spec/plan/tasks).
+- **Test incorrecto**: explica por qué el test contradice la spec vigente y espera aprobación explícita antes de tocarlo; si se aprueba el cambio del test, documéntalo (tarea o nota en spec/plan según aplique).
+- **Entorno/datos**: no toques código ni tests; indica qué configurar o qué dato falta y registra el bloqueo (tarea o nota en `tasks.md` / `MEMORY.md`) para que el rojo no quede “olvidado”.
+- 🛑 Si la propuesta no es "Corregir ahora", **DETENTE Y ESPERA** la decisión del usuario; después **ejecuta el registro** elegido antes de seguir con otra tarea.
 
 ### 3. Reproducir antes de corregir (bugs)
 Todo bug de comportamiento, venga de un test fallido, de QA o del usuario, se corrige primero con un test que lo reproduzca (rojo) y luego con el código que lo hace pasar (verde). El test de regresión queda en la suite.
@@ -116,9 +118,10 @@ Al terminar la implementación de la tarea, entrega siempre este reporte en espa
 
 1. **Tarea completada**: `[ID de la tarea]` y los `RF-x` que cubre.
 2. **Archivos modificados**: Lista de rutas de archivos creados/editados.
-3. **Resultado del Test Suite**: Salida/estado de la suite de pruebas en verde, o los Reportes de Fallo pendientes de decisión.
+3. **Resultado del Test Suite**: Salida/estado de la suite de pruebas en verde, o los Reportes de Fallo con su **destino de cierre** (corregido ahora | tarea `Tx` escrita en `tasks.md` | SDD iniciado/ajustado | entorno registrado). Nunca dejes un rojo solo reportado sin destino.
    - **Tests existentes modificados**: "Ninguno" o la lista con la aprobación que lo justifica.
 4. **Decisiones no cubiertas en el plan**: Cualquier decisión técnica menor que tuviste que tomar y que no estaba detallada en `plan.md`.
    - **Desviaciones de convenciones**: "Ninguna" o cada regla "Debe" que no se cumplió, con su justificación.
    - **Simplicidad**: qué código existente se reutilizó y las consultas DRY / KISS / YAGNI hechas con la decisión del usuario (o "Ninguna").
+   - **Diseño**: consultas `CONSULTA DE DISEÑO` hechas con la decisión del usuario (o "Ninguna").
 5. **Verificación de Propiedades**: Qué propiedad(es) de corrección validó esta tarea.

@@ -1,3 +1,8 @@
+---
+description: Principios SDD e ingeniería inmutables para todo el repo
+alwaysApply: true
+---
+
 # Global Rule: Spec-Driven Development (SDD) & Engineering Standards
 
 ## 1. Misión Global
@@ -7,16 +12,21 @@ Esta regla establece los principios inmutables que aplican a TODOS los agentes, 
 Ante CUALQUIER solicitud de cambio, corrección de errores (bugfix), nueva funcionalidad o refactorización:
 - 🚫 **PROHIBIDO modificar código fuente directamente** sin pasar por la evaluación SDD.
 - ⚙️ **Ejecución del Flujo SDD**: Todo cambio activa inmediatamente la lógica de `/sdd`, la cual:
-  1. Escanea la carpeta `specs/`.
-  2. **Evalúa el alcance**: decide si la petición merece especificación o es un cambio directo (criterios en "Evaluación de Alcance" de `/sdd`) y lo justifica ante el usuario.
-  3. Si merece especificación: determina si impacta un spec existente o requiere uno nuevo, y mapea o actualiza `HU-x`, `RF-x`, el plan y las tareas pendientes (`- [ ]`).
-  4. Si es cambio directo: lo ejecuta `@2-implementer.md` (MODO C) tras la confirmación del usuario.
+    1. Escanea la carpeta `specs/`.
+    2. **Evalúa el alcance**: decide si la petición merece especificación o es un cambio directo (criterios en "Evaluación de Alcance" de `/sdd`) y lo justifica ante el usuario.
+    3. Si merece especificación: determina si impacta un spec existente o requiere uno nuevo, y mapea o actualiza `HU-x`, `RF-x`, el plan y las tareas pendientes (`- [ ]`).
+    4. Si es cambio directo: lo ejecuta `@2-implementer.md` (MODO C) tras la confirmación del usuario.
 - 🛑 **Paso de Confirmación**: La IA debe presentar la evaluación (y, si aplica, la propuesta de actualización o creación en `specs/`) y esperar la confirmación del usuario antes de tocar código.
 
-## 2.1 Integridad de los Tests
-- Los tests existen para detectar fallos. Un test que falla se **reporta**, no se acomoda.
+## 2.1 Integridad de los Tests (obligatorio)
+- Los tests existen para detectar fallos. Un test que falla se **reporta**, no se acomoda. 🚫 **PROHIBIDO ignorar el rojo**.
 - 🚫 **PROHIBIDO** modificar, borrar, saltar, comentar o debilitar un test existente para que pase. Solo se cambia si el requisito que valida cambió en una spec aprobada, o si se demostró que el test está mal y el usuario lo aprobó.
-- Todo fallo genera un **Reporte de Fallo** (qué falló, dónde, causa probable con evidencia y propuesta) según `@2-implementer.md`. La propuesta es corregir ahora (solo si es pequeño y dentro del alcance de la tarea), crear una tarea con test de regresión, o pasar por SDD; el usuario decide salvo en el primer caso.
+- Todo fallo genera un **Reporte de Fallo** (qué falló, dónde, causa probable con evidencia y propuesta) según `@2-implementer.md`.
+- **Cierre obligatorio tras el reporte**: no se continúa ni se cierra la tarea dejando el fallo sin uno de estos destinos:
+  1. **Corregir código ahora** (solo si es pequeño y dentro del alcance de la tarea; nunca el test).
+  2. **Escribir o actualizar** una tarea `- [ ]` en `tasks.md` (vía `@1-planner.md` si aplica), con test de regresión cuando corresponda.
+  3. **Abrir o ajustar** spec / plan vía SDD (`/sdd`).
+- Crear tests **nuevos** (TDD) sí está permitido.
 - Todo bug de comportamiento se corrige primero con un test que lo reproduce.
 
 ## 2.2 Simplicidad: DRY, KISS y YAGNI
@@ -68,6 +78,29 @@ CONSULTA DE SIMPLICIDAD — [DRY | KISS | YAGNI]
 
 Si el usuario elige mejorar: dentro del alcance de la tarea actual, se aplica en la misma tarea; fuera de ese alcance, se propone como tarea nueva (`1-planner`) o pasa por `/sdd`.
 
+## 2.3 Revisión de diseño (sugerencia)
+Aplica al planificar (`@1-planner.md`), al implementar (`@2-implementer.md`) y en QA (`@3-qa-reviewer.md`) cuando se **crea o genera código propio** (servicios, policies, Livewire propio, helpers, acciones, etc.).
+
+- **No** hace falta titular todo "SOLID" ni exigir un checklist de cumplimiento en cada archivo.
+- Lo que el framework ya estructura de forma idiomática (recursos Filament, CRUD generado, convenciones Laravel/Django/etc.) **no** se re-audita como deuda de diseño.
+- Al crear código propio, revisa de forma ligera: responsabilidades, acoplamiento, extensibilidad y dependencias.
+- Si ves una mejora posible → emite una `CONSULTA DE DISEÑO` y espera la decisión del usuario. 🚫 **PROHIBIDO refactorizar por iniciativa propia**.
+- Alcance: solo código propio **nuevo o modificado en la iteración/tarea actual**; no se barre todo el repositorio.
+- No es bloqueante en QA: decide el usuario.
+
+Formato de consulta (una por hallazgo, y espera la respuesta):
+
+```
+CONSULTA DE DISEÑO
+- Dónde: [ruta/al/archivo o unidad nueva]
+- Qué vi: [responsabilidad / acoplamiento / extensibilidad / dependencia]
+- Sugerencia: [cambio propuesto] — Impacto: [archivos / tests / RF]
+- Alternativa: dejarlo igual — [por qué puede estar bien así]
+- ¿Aplicamos la sugerencia o lo dejamos igual?
+```
+
+Si el usuario elige mejorar: dentro del alcance de la tarea actual se aplica ahí; fuera de ese alcance, se propone como tarea nueva (`1-planner`) o pasa por `/sdd`. Si decide dejarlo igual y da un motivo, regístralo en **Convenciones** de `AGENTS.md` o en `MEMORY.md`.
+
 ## 3. Idioma y Comunicación
 - **Comunicación**: Toda la interacción con el usuario (preguntas, resúmenes, reportes) debe ser en **ESPAÑOL**.
 - **Documentación**: Todos los archivos dentro de `specs/` deben redactarse en **ESPAÑOL**.
@@ -97,7 +130,7 @@ Los subagentes no asumen ningún lenguaje, framework ni comando. Toman los datos
 | `conventions` | Guías de la skill `stack-conventions` que aplican (ej. `laravel, filament`) |
 
 - Si una clave necesaria falta o dice `no configurado`, el subagente **se detiene y pregunta**; nunca la inventa. Excepción: si `conventions` no está configurada, se aplican solo los Principios Generales de `stack-conventions`.
-- **Convenciones de código**: prioridad `docs/constitution.md` > **Convenciones** de `AGENTS.md` > guías de `conventions` > Principios Generales. Aplican al código nuevo o modificado; una refactorización para alinearse se propone como tarea, no se hace por iniciativa propia. `/init` activa cada guía como regla en `.agents/rules/stack-[nombre].md`.
+- **Convenciones de código**: prioridad `docs/constitution.md` > **Convenciones** de `AGENTS.md` > guías de `conventions` > Principios Generales. Aplican al código nuevo o modificado; una refactorización para alinearse se propone como tarea, no se hace por iniciativa propia. `/init` activa cada guía como regla automática en `.agents/rules/stack-[nombre].md`.
 - El bloque se genera o actualiza con `/init`.
 
 ## 6. Estructura Obligatoria de Módulos (Specs)

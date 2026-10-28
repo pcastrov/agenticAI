@@ -112,18 +112,38 @@ Por cada guía de `conventions`, copia `.agents/skills/stack-conventions/referen
 - Si se quita una guía de `conventions`, borra su `stack-[nombre].md`.
 
 ### PASO 6: `docs/constitution.md`
-Crea o actualiza **6 principios innegociables, cortos y verificables** (máximo 15 líneas):
+Crea o actualiza **7 principios innegociables, cortos y verificables** (máximo ~18 líneas):
 1. **Simplicidad del Stack**: Priorizar convenciones nativas del framework antes de instalar librerías de terceros.
 2. **Relación Spec-Código**: Ningún código existe ni se modifica sin un Requisito Funcional (`RF-x`) o Tarea previa en `specs/`.
 3. **Separación Lógica / UI**: Desacoplar la lógica de negocio de los componentes visuales o vistas.
-4. **Política de Tests**: Pruebas automatizadas obligatorias con el runner del Perfil técnico.
-5. **Protección de Datos**: Respeto estricto a autorizaciones, validaciones de entrada y manejo seguro de datos.
-6. **Idioma**: Código, variables y comentarios en **Inglés**; documentación en `specs/`, UI e interfaces al usuario en **Español** (ajustable si el usuario indica otro).
+4. **Integridad de Tests**: Suite automatizada obligatoria con el runner del Perfil técnico. Un test existente que falla no se modifica ni se debilita para que pase: se entrega Reporte de Fallo y el rojo queda registrado (corregir código ahora, o tarea en `tasks.md`, o SDD). Nunca se ignora el rojo.
+5. **Revisión de diseño (sugerencia)**: Al crear código propio, se pueden sugerir mejoras de responsabilidades/acoplamiento con consulta al usuario; no se refactoriza por iniciativa propia. Lo idiomático del framework no se trata como deuda.
+6. **Protección de Datos**: Respeto estricto a autorizaciones, validaciones de entrada y manejo seguro de datos.
+7. **Idioma**: Código, variables y comentarios en **Inglés**; documentación en `specs/`, UI e interfaces al usuario en **Español** (ajustable si el usuario indica otro).
 
 ### PASO 7: Resto de `AGENTS.md`
 Crea o actualiza las secciones con datos reales del proyecto:
 - **Nombre y Descripción**, **Stack y Estructura**, **Comandos** (copiables), **Convenciones**, **Reglas de Dominio**.
-- **`## Código Compartido`**: catálogo de código **propio** reutilizable entre módulos, que usan las revisiones DRY (ver `global-sdd.md`, sección 2.2):
+- **`## Integridad de tests`** (obligatorio; no sustituye dominio del proyecto):
+
+  ```markdown
+  ## Integridad de tests
+  - Un test existente que falla no se modifica ni se debilita para que pase.
+  - Todo fallo produce un **Reporte de Fallo** (qué, dónde, evidencia, causa probable, propuesta).
+  - Tras el reporte el rojo **siempre** queda cerrado con uno de: corregir código ahora | tarea en `tasks.md` | abrir/ajustar SDD. Nunca se ignora.
+  - Crear tests nuevos (TDD) sí está permitido.
+  ```
+
+- **`## Revisión de diseño`** (sugerencia):
+
+  ```markdown
+  ## Revisión de diseño
+  - Al crear código propio (servicios, policies, helpers, etc.), planner / implementer / QA pueden emitir `CONSULTA DE DISEÑO` (dónde, qué vi, sugerencia + impacto, alternativa dejar igual).
+  - No es checklist SOLID ni re-auditoría de lo idiomático del framework.
+  - No se refactoriza por iniciativa propia; decide el usuario. No bloquea QA.
+  ```
+
+- **`## Código Compartido`**: catálogo de código **propio** reutilizable entre módulos, que usan las revisiones DRY (ver `global-sdd`, sección 2.2):
 
   ```markdown
   ## Código Compartido
@@ -134,9 +154,9 @@ Crea o actualiza las secciones con datos reales del proyecto:
 
   - **Proyecto existente**: detecta candidatos solo entre archivos versionados de las carpetas de `structure`: clases abstractas, bases, traits, mixins, helpers o componentes propios que usan dos o más módulos. Nunca incluyas clases del framework ni de `vendor/`/`node_modules/`, ni lo de las exclusiones "DRY en este stack". Muéstralos en el DETENTE para que el usuario confirme cuáles entran.
   - **Proyecto nuevo**: deja la tabla vacía con una fila de ejemplo comentada.
-- En **Convenciones**, anota solo lo propio del proyecto y sus desviaciones justificadas respecto a las guías de `conventions` (tienen prioridad sobre ellas); no copies las guías.
+- En **Convenciones**, anota solo lo propio del proyecto y sus desviaciones justificadas respecto a las guías de `conventions` (tienen prioridad sobre ellas); no copies las guías. Incluye la política DRY/KISS/YAGNI como consulta (`CONSULTA DE SIMPLICIDAD`) si aún no está.
 - **Forma de Trabajar**: flujo SDD con subagentes (`@1-planner.md`, `@2-implementer.md`, `@3-qa-reviewer.md`) y regla de histórico (`history.md`, mover nunca borrar).
-- **Límites**: qué hacer siempre, qué preguntar antes y qué no hacer nunca.
+- **Límites**: qué hacer siempre, qué preguntar antes y qué no hacer nunca (incluye: no debilitar tests; no refactor de diseño sin consulta).
 - **Verificación**: cómo dar una tarea por verificada en este proyecto.
 
 ### PASO 8: `MEMORY.md`
@@ -148,11 +168,12 @@ Crea o actualiza (máximo ~50 líneas):
 
 ## Formato de Salida
 1. Resumen del **Stack Detectado** (o de las respuestas de la entrevista) y versión del flujo SDD instalada.
-2. Borrador del bloque `## Perfil técnico` y de `docs/constitution.md`.
-3. Guías de `conventions` elegidas, reglas `stack-*.md` que se crearán y herramientas de verificación sugeridas.
-4. Si el stack es Laravel: propuesta de **instalar Laravel Boost** (paquete + MCP Search Docs + guidelines/skills), o "ya instalado" si `laravel/boost` está presente.
-5. 🛑 **DETENTE Y ESPERA**: Solicita aprobación explícita del usuario antes de escribir los archivos e instalar herramientas del stack.
-6. Tras la aprobación: escribe la Trinidad y las reglas `stack-*.md`; si se aprobó Boost, ejecuta la instalación del PASO 5 (Laravel) y confirma el estado del MCP.
+2. Borrador del bloque `## Perfil técnico` y de `docs/constitution.md` (incluye integridad de tests + revisión de diseño como principios).
+3. Borrador de los bloques operativos de `AGENTS.md`: **Integridad de tests**, **Revisión de diseño**, **Código Compartido** (y DRY/KISS/YAGNI).
+4. Guías de `conventions` elegidas, reglas `stack-*.md` que se crearán y herramientas de verificación sugeridas.
+5. Si el stack es Laravel: propuesta de **instalar Laravel Boost** (paquete + MCP Search Docs + guidelines/skills), o "ya instalado" si `laravel/boost` está presente.
+6. 🛑 **DETENTE Y ESPERA**: Solicita aprobación explícita del usuario antes de escribir los archivos e instalar herramientas del stack. Confirma que constitution + Integridad de tests + Revisión de diseño quedarán en la Trinidad.
+7. Tras la aprobación: escribe la Trinidad y las reglas `stack-*.md`; si se aprobó Boost, ejecuta la instalación del PASO 5 (Laravel) y confirma el estado del MCP.
 
 ---
 
