@@ -8,26 +8,21 @@ Inspirado en el flujo de specs de distintas metodologías (requisitos EARS, dise
 
 Versión actual: ver la primera entrada de [CHANGELOG.md](CHANGELOG.md).
 
-**Edición Full** (este paquete): Cursor Pro / modelos frontier. Existe también **`sdd-lite/`** en el mismo repositorio para modelos locales 8B–14B (16K–32K).
+**Edición Full** (este paquete, carpeta `sdd-full/` del repo). Hermana **Lite**: `sdd-lite/` (locales 8B–14B / Ollama 32K).
 
-Todo el paquete vive dentro de `.agents/`; su documentación está en `.agents/sdd-kit/` (este `README.md` y `CHANGELOG.md`) para no mezclarse con el `README.md` y el `CHANGELOG.md` propios de cada proyecto.
+Todo el paquete vive dentro de `.cursor/` (o `.agents/`); su documentación está en `.cursor/sdd-kit/` para no mezclarse con el README del proyecto.
 
 ---
 
 ## Instalación en un proyecto
 
-Origen público del paquete: [github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI).
+Origen: [github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI) → **`sdd-full/`**.
 
-1. Obtén el paquete (clona el repo o descarga el ZIP) y copia la carpeta `.agents/` a la raíz del proyecto (si el proyecto ya tiene `.agents/`, combina las carpetas; el paquete no pisa archivos propios del stack). Es lo único que se copia al proyecto: el flujo vive dentro de `.agents/`.
-2. Comprueba que `.agents/sdd-kit.md` tenga `source: https://github.com/pcastrov/agenticAI` (o una ruta local si trabajas contra un clone en disco).
-3. Ejecuta `/init`:
-   - **Proyecto existente**: detecta el stack desde los manifiestos y pregunta solo lo ambiguo.
-   - **Proyecto nuevo**: hace una entrevista corta (lenguaje, framework, BD, tests, linter, UI, despliegue) con valores por defecto.
-   - Genera `AGENTS.md` (con `## Perfil técnico`), `docs/constitution.md` y `MEMORY.md`.
-4. Si el proyecto ya tiene código, ejecuta `/retrofit` para documentarlo en `specs/`.
-5. Para cualquier cambio, usa `/sdd`.
-
-Para actualizar un proyecto a una versión nueva del paquete: `/sdd-update` (lee `source`; si es la URL del repo, clona temporalmente y compara).
+1. Copia **`sdd-full/.cursor/`** a la raíz del proyecto como `.cursor/` (o `sdd-full/.agents/` → `.agents/`). No mezcles con Lite.
+2. En `.cursor/sdd-kit.md`: `source: https://github.com/pcastrov/agenticAI` y `package_path: sdd-full/.cursor` (o ruta local a `…/sdd-full`).
+3. Ejecuta `/init` → `AGENTS.md`, `docs/constitution.md`, `MEMORY.md`.
+4. Código existente → `/retrofit`. Cambios → `/sdd`.
+5. Actualizar: `/sdd-update` (compara **`sdd-full/.cursor/`** del clone).
 
 ---
 
@@ -65,7 +60,7 @@ La skill `stack-conventions` contiene una guía de código idiomático por frame
 
 Las guías se usan de dos formas:
 - **En el flujo SDD**: el planner, el implementador y el QA leen solo las guías de la clave `conventions`.
-- **Como regla automática**: `/init` copia esas guías a `.agents/rules/stack-[nombre].mdc`, y Cursor las adjunta al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca.
+- **Como regla automática**: `/init` copia esas guías a `.cursor/rules/stack-[nombre].mdc`, y Cursor las adjunta al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca.
 
 Orden de prioridad: `docs/constitution.md`, luego **Convenciones** de `AGENTS.md` (lo propio del proyecto), luego las guías y por último los Principios Generales. Las guías aplican al código nuevo o modificado; alinear código viejo se propone como tarea.
 
@@ -196,48 +191,48 @@ Nunca se ignora el rojo. Crear tests nuevos (TDD) sí está permitido. El QA rev
 
 ## Archivos del paquete
 
-Lista usada por `/sdd-update` para saber qué archivos le pertenecen (todo lo demás en `.agents/` es del proyecto y no se toca):
+Lista usada por `/sdd-update` para saber qué archivos le pertenecen (todo lo demás en `.cursor/` es del proyecto y no se toca):
 
 ```text
-.agents/sdd-kit.md
-.agents/sdd-kit/README.md
-.agents/sdd-kit/CHANGELOG.md
-.agents/rules/global-sdd.mdc
-.agents/subagents/1-planner.md
-.agents/subagents/2-implementer.md
-.agents/subagents/3-qa-reviewer.md
-.agents/commands/sdd.md
-.agents/commands/init.md
-.agents/commands/retrofit.md
-.agents/commands/architect.md
-.agents/commands/implement.md
-.agents/commands/review.md
-.agents/commands/security.md
-.agents/commands/validation-trace.md
-.agents/commands/validation-properties.md
-.agents/commands/sdd-archive.md
-.agents/commands/sdd-update.md
-.agents/commands/ui-check.md
-.agents/commands/mcp-mode.md
-.agents/skills/sdd-docs-generator/SKILL.md
-.agents/skills/sdd-docs-generator/references/spec-template.md
-.agents/skills/sdd-docs-generator/references/plan-template.md
-.agents/skills/sdd-docs-generator/references/tasks-template.md
-.agents/skills/sdd-docs-generator/references/history-template.md
-.agents/skills/sdd-docs-generator/references/sequence-business-template.md
-.agents/skills/sdd-docs-generator/references/sequence-technical-template.md
-.agents/skills/stack-conventions/SKILL.md
-.agents/skills/stack-conventions/references/laravel.md
-.agents/skills/stack-conventions/references/filament.md
-.agents/skills/stack-conventions/references/nativephp.md
-.agents/skills/stack-conventions/references/django.md
-.agents/skills/stack-conventions/references/fastapi.md
-.agents/skills/stack-conventions/references/flutter.md
+.cursor/sdd-kit.md
+.cursor/sdd-kit/README.md
+.cursor/sdd-kit/CHANGELOG.md
+.cursor/rules/global-sdd.mdc
+.cursor/subagents/1-planner.md
+.cursor/subagents/2-implementer.md
+.cursor/subagents/3-qa-reviewer.md
+.cursor/commands/sdd.md
+.cursor/commands/init.md
+.cursor/commands/retrofit.md
+.cursor/commands/architect.md
+.cursor/commands/implement.md
+.cursor/commands/review.md
+.cursor/commands/security.md
+.cursor/commands/validation-trace.md
+.cursor/commands/validation-properties.md
+.cursor/commands/sdd-archive.md
+.cursor/commands/sdd-update.md
+.cursor/commands/ui-check.md
+.cursor/commands/mcp-mode.md
+.cursor/skills/sdd-docs-generator/SKILL.md
+.cursor/skills/sdd-docs-generator/references/spec-template.md
+.cursor/skills/sdd-docs-generator/references/plan-template.md
+.cursor/skills/sdd-docs-generator/references/tasks-template.md
+.cursor/skills/sdd-docs-generator/references/history-template.md
+.cursor/skills/sdd-docs-generator/references/sequence-business-template.md
+.cursor/skills/sdd-docs-generator/references/sequence-technical-template.md
+.cursor/skills/stack-conventions/SKILL.md
+.cursor/skills/stack-conventions/references/laravel.md
+.cursor/skills/stack-conventions/references/filament.md
+.cursor/skills/stack-conventions/references/nativephp.md
+.cursor/skills/stack-conventions/references/django.md
+.cursor/skills/stack-conventions/references/fastapi.md
+.cursor/skills/stack-conventions/references/flutter.md
 ```
 
 ## Qué NO va en este paquete
 
-Herramientas, skills de terceros o configuración propios de un stack (p. ej. Laravel Boost, skills de Flutter/Dart, auditores de seguridad de un framework, linters, comandos de setup de entorno, `.agents/mcp.json`). No van dentro del paquete SDD; se instalan en cada proyecto.
+Herramientas, skills de terceros o configuración propios de un stack (p. ej. Laravel Boost, skills de Flutter/Dart, auditores de seguridad de un framework, linters, comandos de setup de entorno, `.cursor/mcp.json`). No van dentro del paquete SDD; se instalan en cada proyecto.
 
 Con Laravel, `/init` y `/retrofit` proponen **Laravel Boost** con MCP (`Search Docs`, esquema) y **`guidelines: false`** para no inflar `AGENTS.md`. Las reglas de código viven en `stack-conventions`. Playwright/Chrome DevTools: `/mcp-mode` + `/ui-check`, no siempre-on. Otros stacks: solo sugiere.
 
@@ -246,6 +241,6 @@ Las **guías de convenciones** (`stack-conventions`) sí van en el paquete: son 
 ## Cómo evolucionar el paquete
 
 1. Haz el cambio aquí (no en la copia de un proyecto) o tráelo desde el proyecto donde se probó.
-2. Agrega una entrada al inicio de `.agents/sdd-kit/CHANGELOG.md` con la nueva versión y, si cambia la estructura de `specs/`, los pasos de migración.
-3. Actualiza `version` en `.agents/sdd-kit.md`.
+2. Agrega una entrada al inicio de `.cursor/sdd-kit/CHANGELOG.md` con la nueva versión y, si cambia la estructura de `specs/`, los pasos de migración.
+3. Actualiza `version` en `.cursor/sdd-kit.md`.
 4. En cada proyecto, ejecuta `/sdd-update`.

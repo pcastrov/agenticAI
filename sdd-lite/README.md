@@ -21,6 +21,8 @@ Specs: `spec.md` + `summary.md` + `history/h-NN.md` (máx 3 shards + `h-archive.
 ## Tokens / MCP
 Kit + docs del módulo ≈ **3–3.5K** por turno normal. Usa `/mcp-mode code` por defecto. UI: `/ui-check` o skill `on-demand-tools`. Boost: `guidelines: false`.
 
+En el repo, Full vive en [`../sdd-full/`](../sdd-full/) y Lite aquí — carpetas hermanas; la raíz solo tiene el índice.
+
 Números y tabla Full vs Lite: [README de la raíz](../README.md).
 
 Detalle del paquete: [`.cursor/sdd-kit/README.md`](.cursor/sdd-kit/README.md).
