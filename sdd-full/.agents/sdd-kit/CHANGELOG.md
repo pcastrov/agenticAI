@@ -4,26 +4,39 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
-## 3.5.0 — 2026-11-02
+## 3.5.1 — 2026-11-02
 
-Optimización de tokens (Single Source of Truth), GATE de obediencia, Boost sin guidelines en `AGENTS.md`, UI/MCP bajo demanda y edición **SDD Lite** en `sdd-lite/` del repo.
-
-### Agregado
-- **GATE** al inicio de `global-sdd.mdc` (§0): pregunta vs acción; `[EVALUACION SDD]` antes de editar; fallo de suite/Playwright/`ui_check` → reporte y stop (sin auto-loop).
-- Comandos **`/ui-check`** y **`/mcp-mode`**.
-- Compactación de `history.md` (>~300 líneas) en planner MODO 6 / `/sdd-archive`.
-- Paquete hermano **`sdd-lite/`** en el repositorio (modelos locales 16K–32K): no afecta a `/sdd-update` Full (sigue leyendo `.agents/` en la raíz).
+El paquete Full vive en **`sdd-full/`** del repo (junto a `sdd-lite/`), no en la raíz.
 
 ### Cambiado
-- Subagentes y comandos de validación/review **delegan** a `global-sdd` y a modos de subagente (sin duplicar plantillas largas).
-- `/init` y `/retrofit`: `boost.json` con **`guidelines: false`**, `mcp: true`; propone limpiar `<laravel-boost-guidelines>`.
-- `/sdd-update`: proyección AGENTS como puntero corto + limpieza Boost; lista nuevos comandos.
-- `AGENTS.md` generado: bloque **Gobernanza SDD** (puntero), no copia íntegra de §2.x.
+- `/sdd-update` compara **`sdd-full/.agents/`** (o `sdd-full/.agents/`) del origen.
+- README raíz: solo índice; paquetes en carpetas hermanas.
+
+### Migración desde 3.5.0
+1. Copia una vez desde `sdd-full/.agents/` (o actualiza `source`/ruta hacia `…/agenticAI/sdd-full`).
+2. Siguientes `/sdd-update` usan `package_path: sdd-full/.cursor`.
+
+---
+
+## 3.5.0 — 2026-11-02
+
+Optimización de tokens (Single Source of Truth), GATE, Boost sin guidelines, UI/MCP bajo demanda y hermano Lite.
+
+### Agregado
+- **GATE** al inicio de `global-sdd.md` (§0).
+- Comandos **`/ui-check`** y **`/mcp-mode`**.
+- Compactación de `history.md` (>~300 líneas).
+- Edición hermana **`sdd-lite/`** (modelos locales 16K–32K).
+
+### Cambiado
+- Subagentes/comandos delegan a `global-sdd` (sin duplicar plantillas).
+- `/init` y `/retrofit`: `guidelines: false`, `mcp: true`.
+- `/sdd-update`: proyección AGENTS corta + limpieza Boost.
 
 ### Migración desde 3.4.0
-1. `/sdd-update` en cada proyecto Full.
-2. Confirma limpieza de Boost guidelines y el puntero de gobernanza en `AGENTS.md`.
-3. Opcional: usa `/mcp-mode code` y `/ui-check` para no cargar MCPs de navegador en el hilo de código.
+1. Instalar/actualizar desde `sdd-full/.agents/` (ver 3.5.1 si el repo ya está reorganizado).
+2. Confirma limpieza Boost + puntero de gobernanza en `AGENTS.md`.
+3. Opcional: `/mcp-mode code` y `/ui-check`.
 
 ---
 
@@ -38,12 +51,12 @@ Dos regímenes (integridad de tests obligatoria vs revisión de diseño sugerida
 - **Subagentes**: planner y QA pueden emitir `CONSULTA DE DISEÑO` (no bloqueante); implementer exige cierre post-reporte (fix | tarea escrita | SDD).
 
 ### Cambiado
-- **`global-sdd.md` → `global-sdd.mdc`** (Cursor) con `alwaysApply: true`.
+- **`global-sdd.md` → `global-sdd.md`** (Cursor) con `alwaysApply: true`.
 - **§2.1 Integridad de tests**: cierre obligatorio tras Reporte de Fallo; prohibido ignorar el rojo.
 - **`stack-conventions`**: principio Preferir de revisión de diseño al crear código propio (principios 1–2 no son checklist SOLID global).
 
 ### Migración desde 3.3.1
-1. Ejecuta `/sdd-update` (renombra/reemplaza `global-sdd.md` por `global-sdd.mdc` en proyectos Cursor).
+1. Ejecuta `/sdd-update` (renombra/reemplaza `global-sdd.md` por `global-sdd.md` en proyectos Cursor).
 2. Completa en `docs/constitution.md` y `AGENTS.md` los bloques de integridad de tests y revisión de diseño si faltan (el update los propone; no borra dominio del proyecto).
 
 ---
@@ -83,7 +96,7 @@ Revisión de simplicidad DRY / KISS / YAGNI en planificación, implementación y
 Sin cambios en la estructura de `specs/`.
 1. Agrega `## Código Compartido` a `AGENTS.md`. Puede hacerlo `/init`, que detecta candidatos y te los pide confirmar.
 2. Los `plan.md` existentes reciben la sección "1.1 Reutilización y Simplicidad" la próxima vez que `1-planner` los actualice.
-3. `/sdd-update` refresca las reglas `stack-*.mdc` con la nueva sección "DRY en este stack".
+3. `/sdd-update` refresca las reglas `stack-*.md` con la nueva sección "DRY en este stack".
 
 ---
 
@@ -140,7 +153,7 @@ Calidad de requisitos y diagramas de secuencia PlantUML.
 ### Migración desde 3.0.0
 `/sdd-update` copia `.agents/sdd-kit/README.md` y `.agents/sdd-kit/CHANGELOG.md` al proyecto. No toca el `README.md` ni el `CHANGELOG.md` de la raíz del proyecto: si alguna vez se copiaron ahí los del paquete, bórralos a mano.
 
-Ejecuta `/init` para agregar la clave `conventions` al Perfil técnico y generar las reglas `stack-*.mdc`. Sin la clave, solo aplican los Principios Generales de `stack-conventions`.
+Ejecuta `/init` para agregar la clave `conventions` al Perfil técnico y generar las reglas `stack-*.md`. Sin la clave, solo aplican los Principios Generales de `stack-conventions`.
 
 La adopción de los nuevos requisitos no es obligatoria. Los módulos existentes siguen funcionando; al tocar un módulo con `1-planner` MODO 3, se agregan `HU-x`, MoSCoW y diagramas a los RF pendientes afectados. Para adoptarlo de una vez en un módulo, pide a `@1-planner.md`:
 1. Agrupar los RF pendientes en `HU-x` con criterios `CA-x.y` y asignarles MoSCoW.

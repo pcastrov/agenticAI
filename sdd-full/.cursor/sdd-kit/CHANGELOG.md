@@ -4,26 +4,39 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
-## 3.5.0 — 2026-11-02
+## 3.5.1 — 2026-11-02
 
-Optimización de tokens (Single Source of Truth), GATE de obediencia, Boost sin guidelines en `AGENTS.md`, UI/MCP bajo demanda y edición **SDD Lite** en `sdd-lite/` del repo.
-
-### Agregado
-- **GATE** al inicio de `global-sdd.mdc` (§0): pregunta vs acción; `[EVALUACION SDD]` antes de editar; fallo de suite/Playwright/`ui_check` → reporte y stop (sin auto-loop).
-- Comandos **`/ui-check`** y **`/mcp-mode`**.
-- Compactación de `history.md` (>~300 líneas) en planner MODO 6 / `/sdd-archive`.
-- Paquete hermano **`sdd-lite/`** en el repositorio (modelos locales 16K–32K): no afecta a `/sdd-update` Full (sigue leyendo `.cursor/` en la raíz).
+El paquete Full vive en **`sdd-full/`** del repo (junto a `sdd-lite/`), no en la raíz.
 
 ### Cambiado
-- Subagentes y comandos de validación/review **delegan** a `global-sdd` y a modos de subagente (sin duplicar plantillas largas).
-- `/init` y `/retrofit`: `boost.json` con **`guidelines: false`**, `mcp: true`; propone limpiar `<laravel-boost-guidelines>`.
-- `/sdd-update`: proyección AGENTS como puntero corto + limpieza Boost; lista nuevos comandos.
-- `AGENTS.md` generado: bloque **Gobernanza SDD** (puntero), no copia íntegra de §2.x.
+- `/sdd-update` compara **`sdd-full/.cursor/`** (o `sdd-full/.agents/`) del origen.
+- README raíz: solo índice; paquetes en carpetas hermanas.
+
+### Migración desde 3.5.0
+1. Copia una vez desde `sdd-full/.cursor/` (o actualiza `source`/ruta hacia `…/agenticAI/sdd-full`).
+2. Siguientes `/sdd-update` usan `package_path: sdd-full/.cursor`.
+
+---
+
+## 3.5.0 — 2026-11-02
+
+Optimización de tokens (Single Source of Truth), GATE, Boost sin guidelines, UI/MCP bajo demanda y hermano Lite.
+
+### Agregado
+- **GATE** al inicio de `global-sdd.mdc` (§0).
+- Comandos **`/ui-check`** y **`/mcp-mode`**.
+- Compactación de `history.md` (>~300 líneas).
+- Edición hermana **`sdd-lite/`** (modelos locales 16K–32K).
+
+### Cambiado
+- Subagentes/comandos delegan a `global-sdd` (sin duplicar plantillas).
+- `/init` y `/retrofit`: `guidelines: false`, `mcp: true`.
+- `/sdd-update`: proyección AGENTS corta + limpieza Boost.
 
 ### Migración desde 3.4.0
-1. `/sdd-update` en cada proyecto Full.
-2. Confirma limpieza de Boost guidelines y el puntero de gobernanza en `AGENTS.md`.
-3. Opcional: usa `/mcp-mode code` y `/ui-check` para no cargar MCPs de navegador en el hilo de código.
+1. Instalar/actualizar desde `sdd-full/.cursor/` (ver 3.5.1 si el repo ya está reorganizado).
+2. Confirma limpieza Boost + puntero de gobernanza en `AGENTS.md`.
+3. Opcional: `/mcp-mode code` y `/ui-check`.
 
 ---
 
