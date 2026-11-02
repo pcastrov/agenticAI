@@ -1,12 +1,14 @@
 # SDD Kit — Spec-Driven Development para agentes de IA
 
-Flujo de trabajo portátil para que agentes de IA (Claude Code, Codex, Gemini, Copilot, Junie u otros) desarrollen software guiados por especificaciones: primero el **qué** y el **por qué** (`spec.md`), luego el **cómo** (`plan.md`), después el **paso a paso** (`tasks.md`), implementación con **TDD estricto** y validación QA en cada etapa.
+Flujo de trabajo portátil para que agentes de IA (Cursor) desarrollen software guiados por especificaciones: primero el **qué** y el **por qué** (`spec.md`), luego el **cómo** (`plan.md`), después el **paso a paso** (`tasks.md`), implementación con **TDD estricto** y validación QA en cada etapa.
 
 Es **agnóstico de lenguaje y framework**: funciona igual en Laravel, Python, Node, Go o cualquier otro stack. Lo único que cambia entre proyectos es el bloque `## Perfil técnico` de `AGENTS.md`, que genera `/init`.
 
-Inspirado en el flujo de specs de distintas metodologías (requisitos EARS, diseño, tareas y propiedades de corrección), adaptado a subagentes.
+Inspirado en el flujo de specs de distintas metodologías (requisitos EARS, diseño, tareas y propiedades de corrección), adaptado a subagentes de Cursor.
 
 Versión actual: ver la primera entrada de [CHANGELOG.md](CHANGELOG.md).
+
+**Edición Full** (este paquete): Cursor Pro / modelos frontier. Existe también **`sdd-lite/`** en el mismo repositorio para modelos locales 8B–14B (16K–32K).
 
 Todo el paquete vive dentro de `.agents/`; su documentación está en `.agents/sdd-kit/` (este `README.md` y `CHANGELOG.md`) para no mezclarse con el `README.md` y el `CHANGELOG.md` propios de cada proyecto.
 
@@ -18,13 +20,12 @@ Origen público del paquete: [github.com/pcastrov/agenticAI](https://github.com/
 
 1. Obtén el paquete (clona el repo o descarga el ZIP) y copia la carpeta `.agents/` a la raíz del proyecto (si el proyecto ya tiene `.agents/`, combina las carpetas; el paquete no pisa archivos propios del stack). Es lo único que se copia al proyecto: el flujo vive dentro de `.agents/`.
 2. Comprueba que `.agents/sdd-kit.md` tenga `source: https://github.com/pcastrov/agenticAI` (o una ruta local si trabajas contra un clone en disco).
-3. Indica a tu agente que lea `.agents/rules/global-sdd.md` y que los comandos están en `.agents/commands/`.
-4. Ejecuta `/init` (o pide seguir `.agents/commands/init.md`):
+3. Ejecuta `/init`:
    - **Proyecto existente**: detecta el stack desde los manifiestos y pregunta solo lo ambiguo.
    - **Proyecto nuevo**: hace una entrevista corta (lenguaje, framework, BD, tests, linter, UI, despliegue) con valores por defecto.
    - Genera `AGENTS.md` (con `## Perfil técnico`), `docs/constitution.md` y `MEMORY.md`.
-5. Si el proyecto ya tiene código, ejecuta `/retrofit` para documentarlo en `specs/`.
-6. Para cualquier cambio, usa `/sdd`.
+4. Si el proyecto ya tiene código, ejecuta `/retrofit` para documentarlo en `specs/`.
+5. Para cualquier cambio, usa `/sdd`.
 
 Para actualizar un proyecto a una versión nueva del paquete: `/sdd-update` (lee `source`; si es la URL del repo, clona temporalmente y compara).
 
@@ -64,7 +65,7 @@ La skill `stack-conventions` contiene una guía de código idiomático por frame
 
 Las guías se usan de dos formas:
 - **En el flujo SDD**: el planner, el implementador y el QA leen solo las guías de la clave `conventions`.
-- **Como regla del proyecto**: `/init` copia esas guías a `.agents/rules/stack-[nombre].md` para que el agente las use al trabajar el stack, también fuera de `/sdd`. `/sdd-update` las refresca.
+- **Como regla automática**: `/init` copia esas guías a `.agents/rules/stack-[nombre].mdc`, y Cursor las adjunta al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca.
 
 Orden de prioridad: `docs/constitution.md`, luego **Convenciones** de `AGENTS.md` (lo propio del proyecto), luego las guías y por último los Principios Generales. Las guías aplican al código nuevo o modificado; alinear código viejo se propone como tarea.
 
@@ -94,7 +95,7 @@ Solo cuenta el código propio: archivos versionados en las carpetas de `structur
 
 Al **crear código propio** (servicios, policies, helpers, etc.), planner / implementer / QA pueden emitir una `CONSULTA DE DISEÑO` (dónde, qué vi, sugerencia + impacto, alternativa dejar igual). No es checklist SOLID ni re-auditoría de lo idiomático del framework. Nadie refactoriza por iniciativa propia; en QA no bloquea. Detalle en `global-sdd`, sección 2.3. `/init` proyecta este régimen (y el de integridad de tests) a `AGENTS.md` y `docs/constitution.md`; `/sdd-update` verifica que sigan presentes.
 
-La regla global del flujo (`rules/global-sdd.md`) lleva frontmatter `alwaysApply: true` para hosts que lo soporten.
+La regla global del flujo (`rules/global-sdd.mdc`) lleva `alwaysApply: true` para que Cursor la cargue siempre.
 
 ---
 
@@ -186,8 +187,10 @@ Nunca se ignora el rojo. Crear tests nuevos (TDD) sí está permitido. El QA rev
 | `/security` | Auditoría de seguridad (skill del stack o checklist OWASP) e integración en specs |
 | `/validation-trace` | Trazabilidad HU ↔ RF ↔ arquitectura ↔ tests |
 | `/validation-properties` | Validación y generación de propiedades de corrección |
-| `/sdd-archive` | Cierre manual de iteración hacia `history.md` |
+| `/sdd-archive` | Cierre manual de iteración hacia `history.md` (con compactación si crece) |
 | `/sdd-update` | Actualiza el flujo desde `source` (URL pública o ruta local) |
+| `/ui-check` | Verificación visual aislada (veredicto corto; sin DOM en el hilo) |
+| `/mcp-mode` | Encender/apagar MCPs pesados (`code` vs `ui`/`debug`) |
 
 ---
 
@@ -199,7 +202,7 @@ Lista usada por `/sdd-update` para saber qué archivos le pertenecen (todo lo de
 .agents/sdd-kit.md
 .agents/sdd-kit/README.md
 .agents/sdd-kit/CHANGELOG.md
-.agents/rules/global-sdd.md
+.agents/rules/global-sdd.mdc
 .agents/subagents/1-planner.md
 .agents/subagents/2-implementer.md
 .agents/subagents/3-qa-reviewer.md
@@ -214,6 +217,8 @@ Lista usada por `/sdd-update` para saber qué archivos le pertenecen (todo lo de
 .agents/commands/validation-properties.md
 .agents/commands/sdd-archive.md
 .agents/commands/sdd-update.md
+.agents/commands/ui-check.md
+.agents/commands/mcp-mode.md
 .agents/skills/sdd-docs-generator/SKILL.md
 .agents/skills/sdd-docs-generator/references/spec-template.md
 .agents/skills/sdd-docs-generator/references/plan-template.md
@@ -234,9 +239,9 @@ Lista usada por `/sdd-update` para saber qué archivos le pertenecen (todo lo de
 
 Herramientas, skills de terceros o configuración propios de un stack (p. ej. Laravel Boost, skills de Flutter/Dart, auditores de seguridad de un framework, linters, comandos de setup de entorno, `.agents/mcp.json`). No van dentro del paquete SDD; se instalan en cada proyecto.
 
-Con Laravel, `/init` y `/retrofit` proponen e instalan **Laravel Boost** por defecto (paquete Composer + MCP con Search Docs + guidelines/skills). En el retrofit, Boost sirve para leer esquema, modelos y docs reales. Otros stacks: solo sugiere. El Perfil técnico referencia lo instalado (p. ej. `security_audit_skill`, `lint`).
+Con Laravel, `/init` y `/retrofit` proponen **Laravel Boost** con MCP (`Search Docs`, esquema) y **`guidelines: false`** para no inflar `AGENTS.md`. Las reglas de código viven en `stack-conventions`. Playwright/Chrome DevTools: `/mcp-mode` + `/ui-check`, no siempre-on. Otros stacks: solo sugiere.
 
-Las **guías de convenciones** (`stack-conventions`) sí van en el paquete: son texto, se cargan solo si están en `conventions` y las reglas `stack-*.md` que genera `/init` son del proyecto.
+Las **guías de convenciones** (`stack-conventions`) sí van en el paquete: son texto, se cargan solo si están en `conventions` y las reglas `stack-*.mdc` que genera `/init` son del proyecto.
 
 ## Cómo evolucionar el paquete
 

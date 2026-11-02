@@ -8,9 +8,9 @@ Invocando las reglas de `@1-planner.md`, primero lee el bloque `## Perfil técni
 
 ### 0. Herramientas del stack (antes de mapear)
 Si `conventions` incluye `laravel` (o el framework es Laravel) y `laravel/boost` **no** está instalado:
-1. Propón instalar Laravel Boost (mismo flujo que el PASO 5 de `/init`: `composer require laravel/boost --dev`, `boost.json` con Cursor/MCP/guidelines, `php artisan boost:install`).
+1. Propón instalar Laravel Boost como en `/init`: `composer require laravel/boost --dev`, `boost.json` con `"guidelines": false`, `"mcp": true`, luego `php artisan boost:install`.
 2. 🛑 **DETENTE Y ESPERA** la aprobación del usuario.
-3. Tras aprobar e instalar, pide activar el MCP `laravel-boost` en Cursor si aún no está activo.
+3. Tras instalar, activa el MCP `laravel-boost` si hace falta. Si `AGENTS.md` ya tiene `<laravel-boost-guidelines>`, propón limpiarlo.
 
 Si Boost **ya** está instalado (o acaba de instalarse), úsalo durante el retrofit:
 - **Application Info** / **Database Schema**: modelos, paquetes y esquema reales, para no inventar tablas ni relaciones.
