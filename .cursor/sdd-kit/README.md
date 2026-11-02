@@ -8,6 +8,8 @@ Inspirado en el flujo de specs de distintas metodologías (requisitos EARS, dise
 
 Versión actual: ver la primera entrada de [CHANGELOG.md](CHANGELOG.md).
 
+**Edición Full** (este paquete): Cursor Pro / modelos frontier. Existe también **`sdd-lite/`** en el mismo repositorio para modelos locales 8B–14B (16K–32K).
+
 Todo el paquete vive dentro de `.cursor/`; su documentación está en `.cursor/sdd-kit/` (este `README.md` y `CHANGELOG.md`) para no mezclarse con el `README.md` y el `CHANGELOG.md` propios de cada proyecto.
 
 ---
@@ -185,8 +187,10 @@ Nunca se ignora el rojo. Crear tests nuevos (TDD) sí está permitido. El QA rev
 | `/security` | Auditoría de seguridad (skill del stack o checklist OWASP) e integración en specs |
 | `/validation-trace` | Trazabilidad HU ↔ RF ↔ arquitectura ↔ tests |
 | `/validation-properties` | Validación y generación de propiedades de corrección |
-| `/sdd-archive` | Cierre manual de iteración hacia `history.md` |
+| `/sdd-archive` | Cierre manual de iteración hacia `history.md` (con compactación si crece) |
 | `/sdd-update` | Actualiza el flujo desde `source` (URL pública o ruta local) |
+| `/ui-check` | Verificación visual aislada (veredicto corto; sin DOM en el hilo) |
+| `/mcp-mode` | Encender/apagar MCPs pesados (`code` vs `ui`/`debug`) |
 
 ---
 
@@ -213,6 +217,8 @@ Lista usada por `/sdd-update` para saber qué archivos le pertenecen (todo lo de
 .cursor/commands/validation-properties.md
 .cursor/commands/sdd-archive.md
 .cursor/commands/sdd-update.md
+.cursor/commands/ui-check.md
+.cursor/commands/mcp-mode.md
 .cursor/skills/sdd-docs-generator/SKILL.md
 .cursor/skills/sdd-docs-generator/references/spec-template.md
 .cursor/skills/sdd-docs-generator/references/plan-template.md
@@ -233,7 +239,7 @@ Lista usada por `/sdd-update` para saber qué archivos le pertenecen (todo lo de
 
 Herramientas, skills de terceros o configuración propios de un stack (p. ej. Laravel Boost, skills de Flutter/Dart, auditores de seguridad de un framework, linters, comandos de setup de entorno, `.cursor/mcp.json`). No van dentro del paquete SDD; se instalan en cada proyecto.
 
-Con Laravel, `/init` y `/retrofit` proponen e instalan **Laravel Boost** por defecto (paquete Composer + MCP con Search Docs + guidelines/skills). En el retrofit, Boost sirve para leer esquema, modelos y docs reales. Otros stacks: solo sugiere. El Perfil técnico referencia lo instalado (p. ej. `security_audit_skill`, `lint`).
+Con Laravel, `/init` y `/retrofit` proponen **Laravel Boost** con MCP (`Search Docs`, esquema) y **`guidelines: false`** para no inflar `AGENTS.md`. Las reglas de código viven en `stack-conventions`. Playwright/Chrome DevTools: `/mcp-mode` + `/ui-check`, no siempre-on. Otros stacks: solo sugiere.
 
 Las **guías de convenciones** (`stack-conventions`) sí van en el paquete: son texto, se cargan solo si están en `conventions` y las reglas `stack-*.mdc` que genera `/init` son del proyecto.
 

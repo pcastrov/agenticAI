@@ -28,7 +28,7 @@ Lee **solo** las referencias listadas en `conventions`. Si la clave falta o dice
 | `fastapi` | `references/fastapi.md` |
 | `flutter` | `references/flutter.md` |
 
-Cada referencia lleva un frontmatter de regla (`description`, `globs`, `alwaysApply: false`). Mientras vive en esta skill está inactiva; `/init` copia las del stack a `.agents/rules/stack-[nombre].md` para que el agente host las cargue al trabajar con archivos que coincidan con `globs`.
+Cada referencia lleva un frontmatter de regla de Cursor (`description`, `globs`, `alwaysApply: false`). Mientras vive en esta skill está inactiva; `/init` copia las del stack a `.agents/rules/stack-[nombre].mdc` para que Cursor las adjunte automáticamente al editar archivos que coincidan con `globs`.
 
 ---
 
@@ -58,6 +58,6 @@ Si el proyecto ya tiene una convención establecida y consistente distinta a la 
 5. **Sin capas vacías** (Debe): no crees repositorios, interfaces o servicios que solo reenvían llamadas al ORM o a otra clase.
 6. **Efectos secundarios separados** (Preferir): notificaciones, llamadas a APIs externas y trabajo lento van a colas o tareas en segundo plano, disparadas después de confirmar la transacción. Nunca se llama a una API externa dentro de una transacción de base de datos.
 7. **Autorización explícita** (Debe): con el mecanismo nativo del framework, no con condicionales sueltos.
-8. **Simplicidad DRY / KISS / YAGNI** (Preferir; siempre como consulta): reutilizar lo que ya existe, elegir la solución más simple y no agregar nada que ningún `RF-x` pida. Todo hallazgo se consulta y nunca se aplica por iniciativa propia. La búsqueda solo cubre `## Código Compartido` de `AGENTS.md` y el módulo activo, solo código propio. Alcance, criterios y formato en `global-sdd`, sección 2.2. Cada referencia tiene una sección **DRY en este stack** con la duplicación aceptable del framework y las carpetas excluidas.
-9. **Revisión de diseño al crear código propio** (Preferir; siempre como consulta): al generar servicios, policies, helpers u otra lógica propia, revisa responsabilidades, acoplamiento, extensibilidad y dependencias. Si hay mejora → `CONSULTA DE DISEÑO` (`global-sdd`, sección 2.3). No refactorices por iniciativa propia; no re-audites lo idiomático del framework como deuda.
+8. **Simplicidad DRY / KISS / YAGNI** (Preferir): consulta según `global-sdd` §2.2. Cada referencia tiene **DRY en este stack**.
+9. **Revisión de diseño** (Preferir): `CONSULTA DE DISEÑO` según `global-sdd` §2.3; sin refactor por iniciativa.
 10. **Verificación automática** (Preferir): las reglas "Debe" se respaldan con linters y tests de arquitectura (sección final de cada referencia) configurados en la clave `lint` o en la suite de tests.

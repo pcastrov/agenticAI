@@ -1,117 +1,119 @@
 # SDD Kit
 
-Este repositorio es un **kit de herramientas** para programar con agentes de IA de forma ágil, guiados por **Spec-Driven Development (SDD)** — desarrollo dirigido por especificaciones.
+Kit de **Spec-Driven Development (SDD)** para programar con agentes de IA de forma ordenada: primero el **qué**, luego el **cómo**, después TDD y validación.
 
-**Repositorio público**: [https://github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI)
+**Repositorio**: [https://github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI) · **Licencia**: [MIT](LICENSE)
 
-**Licencia**: [MIT](LICENSE) — uso, copia, modificación y distribución libres; sin garantía.
+---
 
-## De qué se trata
+## Dos ediciones: Full y Lite
 
-La idea es simple: antes de tocar código, el agente (y tú) dejan claro **qué** se va a construir, **por qué** y **cómo** se va a verificar. Eso reduce cambios a ciegas, código que no pediste y “arreglos” que rompen lo que ya funcionaba.
-
-El kit no es una aplicación ni un framework. Es un **paquete portable** (reglas, comandos, subagentes, plantillas y convenciones de stack) que copias a la raíz de tu proyecto. A partir de ahí, el agente trabaja con un flujo fijo:
-
-1. **Especificar** — historias, requisitos y criterios comprobables (`spec.md`).
-2. **Diseñar** — arquitectura y tareas (`plan.md`, `tasks.md`).
-3. **Implementar** — TDD, una tarea a la vez.
-4. **Validar** — QA contra la spec, no contra “lo que parece bien”.
-
-Es **agnóstico de lenguaje y framework**. Lo que cambia entre proyectos es el bloque `## Perfil técnico` de `AGENTS.md` (lo genera `/init`).
-
-Inspirado en el flujo de specs de distintas metodologías (requisitos, diseño, tareas y verificación), adaptado a subagentes y a stacks reales (Laravel, Filament, NativePHP, Django, FastAPI, Flutter, etc.).
-
-### Más detalle (READMEs internos)
-
-Este README solo da el contexto del repositorio. La guía completa del flujo vive dentro de cada paquete:
-
-| Host | Uso del flujo | Historial de versiones |
+| | **SDD Full** (v3.5+) | **SDD Lite** (v1.0+) |
 |---|---|---|
-| Cursor | [`.cursor/sdd-kit/README.md`](.cursor/sdd-kit/README.md) | [CHANGELOG](.cursor/sdd-kit/CHANGELOG.md) |
-| Otros agentes | [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) | [CHANGELOG](.agents/sdd-kit/CHANGELOG.md) |
+| **Carpeta en este repo** | Raíz: [`.cursor/`](.cursor/) y [`.agents/`](.agents/) | [`sdd-lite/`](sdd-lite/) → dentro: `.cursor/` y `.agents/` |
+| **Para quién** | Cursor Pro / modelos frontier (Claude, GPT, Gemini…) | Modelos **locales** 8B–14B (Pi, OpenCode, VS Code + Ollama) |
+| **Ventana típica** | 128K+ | 16K–32K |
+| **Flujo** | 8 fases, 3 subagentes, diagramas Mermaid, propiedades, QA estricto | 3 pasos: planear → implementar → archivar |
+| **Specs** | `spec.md` + `plan.md` + `tasks.md` + `history.md` | `spec.md` unificado + `summary.md` + `history/h-NN.md` (máx 3 shards) |
+| **Actualizar** | `/sdd-update` (busca `.cursor/` o `.agents/` en la **raíz** del clone) | `/sdd-update` lite (busca `sdd-lite/.cursor` o `sdd-lite/.agents`) |
 
-Ahí encontrarás: trinidad de contexto (`AGENTS.md`, constitución, memoria), perfil técnico, estructura de `specs/`, fases de `/sdd`, comandos, lista de archivos del paquete, convenciones por stack, simplicidad DRY/KISS/YAGNI y cómo evolucionar el kit.
-
----
-
-## Dos carpetas, mismo contenido
-
-| Carpeta | Para quién | Qué copias al proyecto |
-|---|---|---|
-| [`.cursor/`](.cursor/) | **Cursor** | Solo `.cursor/` |
-| [`.agents/`](.agents/) | **Cualquier otro agente** (Claude Code, Codex, Gemini, Copilot, Junie, etc.) | Solo `.agents/` |
-
-Son **exactamente el mismo flujo**. La única diferencia práctica es el prefijo de rutas: dentro de `.cursor/` todo apunta a `.cursor/...`; dentro de `.agents/` todo apunta a `.agents/...`.
-
-### No uses las dos a la vez en un proyecto
-
-En un proyecto de trabajo **elige una**:
-
-- Si desarrollas con Cursor → copia **solo** `.cursor/`.
-- Si usas otro agente → copia **solo** `.agents/`.
-
-Tener ambas en el mismo proyecto puede hacer que el agente lea reglas, skills o comandos duplicados y se confunda. Este repositorio sí las tiene las dos porque es el **origen del paquete**, no un proyecto de aplicación.
-
----
-
-## Documentación de cada paquete
-
-Remite a la tabla de [Más detalle](#más-detalle-readmes-internos). Versión instalada y origen: `.cursor/sdd-kit.md` o `.agents/sdd-kit.md`.
-
----
-
-## Qué incluye el paquete
+**No instales Full y Lite a la vez** en el mismo proyecto: el agente se confunde con reglas duplicadas.
 
 ```text
-.cursor/   (o .agents/)
-├── sdd-kit.md              # Versión y source
-├── sdd-kit/
-│   ├── README.md           # Cómo usar el flujo
-│   └── CHANGELOG.md        # Versiones y migraciones
-├── rules/
-│   └── global-sdd.md       # Reglas globales del flujo
-├── commands/               # init, sdd, retrofit, implement, review, …
-├── subagents/              # 1-planner, 2-implementer, 3-qa-reviewer
-└── skills/
-    ├── sdd-docs-generator/ # Plantillas de spec/plan/tasks/history y diagramas
-    └── stack-conventions/  # Guías idiomáticas (Laravel, Filament 5, NativePHP, Django, FastAPI, Flutter)
+agenticAI/
+├── README.md                 ← este archivo
+├── .cursor/                  ← SDD Full (Cursor)
+├── .agents/                  ← SDD Full (otros agentes)
+└── sdd-lite/
+    ├── README.md
+    ├── .cursor/              ← SDD Lite (Cursor / VS Code)
+    └── .agents/              ← SDD Lite (Pi, OpenCode, …)
 ```
 
-Lo que **no** va en el paquete (se instala por proyecto): Laravel Boost, MCP del IDE, linters del stack, skills de terceros, etc.
+> Full vive en la **raíz** (no en `sdd-full/`) para que los proyectos que ya tienen el kit puedan seguir usando `/sdd-update` sin romper la ruta. Lite va en `sdd-lite/` a propósito.
 
 ---
 
-## Instalación rápida
+## Estimación de tokens (orientativa)
 
-1. Clona o descarga [pcastrov/agenticAI](https://github.com/pcastrov/agenticAI).
-2. Copia **solo** `.cursor/` **o** `.agents/` a la raíz de tu proyecto (no las dos).
-3. Ejecuta `/init` (y `/retrofit` si ya hay código).
-4. Para cambios de producto: `/sdd`. Para actualizar el kit: `/sdd-update`.
+Los números son **aproximados** (español + Markdown ≈ 1 token cada ~4 caracteres). Incluyen solo el kit y docs SDD típicos; **no** incluyen el código que leas, el historial del chat ni MCPs de terceros.
 
-Detalle: [`.cursor/sdd-kit/README.md`](.cursor/sdd-kit/README.md) · [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md).
+### SDD Full — por turno en un proyecto Laravel + Filament
 
-### Cómo funciona `/sdd-update`
+| Escenario | Antes (≈3.4) | Ahora (3.5+) | Notas |
+|-----------|--------------|--------------|--------|
+| Base fija (regla global + `AGENTS.md` limpio) | ~9–11K | **~2.5–3.5K** | Sin bloque `<laravel-boost-guidelines>` |
+| Implementar 1 tarea (subagente + guías stack ya adjuntas) | ~20–28K | **~8–11K** | Si las `stack-*.mdc` ya están en contexto, no se releen |
+| Planificar (plantillas + spec/plan) | ~18–25K | **~12–16K** | Lee plantillas bajo demanda |
+| + Playwright/DevTools siempre-on | +6–10K fijos | **0** con `/mcp-mode code` | UI con `/ui-check` (veredicto corto) |
 
-En cada proyecto, `.cursor/sdd-kit.md` (o `.agents/sdd-kit.md`) guarda la versión instalada y un `source`. Por defecto ese `source` es la URL pública del kit. Al ejecutar `/sdd-update`, el agente:
+En la práctica, con Full 3.5+ un turno de implementación suele andar cerca de **la mitad** (o menos) de lo que gastabas en 3.4 si además apagas MCPs de navegador y usas chats cortos por tarea.
 
-1. Lee `source`.
-2. Si es una **URL de Git**, clona el repo en una carpeta temporal (`git clone --depth 1`) y compara.
-3. Si es una **ruta local**, compara contra esa carpeta en disco.
-4. Te muestra el resumen y solo escribe tras tu confirmación.
+### SDD Lite — por turno (modelo local 32K)
 
-No hace falta que el proyecto tenga el kit en una ruta fija: basta con acceso a internet (repo público) o a un clone local.
+| Escenario | Tokens aprox. | Qué queda libre en 32K* |
+|-----------|---------------|-------------------------|
+| Base (regla global lite) | **~500–700** | — |
+| Turno normal (regla + subagente + 1 guía stack + `spec.md` + `summary.md`) | **~3.0–3.5K** | ~12–20K útiles según el cliente |
+| + 1 shard de historial (`h-NN.md`) | **~4.5–5.0K** | Sigue cabiendo |
+| Presupuesto docs del módulo (tope de diseño) | ≤ ~3.5K | `spec` ≤150 líneas, `summary` ≤100, shard ≤150 |
 
----
-
-## Cómo se mantiene este repositorio
-
-1. Los cambios del flujo se hacen primero en **`.cursor/`**.
-2. Cuando quieras alinear el otro host, se pide explícitamente sincronizar `.agents/` desde `.cursor/` (mismas rutas, prefijo `.agents/`, y los matices propios de hosts no Cursor: Boost, carga de reglas, etc.).
-3. **No hay sync automático**: no se asume que un cambio en `.cursor/` se propague solo a `.agents/`.
-4. Tras publicar en GitHub, los proyectos actualizan su copia con `/sdd-update` (usan el `source` con la URL del repo).
+\*Gasto del cliente (aproximado, fuera del kit): **Pi** ~1.2–1.8K · **OpenCode** ~3.5–5K · **VS Code + Copilot Agent** ~6.5–9K. Reserva ~3–4K para la respuesta del modelo.
 
 ---
 
-## Licencia
+## Instalación — SDD Full
 
-Este proyecto está bajo la licencia [MIT](LICENSE). Puedes usarlo, copiarlo y adaptarlo en proyectos propios (incluido uso comercial), siempre que conserves el aviso de copyright y el texto de la licencia. El software se ofrece **tal cual**, sin garantías.
+1. Copia **solo** `.cursor/` **o** `.agents/` desde la **raíz** de este repo a tu proyecto.
+2. Ejecuta `/init` (y `/retrofit` si ya hay código).
+3. Cambios de producto: `/sdd`. Actualizar el kit: `/sdd-update`.
+
+Detalle: [`.cursor/sdd-kit/README.md`](.cursor/sdd-kit/README.md) · [CHANGELOG](.cursor/sdd-kit/CHANGELOG.md)
+
+### Qué cambió en Full 3.5 (ahorro de cuota)
+
+- **GATE** al inicio de `global-sdd`: no editar sin `[EVALUACION SDD]`; no auto-arreglar fallos de Pest/Playwright/`ui_check`.
+- **Una sola fuente** de reglas (subagentes y comandos referencian `global-sdd`; no copian textos largos).
+- **Laravel Boost**: `guidelines: false` + MCP; propone limpiar `<laravel-boost-guidelines>` de `AGENTS.md`.
+- **`/ui-check`** y **`/mcp-mode`**: navegador bajo demanda, sin DOM en el hilo de código.
+- Compactación de `history.md` si supera ~300 líneas.
+
+Tras publicar 3.5, en cada proyecto Full: `/sdd-update` y confirma la limpieza de Boost + el puntero de gobernanza en `AGENTS.md`.
+
+---
+
+## Instalación — SDD Lite
+
+1. Copia `sdd-lite/.cursor/` → `.cursor/` del proyecto (o `sdd-lite/.agents/` → `.agents/`).
+2. `/init` → `/sdd` → `/implement` → `/sdd-archive`.
+3. Actualizar: `/sdd-update` (compara `sdd-lite/...` del `source`).
+
+Specs:
+
+```text
+specs/NNN-modulo/
+├── spec.md           # índice historial + RF + diseño breve + tareas (máx ~150 líneas)
+├── summary.md        # foto actual + scratchpad (máx ~100)
+└── history/
+    ├── h-01.md …     # detalle reciente (máx ~150 líneas; máx 3 shards)
+    └── h-archive.md  # compactado frío
+```
+
+Detalle: [`sdd-lite/README.md`](sdd-lite/README.md)
+
+---
+
+## Tips para gastar menos (Full y Lite)
+
+1. **Un chat / hilo por tarea** — el historial largo se reenvía en cada mensaje y suele costar más que el kit.
+2. **Planear con modelo fuerte; implementar con Auto / modelo más barato** cuando el plan ya está cerrado.
+3. **`/mcp-mode code`** por defecto; `/ui-check` solo al verificar pantallas.
+4. En Laravel: deja Boost con MCP y **sin** guidelines largas en `AGENTS.md`.
+
+---
+
+## Mantenimiento de este repositorio
+
+1. Cambios Full primero en `.cursor/`; espejo a `.agents/` (mismo contenido, prefijo `.agents/`).
+2. Cambios Lite en `sdd-lite/.cursor/` → espejo `sdd-lite/.agents/`.
+3. Publicar → proyectos Full: `/sdd-update`. Proyectos Lite: `/sdd-update` de la edición lite.

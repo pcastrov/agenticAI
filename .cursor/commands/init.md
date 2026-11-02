@@ -86,19 +86,19 @@ Si `conventions` incluye `laravel` (o existe `laravel/framework` en `composer.js
       ```json
       {
         "agents": ["cursor"],
-        "guidelines": true,
+        "guidelines": false,
         "mcp": true,
         "packages": [],
         "skills": []
       }
       ```
 
-      Así el instalador elige Cursor, genera guidelines y registra el MCP sin quedar a medias en modo no interactivo.
+      Así el instalador elige Cursor y registra el MCP **sin** inyectar el bloque gigante `<laravel-boost-guidelines>` en `AGENTS.md` (ahorro de miles de tokens por turno). Las guías de código son `stack-conventions` (`laravel` / `filament`). Si el usuario insiste en guidelines de Boost, puede poner `"guidelines": true` a sabiendas del coste.
    3. Ejecuta `php artisan boost:install`. Preferible **interactivo** (sin `--no-interaction`) para que el usuario confirme agentes y paquetes. Si el entorno no permite prompts, usa `php artisan boost:install --no-interaction` **solo** después de haber escrito el `boost.json` anterior.
    4. Si el proyecto usa Laravel Sail, verifica que `.cursor/mcp.json` use `./vendor/bin/sail` como `command` y `["artisan", "boost:mcp"]` como `args`; si no, ajústalo.
    5. Avisa al usuario que active el servidor MCP en Cursor: Command Palette → `/open MCP Settings` → activar `laravel-boost`.
-4. **Coexistencia con SDD**: Boost solo reemplaza el bloque `<laravel-boost-guidelines>`…`</laravel-boost-guidelines>` dentro de `AGENTS.md`. El bloque `## Perfil técnico` y el resto del contenido SDD van **fuera** de ese bloque. Orden recomendado al escribir: primero el `AGENTS.md` de SDD; después `boost:install` (fusiona su bloque sin borrar el resto). Si Boost ya estaba instalado, vuelve a ejecutar `php artisan boost:update` solo si el usuario lo pide.
-5. En **Comandos** o **Stack** de `AGENTS.md`, anota: `boost:install` / `boost:update` / MCP Search Docs. En el Perfil técnico, si Boost instaló skills de seguridad del ecosistema, puedes apuntarlas en `security_audit_skill`; si no, déjalo en `no configurado`.
+4. **Coexistencia con SDD**: Con `"guidelines": false`, Boost **no** debe llenar `AGENTS.md` de reglas genéricas. Si aparece `<laravel-boost-guidelines>`, propón **eliminarlo** (deja 3–5 líneas: “usar MCP Search Docs / Database Schema bajo demanda”). Conserva `## Perfil técnico` y dominio SDD. Orden: primero `AGENTS.md` SDD; luego `boost:install`.
+5. En **Comandos** o **Stack** de `AGENTS.md`, anota: `boost:install` / MCP Search Docs (bajo demanda). **Higiene MCP**: no registres Playwright/Chrome DevTools como siempre-on; usa `/mcp-mode` y `/ui-check`. `security_audit_skill` si aplica.
 
 #### Otros stacks
 - **Flutter / Dart**: si hay skills de Flutter/Dart disponibles en el entorno del usuario, **sugiere** instalarlas o activarlas (no las instales sin aprobación). Complementan `flutter.md`.
@@ -116,34 +116,26 @@ Crea o actualiza **7 principios innegociables, cortos y verificables** (máximo 
 1. **Simplicidad del Stack**: Priorizar convenciones nativas del framework antes de instalar librerías de terceros.
 2. **Relación Spec-Código**: Ningún código existe ni se modifica sin un Requisito Funcional (`RF-x`) o Tarea previa en `specs/`.
 3. **Separación Lógica / UI**: Desacoplar la lógica de negocio de los componentes visuales o vistas.
-4. **Integridad de Tests**: Suite automatizada obligatoria con el runner del Perfil técnico. Un test existente que falla no se modifica ni se debilita para que pase: se entrega Reporte de Fallo y el rojo queda registrado (corregir código ahora, o tarea en `tasks.md`, o SDD). Nunca se ignora el rojo.
-5. **Revisión de diseño (sugerencia)**: Al crear código propio, se pueden sugerir mejoras de responsabilidades/acoplamiento con consulta al usuario; no se refactoriza por iniciativa propia. Lo idiomático del framework no se trata como deuda.
+4. **Integridad de Tests**: Suite + E2E/`ui_check`/Playwright. No acomodar el rojo; Reporte de Fallo y cierre (código | tarea | SDD). Detalle: `global-sdd` §2.1.
+5. **Revisión de diseño (sugerencia)**: Consulta al usuario; sin refactor por iniciativa. Detalle: `global-sdd` §2.3.
 6. **Protección de Datos**: Respeto estricto a autorizaciones, validaciones de entrada y manejo seguro de datos.
 7. **Idioma**: Código, variables y comentarios en **Inglés**; documentación en `specs/`, UI e interfaces al usuario en **Español** (ajustable si el usuario indica otro).
 
 ### PASO 7: Resto de `AGENTS.md`
-Crea o actualiza las secciones con datos reales del proyecto:
-- **Nombre y Descripción**, **Stack y Estructura**, **Comandos** (copiables), **Convenciones**, **Reglas de Dominio**.
-- **`## Integridad de tests`** (obligatorio; no sustituye dominio del proyecto):
+Crea o actualiza con datos reales del proyecto. **No copies** los textos largos de `global-sdd` (GATE, DRY, formatos de consulta): esa regla ya es `alwaysApply`. En `AGENTS.md` solo hechos del proyecto + punteros cortos:
+
+- **Nombre y Descripción**, **Stack y Estructura**, **Comandos**, **Convenciones**, **Reglas de Dominio**.
+- Encabezado operativo corto (obligatorio):
 
   ```markdown
-  ## Integridad de tests
-  - Un test existente que falla no se modifica ni se debilita para que pase.
-  - Todo fallo produce un **Reporte de Fallo** (qué, dónde, evidencia, causa probable, propuesta).
-  - Tras el reporte el rojo **siempre** queda cerrado con uno de: corregir código ahora | tarea en `tasks.md` | abrir/ajustar SDD. Nunca se ignora.
-  - Crear tests nuevos (TDD) sí está permitido.
+  ## Gobernanza SDD (puntero)
+  - Antes de editar código/tests: GATE y `[EVALUACION SDD]` en `.cursor/rules/global-sdd.mdc` §0.
+  - Integridad de tests (incl. Playwright / ui_check): `global-sdd` §2.1 — no acomodar el rojo; Reporte de Fallo + cierre.
+  - Simplicidad / diseño: `global-sdd` §2.2–2.3 — solo como consulta.
+  - UI/MCP: `/ui-check` y `/mcp-mode`; no DOM en el hilo de código.
   ```
 
-- **`## Revisión de diseño`** (sugerencia):
-
-  ```markdown
-  ## Revisión de diseño
-  - Al crear código propio (servicios, policies, helpers, etc.), planner / implementer / QA pueden emitir `CONSULTA DE DISEÑO` (dónde, qué vi, sugerencia + impacto, alternativa dejar igual).
-  - No es checklist SOLID ni re-auditoría de lo idiomático del framework.
-  - No se refactoriza por iniciativa propia; decide el usuario. No bloquea QA.
-  ```
-
-- **`## Código Compartido`**: catálogo de código **propio** reutilizable entre módulos, que usan las revisiones DRY (ver `global-sdd`, sección 2.2):
+- **`## Código Compartido`**: catálogo de código **propio** reutilizable (DRY; ver `global-sdd` §2.2):
 
   ```markdown
   ## Código Compartido
@@ -168,12 +160,12 @@ Crea o actualiza (máximo ~50 líneas):
 
 ## Formato de Salida
 1. Resumen del **Stack Detectado** (o de las respuestas de la entrevista) y versión del flujo SDD instalada.
-2. Borrador del bloque `## Perfil técnico` y de `docs/constitution.md` (incluye integridad de tests + revisión de diseño como principios).
-3. Borrador de los bloques operativos de `AGENTS.md`: **Integridad de tests**, **Revisión de diseño**, **Código Compartido** (y DRY/KISS/YAGNI).
-4. Guías de `conventions` elegidas, reglas `stack-*.mdc` que se crearán y herramientas de verificación sugeridas.
-5. Si el stack es Laravel: propuesta de **instalar Laravel Boost** (paquete + MCP Search Docs + guidelines/skills), o "ya instalado" si `laravel/boost` está presente.
-6. 🛑 **DETENTE Y ESPERA**: Solicita aprobación explícita del usuario antes de escribir los archivos e instalar herramientas del stack. Confirma que constitution + Integridad de tests + Revisión de diseño quedarán en la Trinidad.
-7. Tras la aprobación: escribe la Trinidad y las reglas `stack-*.mdc`; si se aprobó Boost, ejecuta la instalación del PASO 5 (Laravel) y confirma el estado del MCP.
+2. Borrador de `## Perfil técnico` y `docs/constitution.md` (principios cortos; sin duplicar `global-sdd`).
+3. Borrador de `AGENTS.md`: puntero **Gobernanza SDD** + **Código Compartido** + dominio/stack.
+4. Guías `conventions`, `stack-*.mdc` y verificación sugerida.
+5. Si Laravel: Boost con **`guidelines: false`**, MCP on; higiene MCP (sin Playwright/DevTools siempre-on).
+6. 🛑 **DETENTE Y ESPERA** aprobación antes de escribir/instalar.
+7. Tras aprobación: escribe Trinidad + `stack-*.mdc`; Boost si se aprobó.
 
 ---
 
@@ -191,3 +183,5 @@ Crea o actualiza (máximo ~50 líneas):
 | `/validation-properties` | Valida propiedades de corrección |
 | `/sdd-archive` | Cierra la iteración de un módulo en `history.md` |
 | `/sdd-update` | Actualiza el flujo desde el paquete `sdd-kit` |
+| `/ui-check` | Verificación visual aislada (veredicto corto) |
+| `/mcp-mode` | Encender/apagar MCPs pesados (`code` / `ui`) |

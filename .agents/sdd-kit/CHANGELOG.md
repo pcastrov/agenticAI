@@ -4,6 +4,29 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 3.5.0 — 2026-11-02
+
+Optimización de tokens (Single Source of Truth), GATE de obediencia, Boost sin guidelines en `AGENTS.md`, UI/MCP bajo demanda y edición **SDD Lite** en `sdd-lite/` del repo.
+
+### Agregado
+- **GATE** al inicio de `global-sdd.mdc` (§0): pregunta vs acción; `[EVALUACION SDD]` antes de editar; fallo de suite/Playwright/`ui_check` → reporte y stop (sin auto-loop).
+- Comandos **`/ui-check`** y **`/mcp-mode`**.
+- Compactación de `history.md` (>~300 líneas) en planner MODO 6 / `/sdd-archive`.
+- Paquete hermano **`sdd-lite/`** en el repositorio (modelos locales 16K–32K): no afecta a `/sdd-update` Full (sigue leyendo `.agents/` en la raíz).
+
+### Cambiado
+- Subagentes y comandos de validación/review **delegan** a `global-sdd` y a modos de subagente (sin duplicar plantillas largas).
+- `/init` y `/retrofit`: `boost.json` con **`guidelines: false`**, `mcp: true`; propone limpiar `<laravel-boost-guidelines>`.
+- `/sdd-update`: proyección AGENTS como puntero corto + limpieza Boost; lista nuevos comandos.
+- `AGENTS.md` generado: bloque **Gobernanza SDD** (puntero), no copia íntegra de §2.x.
+
+### Migración desde 3.4.0
+1. `/sdd-update` en cada proyecto Full.
+2. Confirma limpieza de Boost guidelines y el puntero de gobernanza en `AGENTS.md`.
+3. Opcional: usa `/mcp-mode code` y `/ui-check` para no cargar MCPs de navegador en el hilo de código.
+
+---
+
 ## 3.4.0 — 2026-10-28
 
 Dos regímenes (integridad de tests obligatoria vs revisión de diseño sugerida), `global-sdd` always-on y proyección en AGENTS/constitution.
@@ -15,12 +38,12 @@ Dos regímenes (integridad de tests obligatoria vs revisión de diseño sugerida
 - **Subagentes**: planner y QA pueden emitir `CONSULTA DE DISEÑO` (no bloqueante); implementer exige cierre post-reporte (fix | tarea escrita | SDD).
 
 ### Cambiado
-- **`global-sdd.md`**: frontmatter con `alwaysApply: true` (hosts que lo soporten). En el paquete Cursor el archivo equivalente es `global-sdd.mdc`.
+- **`global-sdd.md` → `global-sdd.mdc`** (Cursor) con `alwaysApply: true`.
 - **§2.1 Integridad de tests**: cierre obligatorio tras Reporte de Fallo; prohibido ignorar el rojo.
 - **`stack-conventions`**: principio Preferir de revisión de diseño al crear código propio (principios 1–2 no son checklist SOLID global).
 
 ### Migración desde 3.3.1
-1. Ejecuta `/sdd-update` (actualiza `global-sdd.md` con frontmatter; en proyectos Cursor el rename es a `global-sdd.mdc`).
+1. Ejecuta `/sdd-update` (renombra/reemplaza `global-sdd.md` por `global-sdd.mdc` en proyectos Cursor).
 2. Completa en `docs/constitution.md` y `AGENTS.md` los bloques de integridad de tests y revisión de diseño si faltan (el update los propone; no borra dominio del proyecto).
 
 ---
@@ -34,7 +57,7 @@ Origen público del paquete y `/sdd-update` desde URL de Git.
 - **`/sdd-update`**: resuelve `source` como ruta local o como URL de Git (`git clone --depth 1` a una carpeta temporal); actualiza también el `source` en `sdd-kit.md` al terminar.
 
 ### Migración desde 3.3.0
-En cada proyecto, edita `.agents/sdd-kit.md` (o `.cursor/sdd-kit.md`) y pon `source: https://github.com/pcastrov/agenticAI`, o ejecuta `/sdd-update` indicando esa URL.
+En cada proyecto, edita `.agents/sdd-kit.md` (o `.agents/sdd-kit.md`) y pon `source: https://github.com/pcastrov/agenticAI`, o ejecuta `/sdd-update` indicando esa URL.
 
 ---
 
@@ -60,7 +83,7 @@ Revisión de simplicidad DRY / KISS / YAGNI en planificación, implementación y
 Sin cambios en la estructura de `specs/`.
 1. Agrega `## Código Compartido` a `AGENTS.md`. Puede hacerlo `/init`, que detecta candidatos y te los pide confirmar.
 2. Los `plan.md` existentes reciben la sección "1.1 Reutilización y Simplicidad" la próxima vez que `1-planner` los actualice.
-3. `/sdd-update` refresca las reglas `stack-*.md` con la nueva sección "DRY en este stack".
+3. `/sdd-update` refresca las reglas `stack-*.mdc` con la nueva sección "DRY en este stack".
 
 ---
 
@@ -99,9 +122,9 @@ Calidad de requisitos y diagramas de secuencia PlantUML.
 - **Protocolo ante Tests Fallidos** en `2-implementer`: Reporte de Fallo (test, qué falló, dónde, tipo, causa probable con evidencia, propuesta) y criterios para decidir entre corregir ahora, nueva tarea con test de regresión o pasar por SDD.
 - **`2-implementer` MODO C (Cambio Directo)**: ejecuta los cambios que no merecen spec; se detiene y propone SDD si el cambio crece.
 - **Skill `stack-conventions`**: Principios Generales agnósticos y guías idiomáticas por framework (`laravel`, `filament` para Filament 5.x, `nativephp`, `django`, `fastapi`, `flutter`), con reglas de nivel **Debe** (bloqueante en QA) o **Preferir** (sugerencia) y una sección de Verificación Automática (Pint, Larastan, tests de arquitectura de Pest, ruff, mypy, import-linter, `flutter analyze`). Se cargan de forma perezosa según la nueva clave `conventions` del Perfil técnico.
-- **Reglas del stack**: `/init` (PASO 5.1) copia las guías elegidas a `.agents/rules/stack-[nombre].md` (frontmatter con `globs`) para que el agente host las cargue al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca si no se personalizaron.
+- **Reglas del stack**: `/init` (PASO 5.1) copia las guías elegidas a `.agents/rules/stack-[nombre].mdc` (frontmatter con `globs`) para que Cursor las adjunte automáticamente al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca si no se personalizaron.
 - **Integración**: `1-planner` MODO 2 ubica capas y archivos según las guías; `2-implementer` las aplica y reporta desviaciones; `3-qa-reviewer` revisa idiomaticidad del diff (MODO 2) y del plan (MODO 3); `/retrofit` registra desviaciones como deuda técnica.
-- **`/init` y `/retrofit` + Laravel Boost**: si el stack es Laravel, proponen e instalan por defecto `laravel/boost` (`composer require` + `boost:install` con `boost.json` para el agente host + MCP/guidelines). Incluye MCP **Search Docs**. En `/retrofit`, si Boost no está, se detiene a pedirlo antes de mapear; si está, usa Application Info, Database Schema, Search Docs y logs para la ingeniería inversa (solo lectura). Coexiste con SDD: Boost solo escribe el bloque `<laravel-boost-guidelines>` en `AGENTS.md`. Otros stacks siguen en modo "sugerir".
+- **`/init` y `/retrofit` + Laravel Boost**: si el stack es Laravel, proponen e instalan por defecto `laravel/boost` (`composer require` + `boost:install` con `boost.json` para Cursor/MCP/guidelines). Incluye MCP **Search Docs**. En `/retrofit`, si Boost no está, se detiene a pedirlo antes de mapear; si está, usa Application Info, Database Schema, Search Docs y logs para la ingeniería inversa (solo lectura). Coexiste con SDD: Boost solo escribe el bloque `<laravel-boost-guidelines>` en `AGENTS.md`. Otros stacks siguen en modo "sugerir".
 - **QA MODO 2**: detecta en el diff tests modificados o debilitados sin justificación (hallazgo bloqueante); los hallazgos incluyen test que falla, causa probable y tipo.
 
 ### Cambiado
@@ -117,7 +140,7 @@ Calidad de requisitos y diagramas de secuencia PlantUML.
 ### Migración desde 3.0.0
 `/sdd-update` copia `.agents/sdd-kit/README.md` y `.agents/sdd-kit/CHANGELOG.md` al proyecto. No toca el `README.md` ni el `CHANGELOG.md` de la raíz del proyecto: si alguna vez se copiaron ahí los del paquete, bórralos a mano.
 
-Ejecuta `/init` para agregar la clave `conventions` al Perfil técnico y generar las reglas `stack-*.md`. Sin la clave, solo aplican los Principios Generales de `stack-conventions`.
+Ejecuta `/init` para agregar la clave `conventions` al Perfil técnico y generar las reglas `stack-*.mdc`. Sin la clave, solo aplican los Principios Generales de `stack-conventions`.
 
 La adopción de los nuevos requisitos no es obligatoria. Los módulos existentes siguen funcionando; al tocar un módulo con `1-planner` MODO 3, se agregan `HU-x`, MoSCoW y diagramas a los RF pendientes afectados. Para adoptarlo de una vez en un módulo, pide a `@1-planner.md`:
 1. Agrupar los RF pendientes en `HU-x` con criterios `CA-x.y` y asignarles MoSCoW.
