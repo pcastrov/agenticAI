@@ -11,8 +11,8 @@ Kit de **Spec-Driven Development (SDD)** para programar con agentes de IA de for
 | | **SDD Full** (v3.5+) | **SDD Lite** (v1.0+) |
 |---|---|---|
 | **Carpeta en este repo** | Raíz: [`.cursor/`](.cursor/) y [`.agents/`](.agents/) | [`sdd-lite/`](sdd-lite/) → dentro: `.cursor/` y `.agents/` |
-| **Para quién** | Cursor Pro / modelos frontier (Claude, GPT, Gemini…) | Modelos **locales** 8B–14B (Pi, OpenCode, VS Code + Ollama) |
-| **Ventana típica** | 128K+ | 16K–32K |
+| **Para quién** | Cursor Pro / modelos frontier (Claude, GPT, Gemini…) | Modelos **locales** en GPU modestas (ver escenario abajo) |
+| **Ventana típica** | 128K+ | **32K** (a veces 16K) vía **Ollama** |
 | **Flujo** | 8 fases, 3 subagentes, diagramas Mermaid, propiedades, QA estricto | 3 pasos: planear → implementar → archivar |
 | **Specs** | `spec.md` + `plan.md` + `tasks.md` + `history.md` | `spec.md` unificado + `summary.md` + `history/h-NN.md` (máx 3 shards) |
 | **Actualizar** | `/sdd-update` (busca `.cursor/` o `.agents/` en la **raíz** del clone) | `/sdd-update` lite (busca `sdd-lite/.cursor` o `sdd-lite/.agents`) |
@@ -32,6 +32,20 @@ agenticAI/
 
 > Full vive en la **raíz** (no en `sdd-full/`) para que los proyectos que ya tienen el kit puedan seguir usando `/sdd-update` sin romper la ruta. Lite va en `sdd-lite/` a propósito.
 
+### Escenario para el que se midió y diseñó **SDD Lite**
+
+Lite no es “cualquier modelo chico”: se dimensionó el presupuesto de tokens (~3–3.5K de kit + docs del módulo por turno) pensando en algo así:
+
+| Pieza | Objetivo |
+|-------|----------|
+| **Hardware** | GPU de consumo con **~8 GB VRAM** (laptop/desktop) |
+| **Runtime** | **Ollama** (u otro servidor local compatible) |
+| **Contexto** | **32K** tokens de ventana (`num_ctx` ≈ 32768); a veces 16K si el modelo o la VRAM lo obligan |
+| **Modelos** | Familia **8B–14B** en cuantización que quepa en 8 GB, p. ej. **Qwen 2.5 Coder 14B** (Q4/Q5 típico), y variantes **9B / 8B** del mismo rango (Coder u otros instruct/coder locales) |
+| **Cliente de agente (ideal)** | **Pi** (`pi-coding-agent`) — el más liviano en system prompt/tools · **OpenCode** — buen equilibrio · VS Code + Copilot/Ollama también sirve, pero gasta más overhead |
+
+Con esa combinación, el Lite deja margen para leer 2–3 archivos de código y correr tests **sin** llenar los 32K. Full sigue pensado para Cursor Pro / modelos cloud con ventanas grandes; no hace falta meter Lite ahí.
+
 ---
 
 ## Estimación de tokens (orientativa)
@@ -49,7 +63,7 @@ Los números son **aproximados** (español + Markdown ≈ 1 token cada ~4 caract
 
 En la práctica, con Full 3.5+ un turno de implementación suele andar cerca de **la mitad** (o menos) de lo que gastabas en 3.4 si además apagas MCPs de navegador y usas chats cortos por tarea.
 
-### SDD Lite — por turno (modelo local 32K)
+### SDD Lite — por turno (Ollama 32K, p. ej. Qwen 2.5 Coder 14B en ~8 GB VRAM)
 
 | Escenario | Tokens aprox. | Qué queda libre en 32K* |
 |-----------|---------------|-------------------------|
@@ -58,7 +72,15 @@ En la práctica, con Full 3.5+ un turno de implementación suele andar cerca de 
 | + 1 shard de historial (`h-NN.md`) | **~4.5–5.0K** | Sigue cabiendo |
 | Presupuesto docs del módulo (tope de diseño) | ≤ ~3.5K | `spec` ≤150 líneas, `summary` ≤100, shard ≤150 |
 
-\*Gasto del cliente (aproximado, fuera del kit): **Pi** ~1.2–1.8K · **OpenCode** ~3.5–5K · **VS Code + Copilot Agent** ~6.5–9K. Reserva ~3–4K para la respuesta del modelo.
+\*Gasto del **cliente** (fuera del kit; orientativo):
+
+| Cliente | Overhead aprox. | Recomendación |
+|---------|-----------------|---------------|
+| **Pi** | ~1.2–1.8K | **Preferido** con Lite + Ollama |
+| **OpenCode** | ~3.5–5K | Muy bueno; un poco más de tools/contexto |
+| VS Code + Copilot Agent → Ollama | ~6.5–9K | Válido; deja menos aire en 32K |
+
+Reserva ~3–4K para la respuesta del modelo. En 8B–14B conviene no llenar la ventana al tope (~70–75% de 32K) para no degradar atención.
 
 ---
 

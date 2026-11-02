@@ -1,10 +1,15 @@
 # SDD Lite
 
-Edición del kit para **modelos locales 8B–14B** (ventana típica **16K–32K**): Pi, OpenCode, VS Code + Ollama/Copilot, Cursor con modelo local.
+Edición del kit para **modelos locales** en hardware modesto. El presupuesto de tokens se midió y diseñó para un escenario como este:
+
+- **GPU ~8 GB VRAM**
+- **Ollama** con ventana **32K** (a veces 16K)
+- Modelos **8B–14B** que quepan ahí (cuantizados), p. ej. **Qwen 2.5 Coder 14B**, y otros **9B / 8B** coder/instruct
+- Cliente de agente: **Pi** (ideal, más liviano) u **OpenCode**; también VS Code + Copilot/Ollama (más overhead)
 
 ## Qué copiar
-- Cursor / VS Code: carpeta [`/.cursor`](.cursor/) → raíz del proyecto como `.cursor/`
-- Otros agentes: [`/.agents`](.agents/) → `.agents/`
+- Cursor / VS Code: carpeta [`.cursor`](.cursor/) → raíz del proyecto como `.cursor/`
+- Otros agentes (Pi, OpenCode…): [`.agents`](.agents/) → `.agents/`
 
 No instales Full y Lite a la vez en el mismo proyecto.
 
@@ -14,6 +19,8 @@ No instales Full y Lite a la vez en el mismo proyecto.
 Specs: `spec.md` + `summary.md` + `history/h-NN.md` (máx 3 shards + `h-archive.md`).
 
 ## Tokens / MCP
-Usa `/mcp-mode code` por defecto. UI: `/ui-check` o skill `on-demand-tools`. Boost: `guidelines: false`.
+Kit + docs del módulo ≈ **3–3.5K** por turno normal. Usa `/mcp-mode code` por defecto. UI: `/ui-check` o skill `on-demand-tools`. Boost: `guidelines: false`.
 
-Detalle: [`.cursor/sdd-kit/README.md`](.cursor/sdd-kit/README.md).
+Números y tabla Full vs Lite: [README de la raíz](../README.md).
+
+Detalle del paquete: [`.cursor/sdd-kit/README.md`](.cursor/sdd-kit/README.md).
