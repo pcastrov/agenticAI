@@ -4,6 +4,26 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 4.0.0 — 2026-11-04
+
+Estándar de producción agnóstico al editor (Cursor, Claude Code, GitHub Copilot, Pi/OpenCode…). **Cambio mayor.**
+
+### Cambiado
+- **Un solo origen**: `sdd-full/.cursor/` eliminado; el origen es `sdd-full/.agents/` con **rutas relativas puras** (`rules/global-sdd.md`, `commands/architect.md`), sin prefijos `.cursor/` ni `.agents/`. Al instalar, la carpeta se llama **`.cursor/`** (Cursor) o **`.agents/`** (otros): mismo contenido, solo cambia el nombre. Reglas `.md` en el origen; en Cursor el instalador (y `/sdd-update`) las deja como **`.mdc`**, único formato que Cursor acepta.
+- **REGLA ZERO / TRIAGE GATE** (`rules/global-sdd.md` §0): `[TRIAGE SDD]` — Nivel 0 FAST-TRACK (≤1 archivo, sin impacto de arquitectura) o Nivel 1 SDD-REQUIRED (negocio, BD o multi-archivo: prohibido emitir código o diffs hasta aprobación explícita). Sustituye a `[EVALUACION SDD]`.
+- **Historial jerárquico**: `history.md` monolítico → `history/index.md` (~20 líneas) + `history/<dominio>.md`. Sin compactación: las decisiones se conservan íntegras, segmentadas por dominio. Plantillas `history-index-template.md` y `domain-history-template.md`; se elimina `history-template.md`.
+- `spec-template.md` y `plan-template.md` en formato tabular.
+- `/review` (MODO 2): **auditoría a ciegas** — `git diff` vs `spec.md` aprobado + ejecución obligatoria de la suite en terminal (Exit Code 0); sin aprobación por inspección visual.
+- `/sdd-update`: gestor de paquetes seguro. Detecta la carpeta raíz en uso (`.cursor/` o `.agents/`) y actualiza **en el sitio**, sin renombrarla. Solo sobrescribe archivos base del paquete; **prohibido** tocar skills creadas por el usuario en `skills/`. Corrige en `AGENTS.md` las rutas al framework según el host. Pregunta antes de migrar `history.md`.
+- **Convenciones de framework opcionales** (`global-sdd.md` §5.1 + skill `stack-conventions`): si `skills/stack-conventions/references/` está vacía, falta el archivo o la carpeta fue eliminada, el agente usa buenas prácticas estándar del lenguaje sin error. `/sdd-update` no restaura guías que el usuario eliminó.
+- Scripts opcionales de instalación: `setup_sdd_full.sh` / `setup_sdd_full.ps1` (instalan en `.cursor/` o `.agents/` según tu herramienta; con paso opcional para conservar solo la guía de tu framework).
+
+### Migración desde 3.x
+1. Ejecuta `/sdd-update` (conserva tu carpeta `.cursor/` o `.agents/`; confirma el plan).
+2. Proyectos con `specs/NNN/history.md`: `/sdd-update` **pregunta** y, si aceptas, `@1-planner.md` lo separa en `history/index.md` + `history/<dominio>.md` sin resumir. Si no aceptas, sigue siendo legible por ID.
+3. Extensión de reglas según host (`.mdc` en Cursor, `.md` en los demás): lo ajusta el paso 0 de `/sdd-update`, sin cambiar el nombre de la carpeta.
+
+---
 ## 3.5.1 — 2026-11-02
 
 El paquete Full vive en **`sdd-full/`** del repo (junto a `sdd-lite/`), no en la raíz.

@@ -11,7 +11,7 @@ Cambia el perfil de MCP para no pagar tokens de schemas JSON de navegador mientr
 ## Instrucción
 1. Pregunta el modo si el usuario no lo dijo (`code` | `ui` | `debug`).
 2. Indica qué archivos editar según el host:
-   - Cursor: `.agents/mcp.json` (o settings MCP del IDE).
+   - Cursor / Claude Code / VS Code + Copilot: el archivo MCP del host (p. ej. `mcp.json`) o los settings MCP del IDE.
    - OpenCode: `opencode.json` / tools del agente.
    - VS Code + Copilot / Pi: configuración MCP / extensiones equivalentes.
 3. En `code`: deshabilita o comenta servidores `playwright`, `chrome-devtools` (y similares). Deja Boost u otros MCP ligeros del stack si el proyecto los usa.

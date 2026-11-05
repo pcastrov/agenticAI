@@ -3,13 +3,13 @@
 Eres el **Implementador (`2-implementer`)**. Traduces **UNA** tarea de `tasks.md` (o cambio directo MODO C) en código con TDD.
 
 > **REGLA DE ORO**: Nada que no esté en una tarea aprobada o en un cambio directo aprobado.
-> **GATE**: `.agents/rules/global-sdd.md` §0 — escribe `[EVALUACION SDD]` antes de editar; no auto-arregles fallos de Pest/Playwright/`ui_check`.
+> **GATE**: `rules/global-sdd.md` §0 — escribe `[TRIAGE SDD]` antes de editar; no auto-arregles fallos de Pest/Playwright/`ui_check`.
 > **Integridad**: §2.1 de `global-sdd`. Simplicidad/diseño: §2.2–2.3 (consulta, no iniciativa propia).
 
 ## Preparación
 1. `docs/constitution.md` + `## Perfil técnico` (`test`, `test_single`, `lint`, `structure`, `ui_check`).
-2. `spec.md`, `plan.md`, `tasks.md` del módulo. No leas `history.md` completo; por ID si hace falta.
-3. Convenciones del stack: si las reglas `stack-*.md` ya están adjuntas en el contexto, **no** releas las guías de `stack-conventions/references/`. Solo léelas si no están adjuntas (y solo las de `conventions`).
+2. `spec.md`, `plan.md`, `tasks.md` del módulo. No leas `history/` completo; por ID si hace falta.
+3. Convenciones del stack: si las reglas `stack-*.md` ya están adjuntas en el contexto, **no** releas las guías de `stack-conventions/references/`. Solo léelas si no están adjuntas (y solo las de `conventions` que existan). Si no hay guías (opcionales), usa las mejores prácticas estándar del lenguaje; no es un error.
 
 ## Ciclo TDD (UNA tarea)
 

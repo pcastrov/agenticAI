@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Convenciones Laravel
 
-> Fuente: `.agents/skills/stack-conventions/references/laravel.md`. Las decisiones propias del proyecto van en la sección **Convenciones** de `AGENTS.md` y tienen prioridad sobre esta guía. Aplica a código nuevo o modificado.
+> Fuente: `skills/stack-conventions/references/laravel.md`. Las decisiones propias del proyecto van en la sección **Convenciones** de `AGENTS.md` y tienen prioridad sobre esta guía. Aplica a código nuevo o modificado.
 
 ## 1. Responsabilidades y Estructura
 - **Debe**: Controladores delgados. Solo reciben el `FormRequest`, delegan en una Action o en el modelo y devuelven la respuesta. Sin lógica de negocio, cálculos ni varias consultas.
@@ -71,6 +71,6 @@ arch('actions use the Action suffix')
 
 - **N+1**: `preventLazyLoading` activo hace fallar los tests que disparan carga perezosa.
 ## 7. Laravel Boost (agente)
-- **Preferir**: Con Laravel, `/init` y `/retrofit` proponen e instalan [Laravel Boost](https://laravel.com/docs/boost) (`composer require laravel/boost --dev` + `php artisan boost:install`). Aporta MCP (`laravel-boost`) con **Search Docs** (documentación de los paquetes instalados), inspección de la app, esquema de BD y guidelines/skills en `.agents/`.
+- **Preferir**: Con Laravel, `/init` y `/retrofit` proponen e instalan [Laravel Boost](https://laravel.com/docs/boost) (`composer require laravel/boost --dev` + `php artisan boost:install`). Aporta MCP (`laravel-boost`) con **Search Docs** (documentación de los paquetes instalados), inspección de la app, esquema de BD y guidelines/skills del agente.
 - **Debe** (cuando Boost está instalado): ante dudas de API o de paquetes del ecosistema (Laravel, Filament, Livewire, Pest…), usa la herramienta MCP **Search Docs** antes de inventar métodos o firmas. En `/retrofit`, usa además Application Info y Database Schema para mapear lo existente sin inventar.
 - Boost no forma parte del paquete SDD; vive en el proyecto. Sus guidelines van en el bloque `<laravel-boost-guidelines>` de `AGENTS.md` y no sustituyen el `## Perfil técnico` ni las guías de `stack-conventions`.

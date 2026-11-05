@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Convenciones NativePHP
 
-> Fuente: `.agents/skills/stack-conventions/references/nativephp.md`. Se usa junto con `laravel.md`, que sigue aplicando completo. NativePHP evoluciona rápido: antes de usar una API nativa (ventanas, menús, notificaciones, almacenamiento, cámara...), verifica su firma en la documentación de la versión instalada. No inventes métodos.
+> Fuente: `skills/stack-conventions/references/nativephp.md`. Se usa junto con `laravel.md`, que sigue aplicando completo. NativePHP evoluciona rápido: antes de usar una API nativa (ventanas, menús, notificaciones, almacenamiento, cámara...), verifica su firma en la documentación de la versión instalada. No inventes métodos.
 
 ## 1. Entorno de Ejecución
 - **Debe**: Asumir que la app corre en el equipo del usuario, no en un servidor: base de datos local (normalmente SQLite), sin servicios externos garantizados (Redis, colas de servidor, cron del sistema).

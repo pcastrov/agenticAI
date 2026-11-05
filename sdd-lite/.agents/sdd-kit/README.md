@@ -1,39 +1,39 @@
-# SDD Lite — Spec-Driven Development para modelos locales (16K–32K)
+# SDD Lite — Spec-Driven Development para modelos locales (8B–14B, 16K–32K)
 
-Copia **`sdd-lite/.agents/`** (o `.agents/`) a la raíz del proyecto. No combines con el paquete Full en el mismo proyecto.
+Copia el contenido de **`sdd-lite/.agents/`** a la raíz del proyecto como **`.cursor/`** (Cursor) o **`.agents/`** (otros): mismo contenido, solo cambia el nombre. No combines con el paquete Full. Todas las rutas internas son relativas.
 
 ## Instalación
-1. Copia `sdd-lite/.agents/` → `.agents/` del proyecto (o `.agents/`).
+1. Copia `sdd-lite/.agents/` → `.cursor/` (Cursor) o `.agents/` (otros), o corre `setup_sdd_lite.sh` / `.ps1`.
 2. `/init` → Trinidad liviana.
-3. Cambios: `/sdd` → `/implement` → `/sdd-archive`.
-4. Actualizar: `/sdd-update` (compara `sdd-lite/.agents` del `source`).
+3. Cambios: `/sdd` (Triage) → `/implement` → `/sdd-archive`.
+4. Actualizar: `/sdd-update` (compara `sdd-lite/.agents/` del `source` contra tu carpeta en el sitio).
 
 ## Presupuesto
-Reglas + docs del módulo ≈ 3–3.5K tokens. Historial shard ≤150 líneas; máx 3 recientes + `h-archive.md`.
+Reglas + spec del módulo ≈ 3–3.5K tokens. Spec ≤150 líneas; índice de historial ≤30; shard de dominio ≤100.
 
 ## Archivos del paquete
 ```text
-.agents/sdd-kit.md
-.agents/sdd-kit/README.md
-.agents/sdd-kit/CHANGELOG.md
-.agents/rules/global-sdd.md
-.agents/subagents/1-planner.md
-.agents/subagents/2-implementer.md
-.agents/subagents/3-qa-reviewer.md
-.agents/commands/init.md
-.agents/commands/sdd.md
-.agents/commands/implement.md
-.agents/commands/sdd-archive.md
-.agents/commands/sdd-update.md
-.agents/commands/ui-check.md
-.agents/commands/mcp-mode.md
-.agents/commands/architect.md
-.agents/commands/review.md
-.agents/commands/retrofit.md
-.agents/skills/sdd-docs-generator/...
-.agents/skills/stack-conventions/...
-.agents/skills/on-demand-tools/SKILL.md
+sdd-kit.md
+sdd-kit/README.md
+sdd-kit/CHANGELOG.md
+rules/global-sdd.md
+subagents/1-planner.md
+subagents/2-implementer.md
+subagents/3-qa-reviewer.md
+commands/init.md
+commands/sdd.md
+commands/implement.md
+commands/sdd-archive.md
+commands/sdd-update.md
+commands/ui-check.md
+commands/mcp-mode.md
+commands/architect.md
+commands/review.md
+commands/retrofit.md
+skills/sdd-docs-generator/...
+skills/stack-conventions/...
+skills/on-demand-tools/SKILL.md
 ```
 
 ## Hosts
-Cursor, VS Code + Ollama/Copilot, OpenCode, Pi: preferir MCP navegador off (`/mcp-mode code`) y `/ui-check` o CLI (`on-demand-tools`).
+Cualquier agente (Cursor, VS Code + Ollama/Copilot, OpenCode, Pi…): preferir MCP navegador off (`/mcp-mode code`) y `/ui-check` o CLI (`on-demand-tools`).

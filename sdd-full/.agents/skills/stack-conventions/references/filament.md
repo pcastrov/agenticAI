@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Convenciones Filament 5
 
-> Fuente: `.agents/skills/stack-conventions/references/filament.md`. Se usa junto con `laravel.md`. Las decisiones propias del proyecto van en **Convenciones** de `AGENTS.md`.
+> Fuente: `skills/stack-conventions/references/filament.md`. Se usa junto con `laravel.md`. Las decisiones propias del proyecto van en **Convenciones** de `AGENTS.md`.
 >
 > **Versión objetivo: Filament 5.x** (requiere PHP 8.2+, Laravel 11.28+, Livewire 4 y Tailwind CSS 4). Su API es la de Filament 4: no uses patrones de Filament 3 (`Form $form`, `Infolist $infolist`, `Tables\Actions\*`, `->actions()` / `->bulkActions()` en tablas). Ante la duda, verifica en https://filamentphp.com/docs/5.x. Si el proyecto usa otra versión mayor, indícalo en `AGENTS.md` y no apliques esta guía sin revisarla.
 

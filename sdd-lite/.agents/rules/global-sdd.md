@@ -1,39 +1,39 @@
 ---
-description: SDD Lite — reglas cortas para modelos locales 16K-32K
+description: SDD Lite — reglas cortas para modelos locales 8B-14B (16K-32K)
 alwaysApply: true
 ---
 
 # SDD Lite
 
-## 0. GATE (antes de editar)
+## 0. REGLA ZERO — TRIAGE GATE (Turno 1, obligatorio)
 1. Solo pregunta/análisis → **no** toques archivos.
-2. Antes de editar código/tests, escribe:
+2. Antes de cualquier edición, emite este bloque y clasifica:
    ```
-   [EVALUACION SDD]
-   - Clasificación: Cambio Directo | Requiere Spec/Task
+   [TRIAGE SDD]
+   - Nivel: 0 FAST-TRACK | 1 SDD-REQUIRED
    - Motivo: [1 línea]
-   - Aprobación: pendiente | ok
    ```
-   Si `pendiente` → **STOP**.
-3. Fallo de `test` / Playwright / `ui_check` → **STOP** + `REPORTE DE FALLO`. No acomodes tests ni auto-loops.
+3. **FAST-TRACK (Nivel 0)**: ≤ 1 archivo, < 15 líneas, sin impacto en BD (migraciones, esquema, seeds). Puedes editar directo; explica el motivo en 1 línea.
+4. **SDD-REQUIRED (Nivel 1)**: cualquier otra tarea. **TERMINANTEMENTE PROHIBIDO generar código en este turno.** Solo emite el Spec atómico tabular (`spec-template.md`) y **espera aprobación**.
+5. Duda entre 0 y 1 → Nivel 1.
+6. Fallo de `test` / Playwright / `ui_check` → **STOP** + `REPORTE DE FALLO`. No acomodes tests ni auto-loops.
 
 ## 1. Flujo (3 pasos)
-1. **Planear** (`/sdd`): lee `summary.md` + `spec.md`; máx 3 preguntas; actualiza RF + archivos + tareas en `spec.md`; pide OK.
+1. **Planear** (`/sdd`): lee `spec.md`; máx 3 preguntas; emite Spec tabular; pide OK.
 2. **Implementar** (`/implement`): una tarea `- [ ]`; TDD rojo→verde; `test_single`.
-3. **Cerrar** (`/sdd-archive`): tests OK → actualiza `summary.md` → mueve a `history/h-NN.md` → 1 línea en índice de `spec.md`.
+3. **Cerrar** (`/sdd-archive`): tests OK → ficha atómica en `history/<dominio>.md` → 1 fila en `history/index.md`.
 
 ## 2. Specs (presupuesto tokens)
 ```text
 specs/NNN-modulo/
-├── spec.md      # máx ~150 líneas: índice historial + RF + diseño breve + tareas
-├── summary.md   # máx ~100 líneas: foto actual + scratchpad
+├── spec.md              # activo, tabular, máx ~150 líneas
 └── history/
-    ├── h-01.md … h-NN.md   # máx ~150 líneas c/u; máx 3 shards recientes
-    └── h-archive.md        # compactado frío
+    ├── index.md         # tabla dominio → shard, máx 30 líneas
+    └── <dominio>.md     # ficha atómica por dominio, máx 100 líneas
 ```
-- Lee solo `spec.md` + `summary.md` por defecto.
-- Historial: un solo `h-XX.md` si el índice lo pide; anota 3–5 líneas en `summary.md`.
-- Al 4º shard: compacta el más viejo → `h-archive.md` (5–8 líneas) y **borra** el shard viejo.
+- Lee solo `spec.md` por defecto.
+- Historial: consulta `history/index.md` y abre **un solo** shard de dominio si hace falta.
+- Shard lleno (100 líneas) → condensa entradas viejas del mismo dominio; no crees archivos extra.
 
 ## 3. Tests e integridad
 No ignores el rojo. No debilites tests/E2E/Playwright. Cierre: corregir código | tarea nueva | reabrir plan. Detalle de reporte: subagente implementer.
@@ -43,6 +43,9 @@ DRY/KISS/YAGNI solo como pregunta corta al usuario. No refactorices solo.
 
 ## 5. UI / MCP
 Navegador apagado al programar. UI → `/ui-check` o skill `on-demand-tools` (CLI). Veredicto ≤5 líneas.
+
+### 5.1 Convenciones de framework (opcionales)
+Si existe una guía en `skills/stack-conventions/references/`, léela antes de implementar. Si la carpeta está vacía, falta el archivo o la skill fue eliminada, asume que no hay convenciones forzadas y usa buenas prácticas estándar del lenguaje. Sin error ni preguntas.
 
 ## 6. Idioma
 Usuario y `specs/`: español. Código: según constitution.

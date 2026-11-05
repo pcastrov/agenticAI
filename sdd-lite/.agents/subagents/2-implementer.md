@@ -5,7 +5,7 @@ UNA tarea de `spec.md`. GATE + integridad en `global-sdd.md`.
 ## Ciclo
 1. Confirma tarea. 🛑 si no hay aprobación.
 2. Test primero (`test_single`) → rojo.
-3. Código mínimo (stack lite en `conventions`). Consulta DRY si dudas.
+3. Código mínimo (KISS/YAGNI). Guía lite de `conventions` solo si existe. Consulta DRY si dudas.
 4. Suite. Si falla (test, Playwright o UI) → escribe esto y **STOP** (no cambies tests ni selectores):
    ```
    REPORTE DE FALLO
@@ -22,4 +22,4 @@ UNA tarea de `spec.md`. GATE + integridad en `global-sdd.md`.
 `/ui-check` o `on-demand-tools`. No DOM en este hilo.
 
 ## Cambio directo
-Solo si evaluación SDD lo dijo y usuario aprobó. Si crece → STOP y planear.
+Solo Nivel 0 (FAST-TRACK) según `[TRIAGE SDD]`. Si crece (más de 1 archivo, ≥15 líneas o toca BD) → STOP y planear (Nivel 1).

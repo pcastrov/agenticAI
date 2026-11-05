@@ -8,6 +8,9 @@ description: Convenciones idiomáticas por framework (Laravel, Filament, NativeP
 ## Descripción
 Guías de código idiomático por framework. El núcleo del flujo SDD es agnóstico; esta skill aporta las convenciones concretas del stack que indica la clave `conventions` del `## Perfil técnico` de `AGENTS.md` (ej. `laravel, filament`).
 
+## Uso opcional
+Esta skill es **opcional**. Antes de usarla, verifica si existe un archivo de convención dentro de `references/`. Si existe, léelo antes de implementar código. Si la carpeta está vacía, el archivo no existe o la skill fue eliminada para ahorrar tokens, asume que no hay convenciones forzadas de framework y usa las mejores prácticas estándar del lenguaje. Ausencia ≠ error: no te detengas ni preguntes por ello.
+
 ## Cuándo Usar Esta Skill
 - `1-planner` MODO 2: para ubicar archivos y capas en `plan.md`.
 - `2-implementer`: antes de escribir o modificar código.
@@ -17,7 +20,7 @@ Guías de código idiomático por framework. El núcleo del flujo SDD es agnóst
 ---
 
 ## Referencias (Lazy Loading)
-Lee **solo** las referencias listadas en `conventions`. Si la clave falta o dice `no configurado`, aplica únicamente los Principios Generales de abajo.
+Lee **solo** las referencias listadas en `conventions` que existan en `references/`. Si la clave falta, dice `no configurado` o el archivo no existe, aplica únicamente los Principios Generales de abajo (o las mejores prácticas del lenguaje si esta skill fue eliminada).
 
 | Valor en `conventions` | Archivo |
 |------------------------|---------|
@@ -28,7 +31,7 @@ Lee **solo** las referencias listadas en `conventions`. Si la clave falta o dice
 | `fastapi` | `references/fastapi.md` |
 | `flutter` | `references/flutter.md` |
 
-Cada referencia lleva un frontmatter de regla de Cursor (`description`, `globs`, `alwaysApply: false`). Mientras vive en esta skill está inactiva; `/init` copia las del stack a `.agents/rules/stack-[nombre].mdc` para que Cursor las adjunte automáticamente al editar archivos que coincidan con `globs`.
+Cada referencia lleva un frontmatter de regla (`description`, `globs`, `alwaysApply: false`). Mientras vive en esta skill está inactiva; `/init` copia las del stack a `rules/stack-[nombre].md` para que el host (p. ej. Cursor) las adjunte automáticamente al editar archivos que coincidan con `globs`.
 
 ---
 

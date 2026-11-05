@@ -26,8 +26,8 @@ No ejecutes mutaciones de BD ni cambies código de la aplicación durante el ret
 - Identifica el **código propio compartido** entre módulos (clases abstractas, bases, traits, helpers o componentes que usan dos o más módulos; nada del framework ni de las exclusiones "DRY en este stack") y propón agregarlo a `## Código Compartido` de `AGENTS.md`. No lo escribas sin aprobación.
 - Registra en la deuda técnica de cada módulo las reglas de negocio duplicadas que detectes (sin corregirlas), según "Qué cuenta como duplicación" de `global-sdd.md`, sección 2.2.
 
-### 2. `history.md` de cada módulo (lo que ya existe)
-- Crea `history.md` con la entrada `## Iteración 1 — AAAA-MM-DD — Retrofit` según `history-template.md`.
+### 2. `history/` de cada módulo (lo que ya existe)
+- Agrupa lo existente por dominio (auth, billing…). Crea `history/index.md` (`history-index-template.md`) y un `history/<dominio>.md` por dominio con la entrada `## Iteración 1 — AAAA-MM-DD — Retrofit` según `domain-history-template.md`.
 - Deduce las Historias de Usuario (`HU-x`) a partir de los flujos reales (rutas, pantallas, roles) e inclúyelas en "Historias cerradas" con sus criterios `CA-x.y` cuando el comportamiento esté probado.
 - Incluye los Requisitos Funcionales (`RF-x`) en notación EARS extraídos del código real, cada uno con su prioridad MoSCoW estimada y la `HU-x` que cubre, sus decisiones de diseño y técnicas, la arquitectura implementada y las tareas ya construidas como `- [x]`.
 - Marca cada RF sin tests como `sin tests → Tx`.
@@ -50,4 +50,4 @@ No ejecutes mutaciones de BD ni cambies código de la aplicación durante el ret
 ### 6. `tasks.md` de cada módulo
 - Solo tareas `- [ ]`: lo que falta construir o probar (tests faltantes, validaciones, políticas de acceso no creadas, deuda).
 - Cada tarea con **Prioridad** (blocker/required/optional/nice-to-have), **Propiedades validadas**, **Tests asociados** y **Hecho cuando**.
-- La numeración continúa después de las tareas archivadas en `history.md`.
+- La numeración continúa después de las tareas archivadas en `history/`.

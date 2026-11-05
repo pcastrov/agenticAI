@@ -12,9 +12,9 @@ Este comando prepara cualquier proyecto de software (existente o nuevo, en cualq
 ## Instrucción para la IA
 
 ### PASO 1: Verificar el Flujo SDD
-1. Comprueba que existan `.agents/rules/global-sdd.md`, `.agents/subagents/1-planner.md` y `.agents/sdd-kit.md`.
-2. Lee la versión instalada en `.agents/sdd-kit.md`.
-   - **Si falta el flujo**: indica al usuario que copie la carpeta `.agents/` del paquete `sdd-kit` (ver `.agents/sdd-kit/README.md` del paquete) y vuelve a ejecutar `/init`. No lo recrees de memoria.
+1. Comprueba que existan `rules/global-sdd.md`, `subagents/1-planner.md` y `sdd-kit.md`. **Detecta la carpeta raíz del framework** (`.cursor/` si el host es Cursor, `.agents/` en otro caso; la que contenga `sdd-kit.md`) y úsala como `<raíz>` al escribir cualquier ruta en `AGENTS.md`, constitution o puentes. Nunca escribas la otra. Las reglas llevan la extensión del host: **`.mdc` en Cursor**, `.md` en los demás (`rules/global-sdd.mdc` / `rules/stack-[nombre].mdc` vs `.md`).
+2. Lee la versión instalada en `sdd-kit.md`.
+   - **Si falta el flujo**: indica al usuario que copie la carpeta `.agents/` del paquete `sdd-kit` (ver `sdd-kit/README.md` del paquete) y vuelve a ejecutar `/init`. No lo recrees de memoria.
    - **Si existe**: informa la versión e indica que se puede actualizar con `/sdd-update`.
 3. Si existen `AGENTS.md`, `MEMORY.md` o `docs/constitution.md`, léelos primero para preservar decisiones, contexto e historia.
 
@@ -26,7 +26,7 @@ Este comando prepara cualquier proyecto de software (existente o nuevo, en cualq
 1. Escanea manifiestos y configuración en la raíz (ej: `composer.json`, `package.json`, `pyproject.toml`, `requirements.txt`, `Pipfile`, `go.mod`, `Cargo.toml`, `pom.xml`, `build.gradle`, `Gemfile`, `*.csproj`) y la estructura de carpetas.
 2. Usa herramientas del proyecto para confirmar versiones instaladas cuando existan (ej: `composer show --direct`, `npm ls --depth=0`, `pip list`, `go list -m all`).
 3. Identifica: lenguaje y versión, framework(s), base de datos, runner de tests, linter/formatter, UI/frontend, despliegue, carpetas de código y de tests.
-4. Deduce las guías de `conventions` (ver `.agents/skills/stack-conventions/SKILL.md`):
+4. Deduce las guías de `conventions` (ver `skills/stack-conventions/SKILL.md`):
    - `laravel/framework` en `composer.json` → `laravel`; `filament/filament` → `filament`; paquetes `nativephp/*` → `nativephp`.
    - La guía `filament` está escrita para **Filament 5.x**. Si la versión instalada es anterior, avisa al usuario: sugiere actualizar (`filament/upgrade`) o anotar en **Convenciones** de `AGENTS.md` qué partes de la guía no aplican.
    - `django` en las dependencias de Python → `django`; `fastapi` → `fastapi`.
@@ -78,7 +78,7 @@ Si `conventions` incluye `laravel` (o existe `laravel/framework` en `composer.js
 2. En el borrador del DETENTE, propone **instalar Laravel Boost** como acción por defecto (el usuario puede rechazarlo). Explica qué aporta:
    - MCP `laravel-boost` (inspección de la app, esquema y consultas de BD, logs, URLs).
    - Herramienta **Search Docs**: documentación oficial indexada de los paquetes instalados (Laravel, Filament, Livewire, etc.).
-   - Guidelines en `AGENTS.md` (bloque `<laravel-boost-guidelines>`) y skills en `.agents/skills/`.
+   - Guidelines en `AGENTS.md` (bloque `<laravel-boost-guidelines>`) y skills en `skills/`.
 3. Tras la aprobación, en este orden:
    1. Si no está instalado: `composer require laravel/boost --dev`.
    2. Si no existe `boost.json` en la raíz, créalo con al menos:
@@ -93,10 +93,10 @@ Si `conventions` incluye `laravel` (o existe `laravel/framework` en `composer.js
       }
       ```
 
-      Así el instalador elige Cursor y registra el MCP **sin** inyectar el bloque gigante `<laravel-boost-guidelines>` en `AGENTS.md` (ahorro de miles de tokens por turno). Las guías de código son `stack-conventions` (`laravel` / `filament`). Si el usuario insiste en guidelines de Boost, puede poner `"guidelines": true` a sabiendas del coste.
+      Así el instalador registra el MCP **sin** inyectar el bloque gigante `<laravel-boost-guidelines>` en `AGENTS.md` (ahorro de miles de tokens por turno). Las guías de código son `stack-conventions` (`laravel` / `filament`). Si el usuario insiste en guidelines de Boost, puede poner `"guidelines": true` a sabiendas del coste.
    3. Ejecuta `php artisan boost:install`. Preferible **interactivo** (sin `--no-interaction`) para que el usuario confirme agentes y paquetes. Si el entorno no permite prompts, usa `php artisan boost:install --no-interaction` **solo** después de haber escrito el `boost.json` anterior.
-   4. Si el proyecto usa Laravel Sail, verifica que `.agents/mcp.json` use `./vendor/bin/sail` como `command` y `["artisan", "boost:mcp"]` como `args`; si no, ajústalo.
-   5. Avisa al usuario que active el servidor MCP en Cursor: Command Palette → `/open MCP Settings` → activar `laravel-boost`.
+   4. Si el proyecto usa Laravel Sail, verifica que el archivo MCP del host (`mcp.json`) use `./vendor/bin/sail` como `command` y `["artisan", "boost:mcp"]` como `args`; si no, ajústalo.
+   5. Avisa al usuario que active el servidor MCP `laravel-boost` en los settings MCP de su host (en Cursor: Command Palette → `/open MCP Settings`).
 4. **Coexistencia con SDD**: Con `"guidelines": false`, Boost **no** debe llenar `AGENTS.md` de reglas genéricas. Si aparece `<laravel-boost-guidelines>`, propón **eliminarlo** (deja 3–5 líneas: “usar MCP Search Docs / Database Schema bajo demanda”). Conserva `## Perfil técnico` y dominio SDD. Orden: primero `AGENTS.md` SDD; luego `boost:install`.
 5. En **Comandos** o **Stack** de `AGENTS.md`, anota: `boost:install` / MCP Search Docs (bajo demanda). **Higiene MCP**: no registres Playwright/Chrome DevTools como siempre-on; usa `/mcp-mode` y `/ui-check`. `security_audit_skill` si aplica.
 
@@ -105,10 +105,10 @@ Si `conventions` incluye `laravel` (o existe `laravel/framework` en `composer.js
 - Cualquier otra herramienta de agente del stack: sugiere, no instales sin aprobación.
 
 ### PASO 5.1: Reglas del Stack
-Por cada guía de `conventions`, copia `.agents/skills/stack-conventions/references/[nombre].md` a `.agents/rules/stack-[nombre].md` sin modificar su contenido (incluido el frontmatter con `globs`). Así Cursor la adjunta automáticamente al editar archivos del stack, también fuera de `/sdd`.
+Solo si existe `skills/stack-conventions/references/` con la guía (es opcional; si falta, deja `conventions: no configurado` y sigue sin error). Por cada guía de `conventions`, copia `skills/stack-conventions/references/[nombre].md` a `rules/stack-[nombre].md` (`.mdc` si el host es Cursor) sin modificar su contenido (incluido el frontmatter con `globs`). Así el host (p. ej. Cursor) la adjunta automáticamente al editar archivos del stack, también fuera de `/sdd`.
 - No copies guías que no estén en `conventions` (ej. en un proyecto Django no se copia `fastapi`, aunque ambas usen `**/*.py`).
 - Si una `stack-*.md` ya existe y difiere de su guía, muestra el diff y pregunta antes de reemplazarla.
-- Las decisiones propias del proyecto no se escriben en la `.mdc` sino en **Convenciones** de `AGENTS.md`, para que la copia pueda refrescarse con `/sdd-update`.
+- Las decisiones propias del proyecto no se escriben en la regla `stack-*.md` sino en **Convenciones** de `AGENTS.md`, para que la copia pueda refrescarse con `/sdd-update`.
 - Si se quita una guía de `conventions`, borra su `stack-[nombre].md`.
 
 ### PASO 6: `docs/constitution.md`
@@ -129,7 +129,7 @@ Crea o actualiza con datos reales del proyecto. **No copies** los textos largos 
 
   ```markdown
   ## Gobernanza SDD (puntero)
-  - Antes de editar código/tests: GATE y `[EVALUACION SDD]` en `.agents/rules/global-sdd.md` §0.
+  - Antes de editar código/tests: GATE y `[TRIAGE SDD]` en `<raíz>/rules/global-sdd.md` §0.
   - Integridad de tests (incl. Playwright / ui_check): `global-sdd` §2.1 — no acomodar el rojo; Reporte de Fallo + cierre.
   - Simplicidad / diseño: `global-sdd` §2.2–2.3 — solo como consulta.
   - UI/MCP: `/ui-check` y `/mcp-mode`; no DOM en el hilo de código.
@@ -147,7 +147,7 @@ Crea o actualiza con datos reales del proyecto. **No copies** los textos largos 
   - **Proyecto existente**: detecta candidatos solo entre archivos versionados de las carpetas de `structure`: clases abstractas, bases, traits, mixins, helpers o componentes propios que usan dos o más módulos. Nunca incluyas clases del framework ni de `vendor/`/`node_modules/`, ni lo de las exclusiones "DRY en este stack". Muéstralos en el DETENTE para que el usuario confirme cuáles entran.
   - **Proyecto nuevo**: deja la tabla vacía con una fila de ejemplo comentada.
 - En **Convenciones**, anota solo lo propio del proyecto y sus desviaciones justificadas respecto a las guías de `conventions` (tienen prioridad sobre ellas); no copies las guías. Incluye la política DRY/KISS/YAGNI como consulta (`CONSULTA DE SIMPLICIDAD`) si aún no está.
-- **Forma de Trabajar**: flujo SDD con subagentes (`@1-planner.md`, `@2-implementer.md`, `@3-qa-reviewer.md`) y regla de histórico (`history.md`, mover nunca borrar).
+- **Forma de Trabajar**: flujo SDD con subagentes (`@1-planner.md`, `@2-implementer.md`, `@3-qa-reviewer.md`) y regla de histórico (`history/`, mover nunca borrar).
 - **Límites**: qué hacer siempre, qué preguntar antes y qué no hacer nunca (incluye: no debilitar tests; no refactor de diseño sin consulta).
 - **Verificación**: cómo dar una tarea por verificada en este proyecto.
 
@@ -181,7 +181,7 @@ Crea o actualiza (máximo ~50 líneas):
 | `/security` | Auditoría de seguridad e integración en specs |
 | `/validation-trace` | Valida trazabilidad HU ↔ RF ↔ arquitectura ↔ tests |
 | `/validation-properties` | Valida propiedades de corrección |
-| `/sdd-archive` | Cierra la iteración de un módulo en `history.md` |
+| `/sdd-archive` | Cierra la iteración de un módulo en `history/` |
 | `/sdd-update` | Actualiza el flujo desde el paquete `sdd-kit` |
 | `/ui-check` | Verificación visual aislada (veredicto corto) |
 | `/mcp-mode` | Encender/apagar MCPs pesados (`code` / `ui`) |

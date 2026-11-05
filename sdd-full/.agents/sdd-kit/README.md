@@ -1,16 +1,16 @@
 # SDD Kit — Spec-Driven Development para agentes de IA
 
-Flujo de trabajo portátil para que agentes de IA (Cursor) desarrollen software guiados por especificaciones: primero el **qué** y el **por qué** (`spec.md`), luego el **cómo** (`plan.md`), después el **paso a paso** (`tasks.md`), implementación con **TDD estricto** y validación QA en cada etapa.
+Flujo de trabajo portátil para que agentes de IA (Cursor, Claude Code, GitHub Copilot, Pi/OpenCode…) desarrollen software guiados por especificaciones: primero el **qué** y el **por qué** (`spec.md`), luego el **cómo** (`plan.md`), después el **paso a paso** (`tasks.md`), implementación con **TDD estricto** y validación QA en cada etapa.
 
 Es **agnóstico de lenguaje y framework**: funciona igual en Laravel, Python, Node, Go o cualquier otro stack. Lo único que cambia entre proyectos es el bloque `## Perfil técnico` de `AGENTS.md`, que genera `/init`.
 
-Inspirado en el flujo de specs de distintas metodologías (requisitos EARS, diseño, tareas y propiedades de corrección), adaptado a subagentes de Cursor.
+Inspirado en el flujo de specs de distintas metodologías (requisitos EARS, diseño, tareas y propiedades de corrección), adaptado a subagentes.
 
 Versión actual: ver la primera entrada de [CHANGELOG.md](CHANGELOG.md).
 
 **Edición Full** (este paquete, carpeta `sdd-full/` del repo). Hermana **Lite**: `sdd-lite/` (locales 8B–14B / Ollama 32K).
 
-Todo el paquete vive dentro de `.agents/` (o `.agents/`); su documentación está en `.agents/sdd-kit/` para no mezclarse con el README del proyecto.
+Todo el paquete vive en **una carpeta raíz** cuyo nombre depende de tu herramienta: **`.cursor/`** si usas Cursor, **`.agents/`** en cualquier otra. El contenido es idéntico y usa **rutas relativas** a esa carpeta (p. ej. `rules/global-sdd.md`); basta con nombrarla según el host (en Cursor, además, las reglas llevan extensión `.mdc`; el instalador lo hace). Su documentación está en `sdd-kit/` para no mezclarse con el README del proyecto.
 
 ---
 
@@ -18,11 +18,11 @@ Todo el paquete vive dentro de `.agents/` (o `.agents/`); su documentación est�
 
 Origen: [github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI) → **`sdd-full/`**.
 
-1. Copia **`sdd-full/.agents/`** a la raíz del proyecto como `.agents/` (o `sdd-full/.agents/` → `.agents/`). No mezcles con Lite.
-2. En `.agents/sdd-kit.md`: `source: https://github.com/pcastrov/agenticAI` y `package_path: sdd-full/.cursor` (o ruta local a `…/sdd-full`).
+1. Copia el contenido de **`sdd-full/.agents/`** a la raíz de tu proyecto como **`.cursor/`** (Cursor) o **`.agents/`** (otros), o ejecuta `setup_sdd_full.sh` / `setup_sdd_full.ps1`, que eligen el nombre y crean el puente que haga falta. No mezcles con Lite.
+2. En `sdd-kit.md`: `source: https://github.com/pcastrov/agenticAI` y `package_path: sdd-full/.agents` (o ruta local a `…/sdd-full`).
 3. Ejecuta `/init` → `AGENTS.md`, `docs/constitution.md`, `MEMORY.md`.
 4. Código existente → `/retrofit`. Cambios → `/sdd`.
-5. Actualizar: `/sdd-update` (compara **`sdd-full/.agents/`** del clone).
+5. Actualizar: `/sdd-update` (compara **`sdd-full/.agents/`** del clone contra tu carpeta en el sitio, `.cursor/` o `.agents/`).
 
 ---
 
@@ -60,7 +60,7 @@ La skill `stack-conventions` contiene una guía de código idiomático por frame
 
 Las guías se usan de dos formas:
 - **En el flujo SDD**: el planner, el implementador y el QA leen solo las guías de la clave `conventions`.
-- **Como regla automática**: `/init` copia esas guías a `.agents/rules/stack-[nombre].mdc`, y Cursor las adjunta al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca.
+- **Como regla automática**: `/init` copia esas guías a `rules/stack-[nombre].md`, y el host (p. ej. Cursor) las adjunta al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca.
 
 Orden de prioridad: `docs/constitution.md`, luego **Convenciones** de `AGENTS.md` (lo propio del proyecto), luego las guías y por último los Principios Generales. Las guías aplican al código nuevo o modificado; alinear código viejo se propone como tarea.
 
@@ -90,7 +90,7 @@ Solo cuenta el código propio: archivos versionados en las carpetas de `structur
 
 Al **crear código propio** (servicios, policies, helpers, etc.), planner / implementer / QA pueden emitir una `CONSULTA DE DISEÑO` (dónde, qué vi, sugerencia + impacto, alternativa dejar igual). No es checklist SOLID ni re-auditoría de lo idiomático del framework. Nadie refactoriza por iniciativa propia; en QA no bloquea. Detalle en `global-sdd`, sección 2.3. `/init` proyecta este régimen (y el de integridad de tests) a `AGENTS.md` y `docs/constitution.md`; `/sdd-update` verifica que sigan presentes.
 
-La regla global del flujo (`rules/global-sdd.md`) lleva `alwaysApply: true` para que Cursor la cargue siempre.
+La regla global del flujo (`rules/global-sdd.md`) lleva `alwaysApply: true` para que el host la cargue siempre.
 
 ---
 
@@ -101,7 +101,7 @@ specs/NNN-[id-nombre-modulo]/
 ├── spec.md     # Índice "Ya implementado" + HU con criterios DADO/CUANDO/ENTONCES, RF (EARS + MoSCoW), RN, RNF, restricciones, integraciones, casos límite, propiedades, trazabilidad
 ├── plan.md     # Estructura vigente + arquitectura de lo pendiente, trazabilidad RF ↔ archivo, decisiones técnicas
 ├── tasks.md    # Solo tareas pendientes: prioridad, propiedades validadas, tests asociados, "Hecho cuando"
-├── history.md  # Histórico append-only de iteraciones cerradas
+├── history/\r\n│   ├── index.md      # Mapa maestro (~20 líneas) → dominios\r\n│   └── <dominio>.md  # Histórico append-only por dominio (decisiones íntegras)
 └── diagramas/
     ├── HU-01-negocio.md   # Secuencia para cualquier persona (va con spec.md)
     └── HU-01-tecnico.md   # Secuencia por capas y archivos (va con plan.md)
@@ -114,7 +114,7 @@ Cada historia tiene dos diagramas del mismo flujo:
 - **Negocio**: actores, el "Sistema" como caja negra y los sistemas externos, con mensajes en lenguaje natural. Cada caso límite es un bloque `alt` y cada mensaje cita el `RF` o `RN` que lo exige. Lo entiende cualquier persona.
 - **Técnico**: el mismo flujo desglosado en las capas del plan (interfaz, servicio, autorización, persistencia, integraciones), con transacciones y errores.
 
-Los diagramas describen el **flujo vigente**: se actualizan en su lugar y no se archivan; `history.md` solo registra qué cambió.
+Los diagramas describen el **flujo vigente**: se actualizan en su lugar y no se archivan; `history/` solo registra qué cambió.
 
 Cada diagrama es un archivo Markdown con un bloque ` ```mermaid ` (`sequenceDiagram`).
 
@@ -125,8 +125,8 @@ Cada diagrama es un archivo Markdown con un bloque ` ```mermaid ` (`sequenceDiag
 Para que los agentes no relean todo lo ya hecho en cada interacción:
 
 - `spec.md`, `plan.md` y `tasks.md` contienen **solo lo pendiente**. `spec.md` mantiene un índice `0. Ya implementado` con una línea por RF cerrado.
-- Al cerrar una iteración (QA aprobado o `/sdd-archive`), lo completado se **mueve** a `history.md`: HU y RF con su texto completo, propiedades, decisiones, arquitectura y tareas `[x]`. Nunca se borra.
-- Los agentes consultan `history.md` solo si el usuario lo pide o si la tarea se parece a algo ya hecho, y siempre buscando por ID o palabra clave, nunca leyéndolo completo.
+- Al cerrar una iteración (QA aprobado o `/sdd-archive`), lo completado se **mueve** a `history/<dominio>.md`: HU y RF con su texto completo, propiedades, decisiones, arquitectura y tareas `[x]`. Nunca se borra.
+- Los agentes leen `history/index.md` y abren **solo el dominio** relevante si el usuario lo pide o la tarea se parece a algo ya hecho, buscando por ID o palabra clave. No se compacta: la segmentación por dominio mantiene el contexto pequeño.
 - Los IDs (`HU`, `RF`, `RN`, `P`, `T`, `S`, `VULN`) continúan desde el máximo histórico y nunca se reutilizan.
 
 ---
@@ -135,7 +135,7 @@ Para que los agentes no relean todo lo ya hecho en cada interacción:
 
 ```mermaid
 flowchart LR
-  F1["1 Spec"] --> F2["2 QA spec"] --> F3["3 Plan y tareas"] --> F4["4 QA arquitectura"] --> F5["5 QA tareas"] --> F6["6 TDD"] --> F7["7 QA final"] --> F8["8 Cierre: history.md"]
+  F1["1 Spec"] --> F2["2 QA spec"] --> F3["3 Plan y tareas"] --> F4["4 QA arquitectura"] --> F5["5 QA tareas"] --> F6["6 TDD"] --> F7["7 QA final"] --> F8["8 Cierre: history/"]
   F7 -->|"CAMBIOS NECESARIOS (max 2)"| F6
 ```
 
@@ -182,7 +182,7 @@ Nunca se ignora el rojo. Crear tests nuevos (TDD) sí está permitido. El QA rev
 | `/security` | Auditoría de seguridad (skill del stack o checklist OWASP) e integración en specs |
 | `/validation-trace` | Trazabilidad HU ↔ RF ↔ arquitectura ↔ tests |
 | `/validation-properties` | Validación y generación de propiedades de corrección |
-| `/sdd-archive` | Cierre manual de iteración hacia `history.md` (con compactación si crece) |
+| `/sdd-archive` | Cierre manual de iteración hacia `history/<dominio>.md` + `history/index.md` |
 | `/sdd-update` | Actualiza el flujo desde `source` (URL pública o ruta local) |
 | `/ui-check` | Verificación visual aislada (veredicto corto; sin DOM en el hilo) |
 | `/mcp-mode` | Encender/apagar MCPs pesados (`code` vs `ui`/`debug`) |
@@ -191,48 +191,49 @@ Nunca se ignora el rojo. Crear tests nuevos (TDD) sí está permitido. El QA rev
 
 ## Archivos del paquete
 
-Lista usada por `/sdd-update` para saber qué archivos le pertenecen (todo lo demás en `.agents/` es del proyecto y no se toca):
+Lista usada por `/sdd-update` (rutas relativas a `.agents/`) para saber qué archivos le pertenecen. Todo lo demás —en especial skills creadas por el usuario en `skills/`— es del proyecto y **no se toca**:
 
 ```text
-.agents/sdd-kit.md
-.agents/sdd-kit/README.md
-.agents/sdd-kit/CHANGELOG.md
-.agents/rules/global-sdd.md
-.agents/subagents/1-planner.md
-.agents/subagents/2-implementer.md
-.agents/subagents/3-qa-reviewer.md
-.agents/commands/sdd.md
-.agents/commands/init.md
-.agents/commands/retrofit.md
-.agents/commands/architect.md
-.agents/commands/implement.md
-.agents/commands/review.md
-.agents/commands/security.md
-.agents/commands/validation-trace.md
-.agents/commands/validation-properties.md
-.agents/commands/sdd-archive.md
-.agents/commands/sdd-update.md
-.agents/commands/ui-check.md
-.agents/commands/mcp-mode.md
-.agents/skills/sdd-docs-generator/SKILL.md
-.agents/skills/sdd-docs-generator/references/spec-template.md
-.agents/skills/sdd-docs-generator/references/plan-template.md
-.agents/skills/sdd-docs-generator/references/tasks-template.md
-.agents/skills/sdd-docs-generator/references/history-template.md
-.agents/skills/sdd-docs-generator/references/sequence-business-template.md
-.agents/skills/sdd-docs-generator/references/sequence-technical-template.md
-.agents/skills/stack-conventions/SKILL.md
-.agents/skills/stack-conventions/references/laravel.md
-.agents/skills/stack-conventions/references/filament.md
-.agents/skills/stack-conventions/references/nativephp.md
-.agents/skills/stack-conventions/references/django.md
-.agents/skills/stack-conventions/references/fastapi.md
-.agents/skills/stack-conventions/references/flutter.md
+sdd-kit.md
+sdd-kit/README.md
+sdd-kit/CHANGELOG.md
+rules/global-sdd.md
+subagents/1-planner.md
+subagents/2-implementer.md
+subagents/3-qa-reviewer.md
+commands/sdd.md
+commands/init.md
+commands/retrofit.md
+commands/architect.md
+commands/implement.md
+commands/review.md
+commands/security.md
+commands/validation-trace.md
+commands/validation-properties.md
+commands/sdd-archive.md
+commands/sdd-update.md
+commands/ui-check.md
+commands/mcp-mode.md
+skills/sdd-docs-generator/SKILL.md
+skills/sdd-docs-generator/references/spec-template.md
+skills/sdd-docs-generator/references/plan-template.md
+skills/sdd-docs-generator/references/tasks-template.md
+skills/sdd-docs-generator/references/history-index-template.md
+skills/sdd-docs-generator/references/domain-history-template.md
+skills/sdd-docs-generator/references/sequence-business-template.md
+skills/sdd-docs-generator/references/sequence-technical-template.md
+skills/stack-conventions/SKILL.md
+skills/stack-conventions/references/laravel.md
+skills/stack-conventions/references/filament.md
+skills/stack-conventions/references/nativephp.md
+skills/stack-conventions/references/django.md
+skills/stack-conventions/references/fastapi.md
+skills/stack-conventions/references/flutter.md
 ```
 
 ## Qué NO va en este paquete
 
-Herramientas, skills de terceros o configuración propios de un stack (p. ej. Laravel Boost, skills de Flutter/Dart, auditores de seguridad de un framework, linters, comandos de setup de entorno, `.agents/mcp.json`). No van dentro del paquete SDD; se instalan en cada proyecto.
+Herramientas, skills de terceros o configuración propios de un stack (p. ej. Laravel Boost, skills de Flutter/Dart, auditores de seguridad de un framework, linters, comandos de setup de entorno, `mcp.json`). No van dentro del paquete SDD; se instalan en cada proyecto.
 
 Con Laravel, `/init` y `/retrofit` proponen **Laravel Boost** con MCP (`Search Docs`, esquema) y **`guidelines: false`** para no inflar `AGENTS.md`. Las reglas de código viven en `stack-conventions`. Playwright/Chrome DevTools: `/mcp-mode` + `/ui-check`, no siempre-on. Otros stacks: solo sugiere.
 
@@ -241,6 +242,6 @@ Las **guías de convenciones** (`stack-conventions`) sí van en el paquete: son 
 ## Cómo evolucionar el paquete
 
 1. Haz el cambio aquí (no en la copia de un proyecto) o tráelo desde el proyecto donde se probó.
-2. Agrega una entrada al inicio de `.agents/sdd-kit/CHANGELOG.md` con la nueva versión y, si cambia la estructura de `specs/`, los pasos de migración.
-3. Actualiza `version` en `.agents/sdd-kit.md`.
+2. Agrega una entrada al inicio de `sdd-kit/CHANGELOG.md` con la nueva versión y, si cambia la estructura de `specs/`, los pasos de migración.
+3. Actualiza `version` en `sdd-kit.md`.
 4. En cada proyecto, ejecuta `/sdd-update`.
