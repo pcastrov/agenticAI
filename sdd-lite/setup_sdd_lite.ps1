@@ -73,7 +73,32 @@ switch ($choice) {
         Set-Content -Path 'CLAUDE.md' -Value ("# Instrucciones del Repositorio`n`n" + $pointer) -Encoding UTF8
         Write-Host '[+] CLAUDE.md generado.' -ForegroundColor Green
     }
-    '4' { Write-Host "[+] $root/ es soportada nativamente por tu herramienta." -ForegroundColor Green }
+    '4' {
+        Write-Host "[+] $root/ es soportada nativamente por tu herramienta." -ForegroundColor Green
+        # Extension de Pi: registra cada comando de commands/ como slash command (la logica sigue en los .md)
+        $names = Get-ChildItem -Path "$root/commands" -Filter *.md -File | ForEach-Object { "'" + $_.BaseName + "'" }
+        $list = $names -join ', '
+        $tsLines = @(
+            'export default function (pi: any) {',
+            '  // Comandos del kit SDD (generados desde commands/ al instalar)',
+            "  const commands = [$list];",
+            '',
+            '  commands.forEach((cmd) => {',
+            '    pi.registerCommand({',
+            '      name: cmd,',
+            '      description: `Ejecuta el flujo SDD: ${cmd}`,',
+            '      handler: async (args: string[], ctx: any) => {',
+            ('        ctx.sendUserMessage(`Por favor, lee y ejecuta paso a paso las instrucciones definidas en ' + $root + '/commands/${cmd}.md de este repositorio.`);'),
+            '      }',
+            '    });',
+            '  });',
+            '}'
+        )
+        New-Item -ItemType Directory -Force -Path '.pi/extensions' | Out-Null
+        Set-Content -Path '.pi/extensions/sdd-commands.ts' -Value $tsLines -Encoding UTF8
+        Write-Host '[+] Extension de Pi generada en .pi/extensions/sdd-commands.ts' -ForegroundColor Green
+        Write-Host "    Comandos registrados: $list" -ForegroundColor DarkGray
+    }
 }
 
 $ref = "$root/skills/stack-conventions/references"

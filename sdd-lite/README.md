@@ -16,6 +16,8 @@ Desde la raíz de **tu proyecto**:
 
 El script instala el paquete en **`.cursor/`** si usas Cursor o en **`.agents/`** si usas otra herramienta (mismo contenido), crea el archivo puente solo si tu agente lo necesita y deja solo la guía de tu framework.
 
+Con **Pi / OpenCode / Cline** el script genera además `.pi/extensions/sdd-commands.ts` (slash commands que apuntan a `.agents/commands/*.md`).
+
 Manual: copia el contenido de [`.agents`](.agents/) a `.cursor/` (Cursor) o `.agents/` (otros). Mismo contenido; solo cambia el nombre.
 
 No instales Full y Lite a la vez en el mismo proyecto.

@@ -16,6 +16,7 @@ Estándar de producción agnóstico al editor (Cursor, Claude Code, GitHub Copil
 - `/review` (MODO 2): **auditoría a ciegas** — `git diff` vs `spec.md` aprobado + ejecución obligatoria de la suite en terminal (Exit Code 0); sin aprobación por inspección visual.
 - `/sdd-update`: gestor de paquetes seguro. Detecta la carpeta raíz en uso (`.cursor/` o `.agents/`) y actualiza **en el sitio**, sin renombrarla. Solo sobrescribe archivos base del paquete; **prohibido** tocar skills creadas por el usuario en `skills/`. Corrige en `AGENTS.md` las rutas al framework según el host. Pregunta antes de migrar `history.md`.
 - **Convenciones de framework opcionales** (`global-sdd.md` §5.1 + skill `stack-conventions`): si `skills/stack-conventions/references/` está vacía, falta el archivo o la carpeta fue eliminada, el agente usa buenas prácticas estándar del lenguaje sin error. `/sdd-update` no restaura guías que el usuario eliminó.
+- Opción Pi/OpenCode/Cline de los instaladores: genera `.pi/extensions/sdd-commands.ts` que registra como slash commands todos los `.md` de `commands/` (la lógica no se duplica en TypeScript).
 - Scripts opcionales de instalación: `setup_sdd_full.sh` / `setup_sdd_full.ps1` (instalan en `.cursor/` o `.agents/` según tu herramienta; con paso opcional para conservar solo la guía de tu framework).
 
 ### Migración desde 3.x

@@ -64,7 +64,35 @@ case $choice in
     1) echo "[+] Cursor lee $ROOT/ directamente; no se necesita archivo puente." ;;
     2) mkdir -p .github; printf '%s\n' "# Reglas de AgenticAI SDD-Lite" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado." ;;
     3) printf '%s\n' "# Instrucciones del Repositorio" "" "$POINTER" > CLAUDE.md; echo "[+] CLAUDE.md generado." ;;
-    4) echo "[+] $ROOT/ es soportada nativamente por tu herramienta." ;;
+    4)
+        echo "[+] $ROOT/ es soportada nativamente por tu herramienta."
+        # Extensión de Pi: registra cada comando de commands/ como slash command (la lógica sigue en los .md)
+        LIST=""
+        for c in "$ROOT"/commands/*.md; do
+            n="$(basename "$c" .md)"
+            if [ -z "$LIST" ]; then LIST="'$n'"; else LIST="$LIST, '$n'"; fi
+        done
+        mkdir -p .pi/extensions
+        cat << 'EOF' > .pi/extensions/sdd-commands.ts
+export default function (pi: any) {
+  // Comandos del kit SDD (generados desde commands/ al instalar)
+  const commands = [__COMMANDS__];
+
+  commands.forEach((cmd) => {
+    pi.registerCommand({
+      name: cmd,
+      description: `Ejecuta el flujo SDD: ${cmd}`,
+      handler: async (args: string[], ctx: any) => {
+        ctx.sendUserMessage(`Por favor, lee y ejecuta paso a paso las instrucciones definidas en __ROOT__/commands/${cmd}.md de este repositorio.`);
+      }
+    });
+  });
+}
+EOF
+        sed -i.bak "s|__COMMANDS__|$LIST|; s|__ROOT__|$ROOT|" .pi/extensions/sdd-commands.ts && rm -f .pi/extensions/sdd-commands.ts.bak
+        echo "[+] Extensión de Pi generada en .pi/extensions/sdd-commands.ts"
+        echo "    Comandos registrados: $LIST"
+        ;;
 esac
 
 REF="$ROOT/skills/stack-conventions/references"

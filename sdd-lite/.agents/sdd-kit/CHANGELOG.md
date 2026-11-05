@@ -10,6 +10,7 @@ Refactor integral: estándar ligero agnóstico al editor (modelos locales 8B–1
 - Se eliminan `summary.md`, `history-shard-template`, `history-archive-template` y `summary-template`.
 - Nuevas plantillas: `history-index-template.md` (≤30 líneas), `domain-shard-template.md` (≤100 líneas, Few-Shot). `spec-template.md` pasa a formato tabular con Few-Shot.
 - Convenciones de framework opcionales (`global-sdd.md` §5.1): sin guía o sin carpeta → buenas prácticas estándar, sin error.
+- Opción Pi/OpenCode/Cline: genera `.pi/extensions/sdd-commands.ts` con los comandos de `commands/` como slash commands.
 - Instaladores `setup_sdd_lite.sh` / `.ps1` (puente por agente + guía de framework opcional).
 - `/review`: tabla de auditoría determinista contra el Git Diff.
 

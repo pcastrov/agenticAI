@@ -11,6 +11,8 @@ Con script (indica la ruta de **tu proyecto**; sin ella, el script muestra un ej
 
 Sin script: copia el contenido de `.agents/` a `.cursor/` (Cursor) o `.agents/` (otros) y ejecuta `/init`.
 
+Con la opción **Pi / OpenCode / Cline**, el script genera además `.pi/extensions/sdd-commands.ts` (un solo archivo que registra todos los comandos de `.agents/commands/` como slash commands; la lógica sigue en los `.md`).
+
 No combines con **SDD Lite**.
 
 ## Uso
