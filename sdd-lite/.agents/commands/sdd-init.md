@@ -1,4 +1,4 @@
-# /init (Lite)
+# /sdd-init (Lite)
 
 Genera Trinidad liviana para modelos 16K–32K.
 

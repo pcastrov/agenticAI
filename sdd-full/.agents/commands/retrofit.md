@@ -5,13 +5,13 @@ Este comando analiza una base de código existente para generar masivamente la d
 ## Instrucción para la IA
 
 ## PASO 0 — Lectura obligatoria
-Abre con tu herramienta de lectura: `subagents/1-planner.md`, `skills/sdd-docs-generator/references/history-index-template.md`, `domain-history-template.md`, `spec-template.md`, `plan-template.md` y `tasks-template.md`. Luego lee `## Perfil técnico` de `AGENTS.md` (si no existe, ejecuta `/init` antes).
+Abre con tu herramienta de lectura: `subagents/1-planner.md`, `skills/sdd-docs-generator/references/history-index-template.md`, `domain-history-template.md`, `spec-template.md`, `plan-template.md` y `tasks-template.md`. Luego lee `## Perfil técnico` de `AGENTS.md` (si no existe, Ejecuta `/sdd-init` antes).
 
 Analiza la aplicación recorriendo las carpetas de `structure` (persistencia, modelos/entidades, servicios, controladores/endpoints, interfaz, autorización, rutas) y ejecuta la ingeniería inversa siguiendo estos pasos:
 
 ### 0. Herramientas del stack (antes de mapear)
 Si `conventions` incluye `laravel` (o el framework es Laravel) y `laravel/boost` **no** está instalado:
-1. Propón instalar Laravel Boost como en `/init`: `composer require laravel/boost --dev`, `boost.json` con `"guidelines": false`, `"mcp": true`, luego `php artisan boost:install`.
+1. Propón instalar Laravel Boost como en `/sdd-init`: `composer require laravel/boost --dev`, `boost.json` con `"guidelines": false`, `"mcp": true`, luego `php artisan boost:install`.
 2. 🛑 **DETENTE Y ESPERA** la aprobación del usuario.
 3. Tras instalar, activa el MCP `laravel-boost` si hace falta. Si `AGENTS.md` ya tiene `<laravel-boost-guidelines>`, propón limpiarlo.
 

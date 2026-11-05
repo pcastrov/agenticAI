@@ -19,7 +19,7 @@ Antes de escribir cualquier entregable, **abre** la plantilla correspondiente en
 **Prohibido inventar nombres** (`tests.md`, `tareas_completadas.md`, `archive.md`, etc.). Solo los archivos de las plantillas.
 
 ## Preparación
-1. Lee `docs/constitution.md` y `## Perfil técnico` de `AGENTS.md` (si falta → `/init`).
+1. Lee `docs/constitution.md` y `## Perfil técnico` de `AGENTS.md` (Si falta → `/sdd-init`).
 2. Siguiente carpeta libre `NNN-[id-nombre-modulo]`.
 3. Módulo existente: lee solo `spec.md`, `plan.md`, `tasks.md`. Historial: `history/index.md` y solo el dominio relevante, por ID/keyword (`global-sdd` §6–7).
 

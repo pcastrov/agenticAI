@@ -4,7 +4,7 @@ Copia el contenido de **`sdd-lite/.agents/`** a la raíz del proyecto como **`.c
 
 ## Instalación
 1. Copia `sdd-lite/.agents/` → `.cursor/` (Cursor) o `.agents/` (otros), o corre `setup_sdd_lite.sh` / `.ps1`.
-2. `/init` → Trinidad liviana.
+2. `/sdd-init` → Trinidad liviana.
 3. Cambios: `/sdd` (Triage) → `/implement` → `/sdd-archive`.
 4. Actualizar: `/sdd-update` (compara `sdd-lite/.agents/` del `source` contra tu carpeta en el sitio).
 
@@ -20,7 +20,7 @@ rules/global-sdd.md
 subagents/1-planner.md
 subagents/2-implementer.md
 subagents/3-qa-reviewer.md
-commands/init.md
+commands/sdd-init.md
 commands/sdd.md
 commands/implement.md
 commands/sdd-archive.md

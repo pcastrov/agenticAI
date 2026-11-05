@@ -7,7 +7,7 @@ alwaysApply: true
 
 ## 0. REGLA ZERO — TRIAGE GATE (Turno 1, obligatorio)
 Aplica aunque el usuario **no** escriba `/sdd` ni `/implement`.
-> OpenCode/Pi leen sobre todo `AGENTS.md`: el GATE debe estar **copiado** ahí (`/init`). Si falta, no edites código hasta repararlo.
+> OpenCode/Pi leen sobre todo `AGENTS.md`: el GATE debe estar **copiado** ahí (`/sdd-init`). Si falta, no edites código hasta repararlo.
 1. Solo pregunta/análisis → **no** toques archivos.
 2. Si la instrucción implica cambiar código/funcionalidad → emite este bloque **antes** de editar:
    ```

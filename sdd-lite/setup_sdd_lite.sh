@@ -121,8 +121,23 @@ PY
         else
             printf '%s\n' '{' '  "$schema": "https://opencode.ai/config.json",' "  \"instructions\": [\"$INSTR\"]" '}' > opencode.json
         fi
-        echo "[+] OpenCode: $ROOT/ instalado + opencode.json instructions → $INSTR"
-        echo "    Tras /init, el GATE también queda incrustado en AGENTS.md (obligatorio)."
+        mkdir -p .opencode/commands
+        OC_LIST=""
+        for c in "$ROOT"/commands/*.md; do
+            n="$(basename "$c" .md)"
+            if [ -z "$OC_LIST" ]; then OC_LIST="$n"; else OC_LIST="$OC_LIST, $n"; fi
+            cat > ".opencode/commands/$n.md" <<EOF
+---
+description: Ejecuta el flujo SDD: $n
+---
+
+Lee y ejecuta paso a paso las instrucciones definidas en $ROOT/commands/$n.md de este repositorio.
+Incluye cualquier argumento del usuario: \$ARGUMENTS
+EOF
+        done
+        echo "[+] OpenCode: $ROOT/ + opencode.json instructions → $INSTR"
+        echo "[+] Slash commands en .opencode/commands/: $OC_LIST"
+        echo "    Tras /sdd-init, el GATE también queda incrustado en AGENTS.md (obligatorio)."
         ;;
 esac
 
@@ -167,5 +182,5 @@ else
 fi
 
 echo ""
-echo "¡Instalación completada! Siguiente paso: /init"
+echo "¡Instalación completada! Siguiente paso: /sdd-init"
 echo "Para actualizar usa /sdd-update en el chat (detecta $ROOT/, protege tus skills y no restaura guías que eliminaste)."

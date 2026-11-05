@@ -39,8 +39,9 @@ Si la extensión instalada no corresponde al host (p. ej. Cursor con `.md`, u ot
 7. **Corregir `AGENTS.md` y `docs/constitution.md` según el host en uso** (proponer; no borrar dominio):
    - Rutas del framework: `.cursor/rules/global-sdd.mdc` (Cursor) o `.agents/rules/global-sdd.md` (otros).
    - Constitution: integridad de tests + revisión de diseño + Triage.
-   - **`AGENTS.md` — GATE obligatorio**: si solo hay un puntero de 2–3 líneas a `global-sdd`, **reemplázalo** por el bloque completo `## Gobernanza SDD (GATE)` de `/init` (PASO 7). Debe quedar **al inicio** del archivo. Motivo: OpenCode/Pi cargan `AGENTS.md`, no el `alwaysApply` de Cursor.
-   - **OpenCode**: si existe `opencode.json` o el usuario usa OpenCode, asegúrate de que `instructions` incluya `".agents/rules/global-sdd.md"` (o `.cursor/...` si aplica). Crea `opencode.json` mínimo si no existe y el host es OpenCode. No borres otras claves del usuario.
+   - **`AGENTS.md` — GATE obligatorio**: si solo hay un puntero de 2–3 líneas a `global-sdd`, **reemplázalo** por el bloque completo `## Gobernanza SDD (GATE)` de `/sdd-init` (PASO 7). Debe quedar **al inicio** del archivo. Motivo: OpenCode/Pi cargan `AGENTS.md`, no el `alwaysApply` de Cursor.
+   - **OpenCode**: si existe `opencode.json` / `.opencode/` o el usuario usa OpenCode: (1) `instructions` debe incluir `".agents/rules/global-sdd.md"`; (2) regenera `.opencode/commands/<nombre>.md` por cada `commands/*.md` del kit (template: leer y ejecutar esa ruta; `$ARGUMENTS`). OpenCode **no** lee `.agents/commands/` como slash — solo `.opencode/commands/`. No borres otras claves de `opencode.json`.
+   - **Rename `/init` → `/sdd-init`**: si aún existe `commands/init.md` (o `.opencode/commands/init.md` / registro Pi `init`), elimínalo tras instalar `sdd-init` para no chocar con el `/init` built-in de OpenCode.
    - Si existe `<laravel-boost-guidelines>`: propone eliminarlo o ≤5 líneas y `boost.json` con `"guidelines": false`, `"mcp": true`.
    - Higiene MCP: `/mcp-mode` y `/ui-check`.
    - Solo escribe tras confirmación.

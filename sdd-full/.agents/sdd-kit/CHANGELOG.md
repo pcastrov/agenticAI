@@ -4,13 +4,24 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 4.0.4 — 2026-11-05
+
+### Cambiado
+- **OpenCode slash commands:** el instalador (opción 5) y `/sdd-update` generan `.opencode/commands/<cmd>.md` por cada `commands/*.md` del kit.
+- **`/init` → `/sdd-init`:** renombrado en **todos** los hosts para no chocar con el `/init` built-in de OpenCode y alinear con `/sdd-update` / `/sdd-archive`.
+
+### Migración
+Reinstalar o `/sdd-update` (regenera `.opencode/commands/` / extensión Pi). Usa **`/sdd-init`** (el `/init` de OpenCode sigue siendo el nativo del host).
+
+---
+
 ## 4.0.3 — 2026-11-05
 
 ### Cambiado
-- **OpenCode/Pi:** el GATE ya no depende solo de `alwaysApply` (Cursor). `/init` incrusta el bloque completo `## Gobernanza SDD (GATE)` al **inicio** de `AGENTS.md`. Instalador opción OpenCode crea/fusiona `opencode.json` → `instructions: [".agents/rules/global-sdd.md"]`. `/sdd-update` repara Gobernanza corta y `opencode.json`.
+- GATE incrustado en `AGENTS.md`; OpenCode `opencode.json` → `instructions` a `global-sdd.md`.
 
 ### Migración
-`/sdd-update` (acepta arreglar `AGENTS.md` + `opencode.json`) o reinstalar opción 5 + `/init`.
+`/sdd-update` o reinstalar opción 5 + `/sdd-init`.
 
 ---
 
@@ -84,7 +95,7 @@ Optimización de tokens (Single Source of Truth), GATE, Boost sin guidelines, UI
 
 ### Cambiado
 - Subagentes/comandos delegan a `global-sdd` (sin duplicar plantillas).
-- `/init` y `/retrofit`: `guidelines: false`, `mcp: true`.
+- `/sdd-init` y `/retrofit`: `guidelines: false`, `mcp: true`.
 - `/sdd-update`: proyección AGENTS corta + limpieza Boost.
 
 ### Migración desde 3.4.0
@@ -100,7 +111,7 @@ Dos regímenes (integridad de tests obligatoria vs revisión de diseño sugerida
 
 ### Agregado
 - **`global-sdd` sección 2.3**: revisión de diseño como sugerencia (`CONSULTA DE DISEÑO`) al crear código propio; sin checklist SOLID; sin refactor automático; lo idiomático del framework no es deuda.
-- **Proyección en `/init`**: constitution con integridad de tests + revisión de diseño; `AGENTS.md` con bloques operativos `## Integridad de tests` y `## Revisión de diseño`.
+- **Proyección en `/sdd-init`**: constitution con integridad de tests + revisión de diseño; `AGENTS.md` con bloques operativos `## Integridad de tests` y `## Revisión de diseño`.
 - **`/sdd-update`**: tras sincronizar el paquete, verifica proyección AGENTS/constitution y propone bloques faltantes sin borrar dominio.
 - **Subagentes**: planner y QA pueden emitir `CONSULTA DE DISEÑO` (no bloqueante); implementer exige cierre post-reporte (fix | tarea escrita | SDD).
 
@@ -138,7 +149,7 @@ Revisión de simplicidad DRY / KISS / YAGNI en planificación, implementación y
   - **Formato `CONSULTA DE SIMPLICIDAD`**: principio, dónde, qué se detectó, opción de mejora con impacto y opción "dejarlo igual".
   - **Alcance de búsqueda**: solo `## Código Compartido` de `AGENTS.md` y el módulo activo, nunca otros módulos. Solo código propio: versionado, dentro de `structure`, sin generados ni exclusiones del stack. Si algo genérico no está en el catálogo, se pregunta.
   - **Qué cuenta como duplicación**: conocimiento duplicado sí; el código declarativo del framework que se parece entre módulos no. Regla de tres para extraer bloques propios.
-- **`## Código Compartido` en `AGENTS.md`**: catálogo de código propio reutilizable entre módulos. Lo crea `/init` (PASO 7) y lo propone `/retrofit` (mapeo de módulos). `1-planner` MODO 6 y el QA proponen agregar lo genérico nuevo.
+- **`## Código Compartido` en `AGENTS.md`**: catálogo de código propio reutilizable entre módulos. Lo crea `/sdd-init` (PASO 7) y lo propone `/retrofit` (mapeo de módulos). `1-planner` MODO 6 y el QA proponen agregar lo genérico nuevo.
 - **`1-planner` MODO 2**: revisión de simplicidad una vez por iteración, antes de diseñar.
 - **`plan-template.md`**: sección "1.1 Reutilización y Simplicidad" con la zona de origen de cada elemento y las consultas resueltas.
 - **`2-implementer` PASO 4 y MODO C**: sin búsqueda nueva; parte del plan y consulta antes de reutilizar algo no previsto. El reporte final incluye lo reutilizado y las consultas.
@@ -148,7 +159,7 @@ Revisión de simplicidad DRY / KISS / YAGNI en planificación, implementación y
 
 ### Migración desde 3.2.0
 Sin cambios en la estructura de `specs/`.
-1. Agrega `## Código Compartido` a `AGENTS.md`. Puede hacerlo `/init`, que detecta candidatos y te los pide confirmar.
+1. Agrega `## Código Compartido` a `AGENTS.md`. Puede hacerlo `/sdd-init`, que detecta candidatos y te los pide confirmar.
 2. Los `plan.md` existentes reciben la sección "1.1 Reutilización y Simplicidad" la próxima vez que `1-planner` los actualice.
 3. `/sdd-update` refresca las reglas `stack-*.md` con la nueva sección "DRY en este stack".
 
@@ -189,9 +200,9 @@ Calidad de requisitos y diagramas de secuencia PlantUML.
 - **Protocolo ante Tests Fallidos** en `2-implementer`: Reporte de Fallo (test, qué falló, dónde, tipo, causa probable con evidencia, propuesta) y criterios para decidir entre corregir ahora, nueva tarea con test de regresión o pasar por SDD.
 - **`2-implementer` MODO C (Cambio Directo)**: ejecuta los cambios que no merecen spec; se detiene y propone SDD si el cambio crece.
 - **Skill `stack-conventions`**: Principios Generales agnósticos y guías idiomáticas por framework (`laravel`, `filament` para Filament 5.x, `nativephp`, `django`, `fastapi`, `flutter`), con reglas de nivel **Debe** (bloqueante en QA) o **Preferir** (sugerencia) y una sección de Verificación Automática (Pint, Larastan, tests de arquitectura de Pest, ruff, mypy, import-linter, `flutter analyze`). Se cargan de forma perezosa según la nueva clave `conventions` del Perfil técnico.
-- **Reglas del stack**: `/init` (PASO 5.1) copia las guías elegidas a `.agents/rules/stack-[nombre].mdc` (frontmatter con `globs`) para que Cursor las adjunte automáticamente al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca si no se personalizaron.
+- **Reglas del stack**: `/sdd-init` (PASO 5.1) copia las guías elegidas a `.agents/rules/stack-[nombre].mdc` (frontmatter con `globs`) para que Cursor las adjunte automáticamente al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca si no se personalizaron.
 - **Integración**: `1-planner` MODO 2 ubica capas y archivos según las guías; `2-implementer` las aplica y reporta desviaciones; `3-qa-reviewer` revisa idiomaticidad del diff (MODO 2) y del plan (MODO 3); `/retrofit` registra desviaciones como deuda técnica.
-- **`/init` y `/retrofit` + Laravel Boost**: si el stack es Laravel, proponen e instalan por defecto `laravel/boost` (`composer require` + `boost:install` con `boost.json` para Cursor/MCP/guidelines). Incluye MCP **Search Docs**. En `/retrofit`, si Boost no está, se detiene a pedirlo antes de mapear; si está, usa Application Info, Database Schema, Search Docs y logs para la ingeniería inversa (solo lectura). Coexiste con SDD: Boost solo escribe el bloque `<laravel-boost-guidelines>` en `AGENTS.md`. Otros stacks siguen en modo "sugerir".
+- **`/sdd-init` y `/retrofit` + Laravel Boost**: si el stack es Laravel, proponen e instalan por defecto `laravel/boost` (`composer require` + `boost:install` con `boost.json` para Cursor/MCP/guidelines). Incluye MCP **Search Docs**. En `/retrofit`, si Boost no está, se detiene a pedirlo antes de mapear; si está, usa Application Info, Database Schema, Search Docs y logs para la ingeniería inversa (solo lectura). Coexiste con SDD: Boost solo escribe el bloque `<laravel-boost-guidelines>` en `AGENTS.md`. Otros stacks siguen en modo "sugerir".
 - **QA MODO 2**: detecta en el diff tests modificados o debilitados sin justificación (hallazgo bloqueante); los hallazgos incluyen test que falla, causa probable y tipo.
 
 ### Cambiado
@@ -202,12 +213,12 @@ Calidad de requisitos y diagramas de secuencia PlantUML.
 - IDs estables ahora incluyen `HU` y `RN`.
 - **Evaluación de Alcance** de `/sdd` con criterios explícitos (cambio directo vs SDD), justificación obligatoria ante el usuario y ejecución por `2-implementer` MODO C (antes el orquestador, que no escribe código, debía hacer el cambio). `global-sdd.md` la incorpora como paso 2 del flujo y `/implement` la aplica a peticiones fuera de `tasks.md`.
 - **`2-implementer`**: el PASO 5 ya no dice "corrige inmediatamente" ante un fallo, y el MODO B ya no permite ajustar tests existentes; ambos remiten al Protocolo ante Tests Fallidos.
-- **Documentación del paquete movida a `.agents/sdd-kit/`**: `README.md` y `CHANGELOG.md` ya no están en la raíz del paquete, para no confundirse con los del proyecto donde se instala. Todo el paquete vive en `.agents/`. `/sdd-update` los busca en la nueva ruta (y en la raíz si el paquete es 3.0.0); `/init` y `.agents/sdd-kit.md` apuntan a la nueva ruta.
+- **Documentación del paquete movida a `.agents/sdd-kit/`**: `README.md` y `CHANGELOG.md` ya no están en la raíz del paquete, para no confundirse con los del proyecto donde se instala. Todo el paquete vive en `.agents/`. `/sdd-update` los busca en la nueva ruta (y en la raíz si el paquete es 3.0.0); `/sdd-init` y `.agents/sdd-kit.md` apuntan a la nueva ruta.
 
 ### Migración desde 3.0.0
 `/sdd-update` copia `.agents/sdd-kit/README.md` y `.agents/sdd-kit/CHANGELOG.md` al proyecto. No toca el `README.md` ni el `CHANGELOG.md` de la raíz del proyecto: si alguna vez se copiaron ahí los del paquete, bórralos a mano.
 
-Ejecuta `/init` para agregar la clave `conventions` al Perfil técnico y generar las reglas `stack-*.md`. Sin la clave, solo aplican los Principios Generales de `stack-conventions`.
+Ejecuta `/sdd-init` para agregar la clave `conventions` al Perfil técnico y generar las reglas `stack-*.md`. Sin la clave, solo aplican los Principios Generales de `stack-conventions`.
 
 La adopción de los nuevos requisitos no es obligatoria. Los módulos existentes siguen funcionando; al tocar un módulo con `1-planner` MODO 3, se agregan `HU-x`, MoSCoW y diagramas a los RF pendientes afectados. Para adoptarlo de una vez en un módulo, pide a `@1-planner.md`:
 1. Agrupar los RF pendientes en `HU-x` con criterios `CA-x.y` y asignarles MoSCoW.
@@ -227,7 +238,7 @@ Primera versión publicada como paquete independiente (`sdd-kit`), extraída del
 - **`1-planner` MODO 6 (Cierre de iteración)** y FASE 8 de `/sdd` que lo invoca.
 - **Comandos** `/sdd-archive` (cierre manual) y `/sdd-update` (actualización real desde el paquete; antes solo estaba mencionado).
 - **Perfil técnico** en `AGENTS.md` (claves `language`, `framework`, `database`, `test`, `test_single`, `lint`, `run`, `migrate`, `structure`, `ui_check`, `security_audit_skill`). Los subagentes lo leen y se detienen si falta una clave.
-- **`/init` con dos caminos**: detección automática (proyecto existente) o entrevista (proyecto nuevo).
+- **`/sdd-init` con dos caminos**: detección automática (proyecto existente) o entrevista (proyecto nuevo).
 - **`history-template.md`** en `sdd-docs-generator`.
 - **`.agents/sdd-kit.md`**: versión instalada y origen del paquete.
 
@@ -240,7 +251,7 @@ Primera versión publicada como paquete independiente (`sdd-kit`), extraída del
 - Se eliminaron los marcadores `**NUEVO**` / `(NUEVO)` que anotaban cambios dentro de las instrucciones.
 
 ### Eliminado
-- **`.agents/templates/sdd-flow.md`**: copia monolítica de todos los archivos del flujo que `/init` usaba para recrearlos. Duplicaba el contenido y ya estaba desincronizada (referenciaba `/sdd-init`, inexistente). Su parte explicativa pasó a `README.md`; el paquete en carpeta es ahora la única fuente.
+- **`.agents/templates/sdd-flow.md`**: copia monolítica de todos los archivos del flujo que `/sdd-init` usaba para recrearlos. Duplicaba el contenido y ya estaba desincronizada (referenciaba `/sdd-init`, inexistente). Su parte explicativa pasó a `README.md`; el paquete en carpeta es ahora la única fuente.
 
 ### Migración desde 2.x
 Para cada módulo en `specs/` (se puede pedir a `@1-planner.md`):
@@ -248,7 +259,7 @@ Para cada módulo en `specs/` (se puede pedir a `@1-planner.md`):
 2. En `spec.md`, agregar `## 0. Ya implementado` y quitar el detalle de esos RF.
 3. En `plan.md`, dejar una tabla de estructura vigente y solo la arquitectura de lo pendiente.
 4. En `tasks.md`, dejar solo las tareas `[ ]`.
-5. Agregar el bloque `## Perfil técnico` a `AGENTS.md` (ejecutar `/init`).
+5. Agregar el bloque `## Perfil técnico` a `AGENTS.md` (ejecutar `/sdd-init`).
 
 ---
 
@@ -266,7 +277,7 @@ Integración de mejoras inspiradas en el flujo de specs de distintas metodologí
 - **Comandos** `/validation-trace` y `/validation-properties`.
 - **`2-implementer`**: verificación de propiedades en el ciclo TDD.
 - **`AGENTS.md`**: secciones de Especificación (EARS + Propiedades), Validación y Verificación, y checklists de spec/plan/tasks/implementación.
-- **`/init`**: detección y copia del flujo SDD si no existe (vía `templates/sdd-flow.md`, reemplazado en 3.0.0).
+- **`/sdd-init`**: detección y copia del flujo SDD si no existe (vía `templates/sdd-flow.md`, reemplazado en 3.0.0).
 
 ### Beneficios buscados
 Validación formal con propiedades, trazabilidad completa RF ↔ arquitectura ↔ tests ↔ propiedades, validaciones tempranas por QA antes de implementar, priorización explícita y documentación de decisiones.

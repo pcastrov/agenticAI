@@ -31,7 +31,7 @@ Lee **solo** las referencias listadas en `conventions` que existan en `reference
 | `fastapi` | `references/fastapi.md` |
 | `flutter` | `references/flutter.md` |
 
-Cada referencia lleva un frontmatter de regla (`description`, `globs`, `alwaysApply: false`). Mientras vive en esta skill está inactiva; `/init` copia las del stack a `rules/stack-[nombre].md` para que el host (p. ej. Cursor) las adjunte automáticamente al editar archivos que coincidan con `globs`.
+Cada referencia lleva un frontmatter de regla (`description`, `globs`, `alwaysApply: false`). Mientras vive en esta skill está inactiva; `/sdd-init` copia las del stack a `rules/stack-[nombre].md` para que el host (p. ej. Cursor) las adjunte automáticamente al editar archivos que coincidan con `globs`.
 
 ---
 

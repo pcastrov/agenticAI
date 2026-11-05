@@ -106,7 +106,7 @@ switch ($choice) {
         Write-Host "    Comandos registrados: $list" -ForegroundColor DarkGray
     }
     '5' {
-        # OpenCode carga AGENTS.md + opencode.json "instructions" (NO el alwaysApply de Cursor)
+        # OpenCode: AGENTS.md + opencode.json instructions + .opencode/commands/*.md (slash commands)
         $instr = "$root/rules/global-sdd.md"
         $cfgPath = 'opencode.json'
         if (Test-Path -LiteralPath $cfgPath) {
@@ -129,8 +129,24 @@ switch ($choice) {
 "@
             Set-Content -Path $cfgPath -Value $json -Encoding UTF8
         }
-        Write-Host "[+] OpenCode: $root/ instalado + opencode.json instructions -> $instr" -ForegroundColor Green
-        Write-Host '    Tras /init, el GATE tambien queda incrustado en AGENTS.md (obligatorio).' -ForegroundColor DarkGray
+        New-Item -ItemType Directory -Force -Path '.opencode/commands' | Out-Null
+        $ocNames = @()
+        Get-ChildItem -Path "$root/commands" -Filter *.md -File | ForEach-Object {
+            $n = $_.BaseName
+            $ocNames += $n
+            $lines = @(
+                '---',
+                "description: Ejecuta el flujo SDD: $n",
+                '---',
+                '',
+                "Lee y ejecuta paso a paso las instrucciones definidas en $root/commands/$n.md de este repositorio.",
+                'Incluye cualquier argumento del usuario: $ARGUMENTS'
+            )
+            Set-Content -Path ".opencode/commands/$n.md" -Value $lines -Encoding UTF8
+        }
+        Write-Host "[+] OpenCode: $root/ + opencode.json instructions -> $instr" -ForegroundColor Green
+        Write-Host "[+] Slash commands en .opencode/commands/: $($ocNames -join ', ')" -ForegroundColor Green
+        Write-Host '    Tras /sdd-init, el GATE tambien queda incrustado en AGENTS.md (obligatorio).' -ForegroundColor DarkGray
     }
 }
 
@@ -173,5 +189,5 @@ if ($frameChoice -eq '1' -and (Test-Path $ref)) {
 }
 
 Write-Host ''
-Write-Host 'Instalacion completada. Siguiente paso: /init' -ForegroundColor Cyan
+Write-Host 'Instalacion completada. Siguiente paso: /sdd-init' -ForegroundColor Cyan
 Write-Host "Para actualizar usa /sdd-update en el chat (detecta $root/, protege tus skills y no restaura guias que eliminaste)." -ForegroundColor Yellow

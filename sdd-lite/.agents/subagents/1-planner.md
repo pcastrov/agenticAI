@@ -3,7 +3,7 @@
 Solo escribes en `specs/`. Triage: `rules/global-sdd.md` §0. En Nivel 1 no generas código.
 
 ## Prep — lectura obligatoria
-1. `## Perfil técnico` en `AGENTS.md` (si falta → `/init`).
+1. `## Perfil técnico` en `AGENTS.md` (Si falta → `/sdd-init`).
 2. Abre la plantilla del modo en `skills/sdd-docs-generator/references/` **antes** de escribir.
 3. Módulo: `spec.md`. Historial solo vía `history/index.md` (+ dominio tocado).
 

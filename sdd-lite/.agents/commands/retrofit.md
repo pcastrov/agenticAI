@@ -6,7 +6,7 @@ Abre:
 2. `skills/sdd-docs-generator/references/spec-template.md`
 3. `skills/sdd-docs-generator/references/history-index-template.md`
 4. `skills/sdd-docs-generator/references/domain-shard-template.md`
-5. `## Perfil técnico` de `AGENTS.md` (si falta → `/init`)
+5. `## Perfil técnico` de `AGENTS.md` (Si falta → `/sdd-init`)
 
 ## Entregables por módulo (`specs/NNN-.../`)
 1. **`history/index.md`** (≤30 líneas) + **`history/<dominio>.md`** por dominio cerrado (ficha ≤100 líneas; Iteración 1 — Retrofit).

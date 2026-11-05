@@ -11,7 +11,7 @@ Abre con tu herramienta de lectura:
 3. Plantillas en `skills/sdd-docs-generator/references/` de la fase en curso
 
 ## Preparación
-1. Lee `## Perfil técnico` de `AGENTS.md`. Si falta → `/init`.
+1. Lee `## Perfil técnico` de `AGENTS.md`. Si falta → `/sdd-init`.
 2. Escanea `specs/`. Activos primero; `history/index.md` y solo el dominio relevante si hace falta.
 
 ## Evaluación de Alcance
