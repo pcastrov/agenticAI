@@ -1,5 +1,7 @@
 # /sdd (Lite) — Planear
 
+El mismo flujo aplica si el usuario **no** escribió `/sdd` pero el pedido es Nivel 1 (`rules/global-sdd.md` §0).
+
 ## PASO 0 — Lectura obligatoria
 Abre:
 1. `rules/global-sdd.md` §0
@@ -10,10 +12,11 @@ Abre:
 ## Flujo
 1. TRIAGE: si solo preguntan → responde sin editar.
 2. Emite `[TRIAGE SDD]` (Nivel 0 | 1). Ante duda → Nivel 1.
-3. **Nivel 0 (FAST-TRACK)**: edición directa con motivo en 1 línea; no abras spec por reflejo.
-4. **Nivel 1 (SDD-REQUIRED)**: **sin código ni diffs**. Máx 3 preguntas → escribe `specs/NNN-.../spec.md` copiando `spec-template.md`:
-   - Tablas: Entradas, Salidas, Criterios de Aceptación, Archivos
-   - Sección **Tareas** obligatoria con checklist `- [ ] **T1** …` (sin esta sección la fase está incompleta)
+3. **Nivel 0**: edición directa con motivo en 1 línea.
+4. **Nivel 1**: **sin código ni diffs**. Máx 3 preguntas → escribe `spec.md` (`spec-template.md`):
+   - Entradas, Salidas, Criterios de Aceptación, Archivos
+   - Sección **Tareas** obligatoria (`- [ ] **T1** …`)
    - Tope ~150 líneas
-5. 🛑 Espera aprobación explícita antes de `/implement`.
-6. Tras implementar y `/review` APROBADO → `/sdd-archive` (no inventar `tareas_completadas.md`).
+5. 🛑 **DETENTE**: pide aprobación del Spec. No llames a implementar en este turno.
+6. Cuando el usuario apruebe e indique implementar → pregunta `[CADENCIA TDD]` (A una-a-una | B lote) si hay ≥2 tareas; luego `/implement`.
+7. Tras `/review` APROBADO → `/sdd-archive`.

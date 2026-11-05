@@ -42,10 +42,11 @@ Write-Host 'Que entorno principal vas a utilizar?'
 Write-Host '1) Cursor (carpeta .cursor/)'
 Write-Host '2) GitHub Copilot (.github/copilot-instructions.md)'
 Write-Host '3) Claude Code (CLAUDE.md)'
-Write-Host '4) Pi / OpenCode / Cline (nativo en .agents/)'
-$choice = Read-Host 'Selecciona una opcion (1-4)'
+Write-Host '4) Pi (.agents/ + extension .pi/extensions/sdd-commands.ts)'
+Write-Host '5) OpenCode (nativo en .agents/)'
+$choice = Read-Host 'Selecciona una opcion (1-5)'
 
-if ($choice -notin @('1','2','3','4')) { Write-Host 'Opcion no valida.' -ForegroundColor Red; exit 1 }
+if ($choice -notin @('1','2','3','4','5')) { Write-Host 'Opcion no valida.' -ForegroundColor Red; exit 1 }
 $root = if ($choice -eq '1') { '.cursor' } else { '.agents' }
 
 if (Test-Path "$root/sdd-kit.md") {
@@ -74,8 +75,8 @@ switch ($choice) {
         Write-Host '[+] CLAUDE.md generado.' -ForegroundColor Green
     }
     '4' {
-        Write-Host "[+] $root/ es soportada nativamente por tu herramienta." -ForegroundColor Green
-        # Extension de Pi: registra cada comando de commands/ como slash command (la logica sigue en los .md)
+        Write-Host "[+] Pi: $root/ instalado. Generando extension de slash commands..." -ForegroundColor Green
+        # Solo Pi: registra cada comando de commands/ como slash command (la logica sigue en los .md)
         $names = Get-ChildItem -Path "$root/commands" -Filter *.md -File | ForEach-Object { "'" + $_.BaseName + "'" }
         $list = $names -join ', '
         $tsLines = @(
@@ -104,6 +105,7 @@ switch ($choice) {
         Write-Host '[+] Extension de Pi generada en .pi/extensions/sdd-commands.ts' -ForegroundColor Green
         Write-Host "    Comandos registrados: $list" -ForegroundColor DarkGray
     }
+    '5' { Write-Host "[+] OpenCode: $root/ es soportada nativamente (sin extension de Pi)." -ForegroundColor Green }
 }
 
 $ref = "$root/skills/stack-conventions/references"

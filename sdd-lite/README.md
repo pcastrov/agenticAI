@@ -7,7 +7,7 @@ Edición del kit para **modelos locales** en hardware modesto. El presupuesto de
 - Modelos **8B–14B** que quepan ahí (cuantizados), p. ej. **Qwen 2.5 Coder 14B**, y otros **9B / 8B** coder/instruct
 - Cliente de agente: **Pi** (ideal, más liviano) u **OpenCode**; también Cursor, VS Code + Copilot/Ollama (más overhead)
 
-Versión del paquete: **2.0.1** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
+Versión del paquete: **2.0.2** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
 
 No instales Full y Lite a la vez. Comparativa y tokens: [README de la raíz](../README.md).
 
@@ -113,13 +113,13 @@ Desde la raíz de **tu proyecto**:
 
 El script instala en **`.cursor/`** (Cursor) o **`.agents/`** (otros), crea el puente solo si hace falta (Copilot / Claude) y puede dejar solo la guía de tu framework.
 
-Con **Pi / OpenCode / Cline** genera además `.pi/extensions/sdd-commands.ts`.
+Menú del instalador: **1** Cursor · **2** Copilot · **3** Claude Code · **4** Pi (genera `.pi/extensions/sdd-commands.ts`) · **5** OpenCode (solo `.agents/`, sin extensión de Pi).
 
 Manual: copia el contenido de [`.agents`](.agents/) a `.cursor/` o `.agents/`.
 
 ## Flujo rápido
 
-`/init` → `/sdd` (Triage) → `/implement` → `/review` → `/sdd-archive`
+`/init` → Triage (también sin `/sdd`) → Spec + 🛑 OK → `[CADENCIA TDD]` A|B → `/implement` → `/review` → `/sdd-archive`
 
 ## Tokens / MCP
 

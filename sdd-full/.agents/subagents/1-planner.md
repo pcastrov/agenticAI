@@ -28,16 +28,19 @@ Antes de escribir cualquier entregable, **abre** la plantilla correspondiente en
 ### MODO 1 — Spec (`spec.md`)
 1. Si hay ambigüedades: máx 5 preguntas; 🛑 espera.
 2. Genera `spec.md` copiando la estructura de `spec-template.md` + diagramas `HU-x-negocio.md` si aplica. Solo QUÉ/POR QUÉ. Estado: Borrador. Sin stack ni rutas de código.
-3. En la respuesta final lista la ruta exacta de `spec.md`. **No** crees `plan.md`/`tasks.md` en este modo.
+3. Lista la ruta de `spec.md`. **No** crees `plan.md`/`tasks.md` aquí.
+4. 🛑 **DETENTE**: pide aprobación explícita del spec. No pases a plan sin OK.
 
-### MODO 2 — Plan y tareas (ambos obligatorios)
-1. Solo con `spec.md` aprobada.
-2. Revisión DRY/KISS/YAGNI **una vez** (`CONSULTA DE SIMPLICIDAD` en `global-sdd` §2.2). Código propio nuevo → `CONSULTA DE DISEÑO` (§2.3) si aplica. 🛑 espera respuestas antes de escribir.
-3. En el **mismo paso**, escribe en disco **los dos** archivos (si falta uno, la fase está incompleta):
-   - `plan.md` ← estructura de `plan-template.md`
-   - `tasks.md` ← estructura de `tasks-template.md` (checklist `- [ ] **T1** …`; máx 10 tareas; RF Must → blocker/required)
-   - `diagramas/HU-x-tecnico.md` si aplica
-4. Verifica antes de cerrar: existen `plan.md` **y** `tasks.md` en `specs/NNN-.../`. Lista ambas rutas en la respuesta.
+### MODO 2a — Plan (solo `plan.md`)
+1. Solo con `spec.md` **aprobada**.
+2. Revisión DRY/KISS/YAGNI **una vez** (`CONSULTA DE SIMPLICIDAD`). Código propio nuevo → `CONSULTA DE DISEÑO` si aplica. 🛑 espera respuestas antes de escribir.
+3. Escribe **solo** `plan.md` (`plan-template.md`) + `diagramas/HU-x-tecnico.md` si aplica. **No** escribas `tasks.md` en este modo.
+4. 🛑 **DETENTE**: pide aprobación del plan.
+
+### MODO 2b — Tareas (solo `tasks.md`)
+1. Solo con `plan.md` **aprobado**.
+2. Escribe **solo** `tasks.md` (`tasks-template.md`: `- [ ] **T1** …`; máx 10; RF Must → blocker/required).
+3. 🛑 **DETENTE**: pide aprobación de las tareas. Recuerda que antes del TDD el orquestador preguntará `[CADENCIA TDD]` (A una-a-una | B lote).
 
 ### MODO 3 — Iteración
 Actualiza `spec.md` (+ diagramas negocio). Continúa IDs desde histórico. 🛑 no toques plan/tasks hasta aprobación de la spec.

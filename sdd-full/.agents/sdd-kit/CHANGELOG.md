@@ -4,16 +4,28 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 4.0.2 — 2026-11-04
+
+### Cambiado
+- Triage **aunque el usuario no escriba `/sdd`**: cualquier pedido de cambio pasa por `[TRIAGE SDD]` (`global-sdd` §0).
+- Paradas explícitas: 🛑 tras `spec.md`, 🛑 tras `plan.md` (MODO 2a), 🛑 tras `tasks.md` (MODO 2b).
+- Antes del TDD: `[CADENCIA TDD]` A una-a-una | B lote (default A); en A se pregunta tras cada tarea.
+
+### Migración
+`/sdd-update` o reinstalar Full.
+
+---
+
 ## 4.0.1 — 2026-11-04
 
 ### Cambiado
 - Comandos Full (`architect`, `implement`, `sdd`, `sdd-archive`, `review`, `retrofit`, `validation-*`): **PASO 0 de lectura obligatoria** del subagente y de las plantillas con la herramienta de archivos (agnóstico a hosts que no expanden `@archivo`).
-- Fase plan: **`plan.md` y `tasks.md` son obligatorios en el mismo paso**; sin `tasks.md` la fase está incompleta.
-- Cierre: solo `history/index.md` + `history/<dominio>.md`; **prohibido** inventar `tareas_completadas.md` u otros nombres.
-- Tras marcar todas las tareas `[x]`, `/implement` y `/review` recuerdan el siguiente paso: `/sdd-archive`.
+- Plan y tasks obligatorios (luego separados en 4.0.2 con paradas).
+- Cierre: solo `history/index.md` + `history/<dominio>.md`; **prohibido** inventar `tareas_completadas.md`.
+- Tras marcar todas las tareas `[x]`, `/implement` y `/review` recuerdan `/sdd-archive`.
 
 ### Migración
-Actualiza el paquete Full con `/sdd-update` (o reinstala). No cambia la estructura de specs existentes; corrige el comportamiento del agente en las siguientes corridas.
+Actualiza el paquete Full con `/sdd-update` (o reinstala).
 
 ---
 

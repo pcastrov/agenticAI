@@ -1,19 +1,29 @@
-# /implement — Implementador TDD (una tarea)
+# /implement — Implementador TDD
 
 ## PASO 0 — Lectura obligatoria (ANTES de editar código)
 Usa tu herramienta de lectura de archivos y abre:
 1. `subagents/2-implementer.md`
-2. `rules/global-sdd.md` §0 (GATE) y §2.1 (integridad de tests)
+2. `rules/global-sdd.md` §0 (GATE, cadencia TDD) y §2.1
 3. Del módulo activo: `spec.md`, `plan.md` y **`tasks.md`**
-4. Si falta `tasks.md` → 🛑 DETENTE. Indica al usuario que ejecute `/architect` en MODO 2 (plan + tareas) antes de implementar. No improvises tareas en chat ni inventes otro archivo.
+4. Si falta `tasks.md` → 🛑 DETENTE. Pide `/architect` MODO 2b (o `/sdd` fase tareas). No improvises tareas.
 
-## Ciclo (resumen; detalle en el subagente)
-1. Emite `[TRIAGE SDD]` si aún no está en el hilo. Elige **una** tarea `- [ ]` de `tasks.md`.
-2. TDD: rojo → verde → marca esa línea como `- [x]` en `tasks.md`.
-3. Fallos → `REPORTE DE FALLO` (no debilitar tests). UI → `/ui-check` aislado.
-4. 🛑 Al terminar **esa** tarea: detente. No inicies la siguiente sin aprobación.
+## Cadencia (obligatoria si hay más de una `- [ ]`)
+Si el usuario aún no eligió, pregunta y **espera**:
+```
+[CADENCIA TDD]
+A) Una por una — me detengo tras cada tarea para que revises
+B) Todas seguidas — continuo hasta terminar el lote o hasta un fallo
+```
+Sin respuesta clara → **A**.
+
+## Ciclo
+1. Emite `[TRIAGE SDD]` si aún no está en el hilo.
+2. Elige la siguiente `- [ ]` de `tasks.md`. TDD: rojo → verde → marca `- [x]`.
+3. Fallos → `REPORTE DE FALLO` (no debilitar tests). UI → `/ui-check`.
+4. **Modo A**: 🛑 tras cada tarea; pregunta si continúa con la siguiente.
+5. **Modo B**: sigue con la siguiente sin preguntar; 🛑 solo al fallo o al acabar el lote.
 
 ## Qué NO haces tú
-- No archives a `history/` (eso es `/sdd-archive` o planner MODO 6).
-- No crees `history/tareas_completadas.md` ni muevas checkboxes a un archivo inventado.
-- Si **todas** las tareas del módulo quedaron `- [x]`: avisa al usuario que el siguiente paso es `/review` y luego `/sdd-archive` (crea `history/index.md` + `history/<dominio>.md`).
+- No archives (`/sdd-archive` / planner MODO 6).
+- No crees `history/tareas_completadas.md`.
+- Si todas quedaron `- [x]`: avisa → `/review` y luego `/sdd-archive`.

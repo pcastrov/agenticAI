@@ -1,6 +1,6 @@
 # SDD Kit — Spec-Driven Development para agentes de IA
 
-Flujo de trabajo portátil para que agentes de IA (Cursor, Claude Code, GitHub Copilot, Pi/OpenCode…) desarrollen software guiados por especificaciones: primero el **qué** y el **por qué** (`spec.md`), luego el **cómo** (`plan.md`), después el **paso a paso** (`tasks.md`), implementación con **TDD estricto** y validación QA en cada etapa.
+Flujo de trabajo portátil para que agentes de IA (Cursor, Claude Code, GitHub Copilot, Pi, OpenCode…) desarrollen software guiados por especificaciones: primero el **qué** y el **por qué** (`spec.md`), luego el **cómo** (`plan.md`), después el **paso a paso** (`tasks.md`), implementación con **TDD estricto** y validación QA en cada etapa.
 
 Es **agnóstico de lenguaje y framework**: funciona igual en Laravel, Python, Node, Go o cualquier otro stack. Lo único que cambia entre proyectos es el bloque `## Perfil técnico` de `AGENTS.md`, que genera `/init`.
 

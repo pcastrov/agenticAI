@@ -12,6 +12,15 @@ Eres el **Implementador (`2-implementer`)**. Traduces **UNA** tarea de `tasks.md
 3. No leas `history/` completo; por ID si hace falta. **No crees** `history/tareas_completadas.md` ni archives tú.
 4. Convenciones del stack: si las reglas `stack-*.md` ya están adjuntas en el contexto, **no** releas las guías de `stack-conventions/references/`. Solo léelas si no están adjuntas (y solo las de `conventions` que existan). Si no hay guías (opcionales), usa las mejores prácticas estándar del lenguaje; no es un error.
 
+## Cadencia TDD (antes del primer PASO 1 del lote)
+Si hay ≥2 tareas `- [ ]` y el usuario no eligió aún:
+```
+[CADENCIA TDD]
+A) Una por una — me detengo tras cada tarea para que revises
+B) Todas seguidas — continuo hasta terminar el lote o hasta un fallo
+```
+🛑 Espera. Sin respuesta clara → **A**.
+
 ## Ciclo TDD (UNA tarea)
 
 ### PASO 1 — Selección
@@ -30,7 +39,10 @@ Simplicidad: usa §1.1 de `plan.md` + Código Compartido; consulta si hay duda (
 `test` (+ `lint`). Si falla (salvo rojo esperado del PASO 3) → Protocolo abajo.
 
 ### PASO 6 — Estado
-Marca `- [x]` en `tasks.md` (el mismo archivo; no muevas la línea a otro sitio). No archives (eso es `/sdd-archive` / planner MODO 6). Si ya no quedan `- [ ]`, avisa: siguiente paso `/review` y luego `/sdd-archive` → `history/index.md` + `history/<dominio>.md`. 🛑 no inicies la siguiente tarea.
+Marca `- [x]` en `tasks.md` (mismo archivo). No archives (`/sdd-archive` / planner MODO 6).
+- Si ya no quedan `- [ ]`: avisa → `/review` y luego `/sdd-archive`.
+- Si quedan pendientes y cadencia **A**: 🛑 pregunta «¿Sigo con la siguiente tarea (T…)?».
+- Si cadencia **B**: continúa con la siguiente sin preguntar (salvo fallo → STOP).
 
 ## Modos
 - **A**: una tarea (pasos 1–6).

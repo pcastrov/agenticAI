@@ -6,10 +6,11 @@ alwaysApply: true
 # Global Rule: Spec-Driven Development (SDD) & Engineering Standards
 
 ## 0. GATE OBLIGATORIO ANTES DE EDITAR O EJECUTAR
-Aplica a **toda** petición, antes de `Write` / `StrReplace` / `Edit` / mutaciones por `Bash` sobre código o tests:
+Aplica a **toda** petición (con o **sin** slash `/sdd`, `/implement`, etc.), antes de `Write` / `StrReplace` / `Edit` / mutaciones por `Bash` sobre código o tests:
 
 1. **Pregunta vs acción**: si el usuario solo pregunta, consulta o pide analizar → **PROHIBIDO** tocar archivos. Solo responde.
-2. **REGLA ZERO — TRIAGE GATE (Turno 1, obligatorio)**: antes de modificar código fuente o tests **detente y clasifica** en el chat:
+2. **Sin `/sdd` también aplica**: si la instrucción implica crear/cambiar funcionalidad, bugfix, API, BD, multi-archivo o refactor → **igual** emites `[TRIAGE SDD]` en el Turno 1. No hace falta que el usuario escriba `/sdd`.
+3. **REGLA ZERO — TRIAGE GATE (Turno 1, obligatorio)**: antes de modificar código fuente o tests **detente y clasifica** en el chat:
    ```
    [TRIAGE SDD]
    - Nivel: 0 FAST-TRACK | 1 SDD-REQUIRED
@@ -18,9 +19,17 @@ Aplica a **toda** petición, antes de `Write` / `StrReplace` / `Edit` / mutacion
    - Aprobación: n/a (Nivel 0) | pendiente | ya aprobada (cita la frase del usuario)
    ```
    - **FAST-TRACK (Nivel 0)**: ≤ 1 archivo, arreglo menor, sin impacto de arquitectura (sin cambios de contrato, modelo de datos, seguridad ni dependencias). Permite edición inmediata explicando el motivo brevemente.
-   - **SDD-REQUIRED (Nivel 1)**: lógica de negocio, base de datos o multi-archivo. **TERMINANTEMENTE PROHIBIDO emitir bloques de código o diffs** en este turno: genera la especificación (`/sdd`) y pide **aprobación explícita**. Aprobación `pendiente` → **DETENTE**, sin herramientas de escritura sobre código.
+   - **SDD-REQUIRED (Nivel 1)**: lógica de negocio, base de datos o multi-archivo. **TERMINANTEMENTE PROHIBIDO emitir bloques de código o diffs** en este turno: entra al flujo SDD (spec → plan → tasks → TDD) y pide **aprobación explícita** en cada parada. Aprobación `pendiente` → **DETENTE**, sin herramientas de escritura sobre código.
    - Duda entre Nivel 0 y 1 → Nivel 1.
-3. **Compuerta de fallo** (suite `test` / `test_single`, E2E, **Playwright**, **Chrome DevTools**, `ui_check`): si falla → **PROHIBIDO** auto-arreglar en bucle, cambiar selectores/aserciones para ocultar el error o crear tests alternativos "para que pase". Emite `REPORTE DE FALLO` (plantilla en `2-implementer`) y espera orden del usuario.
+4. **Paradas de fase (Nivel 1)**: 🛑 tras crear/actualizar `spec.md`; 🛑 tras `plan.md`; 🛑 tras `tasks.md`. No encadenes la siguiente fase sin OK del usuario.
+5. **Cadencia TDD**: antes de la primera tarea pendiente, pregunta:
+   ```
+   [CADENCIA TDD]
+   A) Una por una — me detengo tras cada tarea para que revises
+   B) Todas seguidas — continuo hasta terminar el lote o hasta un fallo
+   ```
+   Sin respuesta clara → **A**. En modo A, tras cada `- [x]` 🛑 y pregunta si sigue la siguiente.
+6. **Compuerta de fallo** (suite `test` / `test_single`, E2E, **Playwright**, **Chrome DevTools**, `ui_check`): si falla → **PROHIBIDO** auto-arreglar en bucle, cambiar selectores/aserciones para ocultar el error o crear tests alternativos "para que pase". Emite `REPORTE DE FALLO` (plantilla en `2-implementer`) y espera orden del usuario.
 
 Criterios de **Nivel 0** vs **Nivel 1**: ver `/sdd` (Evaluación de Alcance). Detalle de integridad de tests, DRY/KISS/YAGNI y diseño: secciones 2.1–2.3 abajo.
 
@@ -30,10 +39,10 @@ Criterios de **Nivel 0** vs **Nivel 1**: ver `/sdd` (Evaluación de Alcance). De
 Principios inmutables para todos los agentes, subagentes, comandos y skills. Agnóstica de lenguaje y framework.
 
 ## 2. Invocación Obligatoria del Flujo SDD
-Ante cambio, bugfix, funcionalidad o refactor:
+Ante cambio, bugfix, funcionalidad o refactor (**aunque el usuario no escriba `/sdd`**):
 - 🚫 **PROHIBIDO** modificar código sin pasar por la evaluación SDD (sección 0).
-- ⚙️ Ejecuta `/sdd`: escanea `specs/` → evalúa alcance → spec/plan/tasks o cambio directo (MODO C de `2-implementer`) tras confirmación.
-- 🛑 Presenta la evaluación y espera confirmación antes de tocar código.
+- ⚙️ Aplica el mismo flujo que `/sdd`: escanea `specs/` → Triage → spec / plan / tasks (con paradas) o cambio directo Nivel 0 (MODO C) tras confirmación.
+- 🛑 Presenta el Triage y espera; en Nivel 1 no toques código hasta tener spec (y luego plan/tasks) aprobados.
 
 ### 2.1 Integridad de los Tests (obligatorio)
 - Un test/verificación que falla se **reporta**, no se acomoda. 🚫 **PROHIBIDO ignorar el rojo**.

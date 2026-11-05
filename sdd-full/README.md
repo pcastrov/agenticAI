@@ -1,8 +1,8 @@
 # SDD Full
 
-Edición para herramientas agénticas avanzadas (**Cursor, Claude Code, GitHub Copilot**, Pi/OpenCode…) y modelos frontier (ventanas grandes). Flujo completo: Triage + 8 fases, subagentes, diagramas, propiedades y QA a ciegas.
+Edición para herramientas agénticas avanzadas (**Cursor, Claude Code, GitHub Copilot, Pi, OpenCode**) y modelos frontier (ventanas grandes). Flujo completo: Triage + 8 fases, subagentes, diagramas, propiedades y QA a ciegas.
 
-Versión del paquete: **4.0.1** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía del flujo: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
+Versión del paquete: **4.0.2** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía del flujo: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
 
 No combines con **SDD Lite**. Comparativa Full vs Lite: [README de la raíz](../README.md).
 
@@ -111,8 +111,8 @@ Con script (indica la ruta de **tu proyecto**; sin ella, el script muestra un ej
 
 Sin script: copia el contenido de `.agents/` a `.cursor/` (Cursor) o `.agents/` (otros) y ejecuta `/init`.
 
-Con la opción **Pi / OpenCode / Cline**, el script genera además `.pi/extensions/sdd-commands.ts` (registra todos los `.md` de `commands/` como slash commands; la lógica sigue en los `.md`).
+Menú del instalador: **1** Cursor · **2** Copilot · **3** Claude Code · **4** Pi (genera `.pi/extensions/sdd-commands.ts`) · **5** OpenCode (solo `.agents/`, sin extensión de Pi).
 
 ## Uso rápido
 
-`/init` → `/sdd` (o `/architect` + `/implement` + `/review` + `/sdd-archive`) · Código existente → `/retrofit` · Actualizar → `/sdd-update`
+`/init` → `/sdd` (o pedido en lenguaje natural: el Triage aplica **igual** sin slash) · Paradas: OK de **spec** → OK de **plan** → OK de **tasks** → elige cadencia TDD (**A** una-a-una | **B** lote) → `/review` → `/sdd-archive` · Código existente → `/retrofit` · Actualizar → `/sdd-update`

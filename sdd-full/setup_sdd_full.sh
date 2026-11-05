@@ -37,12 +37,13 @@ echo "¿Qué entorno principal vas a utilizar?"
 echo "1) Cursor (carpeta .cursor/)"
 echo "2) GitHub Copilot (.github/copilot-instructions.md)"
 echo "3) Claude Code (CLAUDE.md)"
-echo "4) Pi / OpenCode / Cline (nativo en .agents/)"
-read -p "Selecciona una opción (1-4): " choice
+echo "4) Pi (.agents/ + extensión .pi/extensions/sdd-commands.ts)"
+echo "5) OpenCode (nativo en .agents/)"
+read -p "Selecciona una opción (1-5): " choice
 
 case $choice in
     1) ROOT=".cursor" ;;
-    2|3|4) ROOT=".agents" ;;
+    2|3|4|5) ROOT=".agents" ;;
     *) echo "Opción no válida."; exit 1 ;;
 esac
 
@@ -65,8 +66,8 @@ case $choice in
     2) mkdir -p .github; printf '%s\n' "# Reglas de AgenticAI SDD-Full" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado." ;;
     3) printf '%s\n' "# Instrucciones del Repositorio" "" "$POINTER" > CLAUDE.md; echo "[+] CLAUDE.md generado." ;;
     4)
-        echo "[+] $ROOT/ es soportada nativamente por tu herramienta."
-        # Extensión de Pi: registra cada comando de commands/ como slash command (la lógica sigue en los .md)
+        echo "[+] Pi: $ROOT/ instalado. Generando extensión de slash commands..."
+        # Solo Pi: registra cada comando de commands/ como slash command (la lógica sigue en los .md)
         LIST=""
         for c in "$ROOT"/commands/*.md; do
             n="$(basename "$c" .md)"
@@ -98,6 +99,7 @@ EOF
         echo "[+] Extensión de Pi generada en .pi/extensions/sdd-commands.ts"
         echo "    Comandos registrados: $LIST"
         ;;
+    5) echo "[+] OpenCode: $ROOT/ es soportada nativamente (sin extensión de Pi)." ;;
 esac
 
 REF="$ROOT/skills/stack-conventions/references"

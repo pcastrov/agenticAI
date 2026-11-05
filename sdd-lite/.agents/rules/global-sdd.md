@@ -6,22 +6,25 @@ alwaysApply: true
 # SDD Lite
 
 ## 0. REGLA ZERO — TRIAGE GATE (Turno 1, obligatorio)
+Aplica aunque el usuario **no** escriba `/sdd` ni `/implement`.
 1. Solo pregunta/análisis → **no** toques archivos.
-2. Antes de cualquier edición, emite este bloque y clasifica:
+2. Si la instrucción implica cambiar código/funcionalidad → emite este bloque **antes** de editar:
    ```
    [TRIAGE SDD]
    - Nivel: 0 FAST-TRACK | 1 SDD-REQUIRED
    - Motivo: [1 línea]
    ```
-3. **FAST-TRACK (Nivel 0)**: ≤ 1 archivo, < 15 líneas, sin impacto en BD (migraciones, esquema, seeds). Puedes editar directo; explica el motivo en 1 línea.
-4. **SDD-REQUIRED (Nivel 1)**: cualquier otra tarea. **TERMINANTEMENTE PROHIBIDO generar código en este turno.** Solo emite el Spec atómico tabular (`spec-template.md`) y **espera aprobación**.
-5. Duda entre 0 y 1 → Nivel 1.
-6. Fallo de `test` / Playwright / `ui_check` → **STOP** + `REPORTE DE FALLO`. No acomodes tests ni auto-loops.
+3. **FAST-TRACK (Nivel 0)**: ≤ 1 archivo, < 15 líneas, sin impacto en BD. Edición directa; motivo en 1 línea.
+4. **SDD-REQUIRED (Nivel 1)**: cualquier otra tarea. **PROHIBIDO generar código en este turno.** Escribe Spec tabular y **espera aprobación**.
+5. Duda 0 vs 1 → Nivel 1.
+6. 🛑 Tras escribir `spec.md` (con sección Tareas) → espera OK. No implementes en el mismo turno.
+7. Antes de la 1.ª tarea: pregunta `[CADENCIA TDD]` A una-a-una | B lote. Sin respuesta → **A**. En A, 🛑 tras cada `- [x]`.
+8. Fallo de `test` / Playwright / `ui_check` → **STOP** + `REPORTE DE FALLO`. No acomodes tests.
 
 ## 1. Flujo (3 pasos)
-1. **Planear** (`/sdd`): lee `spec.md`; máx 3 preguntas; emite Spec tabular; pide OK.
-2. **Implementar** (`/implement`): una tarea `- [ ]`; TDD rojo→verde; `test_single`.
-3. **Cerrar** (`/sdd-archive`): tests OK → ficha atómica en `history/<dominio>.md` → 1 fila en `history/index.md`.
+1. **Planear** (`/sdd` o pedido Nivel 1 sin slash): Triage → Spec tabular → 🛑 OK.
+2. **Implementar**: cadencia A/B → TDD; en A una tarea y STOP.
+3. **Cerrar** (`/sdd-archive`): tests OK → `history/<dominio>.md` + fila en `history/index.md`.
 
 ## 2. Specs (presupuesto tokens)
 ```text
