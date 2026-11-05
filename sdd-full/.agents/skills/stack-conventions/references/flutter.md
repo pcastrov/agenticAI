@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Convenciones Flutter & Dart
 
-> Fuente: `.agents/skills/stack-conventions/references/flutter.md`. Basada en la [guía oficial de arquitectura de Flutter](https://docs.flutter.dev/app-architecture). Las decisiones propias del proyecto (gestor de estado, inyección de dependencias, navegación) van en **Convenciones** de `AGENTS.md` y tienen prioridad. Aplica a código nuevo o modificado.
+> Fuente: `skills/stack-conventions/references/flutter.md`. Basada en la [guía oficial de arquitectura de Flutter](https://docs.flutter.dev/app-architecture). Las decisiones propias del proyecto (gestor de estado, inyección de dependencias, navegación) van en **Convenciones** de `AGENTS.md` y tienen prioridad. Aplica a código nuevo o modificado.
 
 ## 1. Capas
 | Capa | Responsabilidad | Ejemplo |

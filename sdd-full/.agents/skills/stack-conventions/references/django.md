@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Convenciones Django
 
-> Fuente: `.agents/skills/stack-conventions/references/django.md`. Las decisiones propias del proyecto van en **Convenciones** de `AGENTS.md` y tienen prioridad. Aplica a código nuevo o modificado.
+> Fuente: `skills/stack-conventions/references/django.md`. Las decisiones propias del proyecto van en **Convenciones** de `AGENTS.md` y tienen prioridad. Aplica a código nuevo o modificado.
 
 ## 1. Responsabilidades y Estructura
 - **Debe**: Vistas (FBV, CBV o ViewSets de DRF) delgadas: validan con Form/Serializer, delegan y responden.

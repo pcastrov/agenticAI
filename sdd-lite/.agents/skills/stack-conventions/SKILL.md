@@ -5,7 +5,7 @@ description: Convenciones condensadas (solo Debe) para SDD Lite. Leer solo la gu
 
 # Stack Conventions (Lite)
 
-Si `conventions` falta → solo Principios Generales.
+Opcional: si `references/` no tiene la guía (o la carpeta fue eliminada) o `conventions` falta → solo Principios Generales / buenas prácticas estándar del lenguaje, sin error.
 
 | Valor | Archivo |
 |-------|---------|

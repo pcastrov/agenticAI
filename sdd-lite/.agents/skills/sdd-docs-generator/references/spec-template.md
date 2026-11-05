@@ -1,28 +1,48 @@
 # [Nombre del módulo]
 
-**Módulo**: `NNN-[id]`
-**Estado**: Borrador | Aprobado
+**Módulo**: `NNN-[id]` | **Estado**: Borrador | Aprobado | **Tope**: ~150 líneas
+Historial: `history/index.md` (solo si hace falta).
 
-## 0. Índice de historial
-*(1 línea por lote; rangos viejos → h-archive)*
-- Iter 1 (RF-01..RF-02): [resumen] → `history/h-01.md`
+## 1. Spec atómico
+| Campo | Valor |
+|-------|-------|
+| RF | RF-0N `[Must/Should]` |
+| Entradas | [datos, tipos, origen] |
+| Salidas | [datos, tipos, destino] |
 
-## 1. Objetivo
-- Problema: […]
-- Objetivo: […]
+### Criterios de Aceptación
+| ID | DADO | CUANDO | ENTONCES |
+|----|------|--------|----------|
+| CA-1 | [estado] | [acción] | [resultado verificable] |
 
-## 2. RF pendientes
-- **RF-03** `[Must]` (HU-01): CUANDO […], EL SISTEMA DEBE […].
-  - CA: DADO […] CUANDO […] ENTONCES […].
+## 2. Archivos
+| Acción | Ruta | RF |
+|--------|------|----|
+| Nuevo | `[ruta]` | RF-0N |
+| Modificar | `[ruta]` | RF-0N |
 
-## 3. Diseño breve (archivos)
-- Nuevos: `[ruta]` — RF-03
-- Modificar: `[ruta]` — RF-03
-- Notas: […]
+## 3. Tareas
+- [ ] **T1** — RF-0N — `[archivos]` — Test: `[ruta]` — Hecho cuando: [criterio].
 
-## 4. Tareas
-- [ ] **T1** — RF-03 — `[archivos]` — Test: `[ruta]` — Hecho cuando: […].
+## 4. Fuera de alcance
+- [ítem]
 
-## 5. Propiedades / límites
-- P1: […]
-- Fuera de alcance: […]
+## Ejemplo (Few-Shot)
+
+| Campo | Valor |
+|-------|-------|
+| RF | RF-03 `[Must]` |
+| Entradas | `email` (string, body), `password` (string, body) |
+| Salidas | `token` (string, JSON 200) o `error` (string, JSON 401) |
+
+| ID | DADO | CUANDO | ENTONCES |
+|----|------|--------|----------|
+| CA-1 | usuario existente | POST `/api/login` con credenciales válidas | 200 y `token` |
+| CA-2 | usuario existente | POST `/api/login` con password errónea | 401 y `error` |
+
+| Acción | Ruta | RF |
+|--------|------|----|
+| Nuevo | `app/Http/Controllers/AuthController.php` | RF-03 |
+| Modificar | `routes/api.php` | RF-03 |
+
+- [ ] **T1** — RF-03 — `AuthController.php` — Test: `tests/Feature/AuthTest.php` — Hecho cuando: CA-1 y CA-2 en verde.

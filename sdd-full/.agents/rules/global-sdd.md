@@ -6,21 +6,34 @@ alwaysApply: true
 # Global Rule: Spec-Driven Development (SDD) & Engineering Standards
 
 ## 0. GATE OBLIGATORIO ANTES DE EDITAR O EJECUTAR
-Aplica a **toda** petición, antes de `Write` / `StrReplace` / `Edit` / mutaciones por `Bash` sobre código o tests:
+> **OpenCode / Pi / chat libre:** este archivo solo se aplica si el host lo carga. Por eso `/init` **copia el GATE a `AGENTS.md`** (primera sección) y, en OpenCode, `opencode.json` → `instructions` apunta aquí. Si `AGENTS.md` no tiene el bloque GATE, **no edites código** hasta corregirlo con `/init` o `/sdd-update`.
+
+Aplica a **toda** petición (con o **sin** slash `/sdd`, `/implement`, etc.), antes de `Write` / `StrReplace` / `Edit` / mutaciones por `Bash` sobre código o tests:
 
 1. **Pregunta vs acción**: si el usuario solo pregunta, consulta o pide analizar → **PROHIBIDO** tocar archivos. Solo responde.
-2. **Compuerta SDD**: antes de modificar código fuente o tests, escribe en el chat:
+2. **Sin `/sdd` también aplica**: si la instrucción implica crear/cambiar funcionalidad, bugfix, API, BD, multi-archivo o refactor → **igual** emites `[TRIAGE SDD]` en el Turno 1. No hace falta que el usuario escriba `/sdd`.
+3. **REGLA ZERO — TRIAGE GATE (Turno 1, obligatorio)**: antes de modificar código fuente o tests **detente y clasifica** en el chat:
    ```
-   [EVALUACION SDD]
-   - Clasificación: Cambio Directo | Requiere Spec/Task
+   [TRIAGE SDD]
+   - Nivel: 0 FAST-TRACK | 1 SDD-REQUIRED
    - Motivo: [1 línea]
    - Spec/tarea: [ruta o "ninguna aún"]
-   - Aprobación: pendiente | ya aprobada (cita la frase del usuario)
+   - Aprobación: n/a (Nivel 0) | pendiente | ya aprobada (cita la frase del usuario)
    ```
-   Si la aprobación es `pendiente` → **DETENTE**. No invoques herramientas de escritura en ese turno.
-3. **Compuerta de fallo** (suite `test` / `test_single`, E2E, **Playwright**, **Chrome DevTools**, `ui_check`): si falla → **PROHIBIDO** auto-arreglar en bucle, cambiar selectores/aserciones para ocultar el error o crear tests alternativos "para que pase". Emite `REPORTE DE FALLO` (plantilla en `2-implementer`) y espera orden del usuario.
+   - **FAST-TRACK (Nivel 0)**: ≤ 1 archivo, arreglo menor, sin impacto de arquitectura (sin cambios de contrato, modelo de datos, seguridad ni dependencias). Permite edición inmediata explicando el motivo brevemente.
+   - **SDD-REQUIRED (Nivel 1)**: lógica de negocio, base de datos o multi-archivo. **TERMINANTEMENTE PROHIBIDO emitir bloques de código o diffs** en este turno: entra al flujo SDD (spec → plan → tasks → TDD) y pide **aprobación explícita** en cada parada. Aprobación `pendiente` → **DETENTE**, sin herramientas de escritura sobre código.
+   - Duda entre Nivel 0 y 1 → Nivel 1.
+4. **Paradas de fase (Nivel 1)**: 🛑 tras crear/actualizar `spec.md`; 🛑 tras `plan.md`; 🛑 tras `tasks.md`. No encadenes la siguiente fase sin OK del usuario.
+5. **Cadencia TDD**: antes de la primera tarea pendiente, pregunta:
+   ```
+   [CADENCIA TDD]
+   A) Una por una — me detengo tras cada tarea para que revises
+   B) Todas seguidas — continuo hasta terminar el lote o hasta un fallo
+   ```
+   Sin respuesta clara → **A**. En modo A, tras cada `- [x]` 🛑 y pregunta si sigue la siguiente.
+6. **Compuerta de fallo** (suite `test` / `test_single`, E2E, **Playwright**, **Chrome DevTools**, `ui_check`): si falla → **PROHIBIDO** auto-arreglar en bucle, cambiar selectores/aserciones para ocultar el error o crear tests alternativos "para que pase". Emite `REPORTE DE FALLO` (plantilla en `2-implementer`) y espera orden del usuario.
 
-Criterios de **Cambio Directo** vs **SDD completo**: ver `/sdd` (Evaluación de Alcance). Detalle de integridad de tests, DRY/KISS/YAGNI y diseño: secciones 2.1–2.3 abajo.
+Criterios de **Nivel 0** vs **Nivel 1**: ver `/sdd` (Evaluación de Alcance). Detalle de integridad de tests, DRY/KISS/YAGNI y diseño: secciones 2.1–2.3 abajo.
 
 ---
 
@@ -28,10 +41,10 @@ Criterios de **Cambio Directo** vs **SDD completo**: ver `/sdd` (Evaluación de 
 Principios inmutables para todos los agentes, subagentes, comandos y skills. Agnóstica de lenguaje y framework.
 
 ## 2. Invocación Obligatoria del Flujo SDD
-Ante cambio, bugfix, funcionalidad o refactor:
+Ante cambio, bugfix, funcionalidad o refactor (**aunque el usuario no escriba `/sdd`**):
 - 🚫 **PROHIBIDO** modificar código sin pasar por la evaluación SDD (sección 0).
-- ⚙️ Ejecuta `/sdd`: escanea `specs/` → evalúa alcance → spec/plan/tasks o cambio directo (MODO C de `2-implementer`) tras confirmación.
-- 🛑 Presenta la evaluación y espera confirmación antes de tocar código.
+- ⚙️ Aplica el mismo flujo que `/sdd`: escanea `specs/` → Triage → spec / plan / tasks (con paradas) o cambio directo Nivel 0 (MODO C) tras confirmación.
+- 🛑 Presenta el Triage y espera; en Nivel 1 no toques código hasta tener spec (y luego plan/tasks) aprobados.
 
 ### 2.1 Integridad de los Tests (obligatorio)
 - Un test/verificación que falla se **reporta**, no se acomoda. 🚫 **PROHIBIDO ignorar el rojo**.
@@ -85,19 +98,23 @@ CONSULTA DE DISEÑO
 ## 5. Perfil Técnico
 Claves en `AGENTS.md`: `language`, `framework`, `database`, `test`, `test_single`, `lint`, `run`, `migrate`, `structure`, `ui_check`, `security_audit_skill`, `conventions`. Si falta una necesaria → detente y pregunta. Prioridad convenciones: constitution > Convenciones de `AGENTS.md` > guías `conventions` > Principios Generales de `stack-conventions`.
 
+### 5.1 Convenciones de framework (opcionales)
+Antes de implementar código, **verifica si existe** un archivo de convención de framework dentro de `skills/stack-conventions/references/`. Si existe, lee sus directrices antes de implementar código. Si la carpeta está vacía o el archivo no existe (o la carpeta `skills/stack-conventions/` fue eliminada para ahorrar tokens), **asume que no hay convenciones forzadas de framework** y utiliza las mejores prácticas estándar del lenguaje. Nunca falles ni te detengas por esta ausencia, y no recrees las guías por tu cuenta.
+
 ## 6. Estructura de Módulos (`specs/`)
 
 ```text
 specs/NNN-[id-nombre-modulo]/
-├── spec.md | plan.md | tasks.md | history.md | diagramas/
+├── spec.md | plan.md | tasks.md | diagramas/
+└── history/
+    ├── index.md          # mapa maestro (~20 líneas): dominio → archivo
+    └── <dominio>.md      # un archivo por dominio (auth, billing…)
 ```
 
-Diagramas vigentes se actualizan in-place. Lectura: activos primero; `history.md` solo por ID/keyword. Cierre: mover a `history.md`, nunca borrar. IDs `HU`/`RF`/`RN`/`P`/`T`/`S` estables.
-
-**Compactación**: si `history.md` > ~300 líneas, al cerrar (`1-planner` MODO 6 / `/sdd-archive`) compactar iteraciones anteriores a las 3 más recientes (IDs + decisiones clave + tests; sin tareas detalladas viejas).
+Diagramas vigentes se actualizan in-place. Lectura: activos primero; del historial lee `history/index.md` y **solo** el dominio relevante, buscando por ID/keyword. Cierre: mover al `history/<dominio>.md` correspondiente; **nunca borrar ni resumir** decisiones arquitectónicas (se segmentan por dominio, no se compactan). IDs `HU`/`RF`/`RN`/`P`/`T`/`S` estables.
 
 ## 7. Flujo SDD (Fases 1-8)
-1 Spec → 2 QA spec → 3 Plan/tareas → 4 QA arquitectura → 5 QA tareas → 6 TDD → 7 QA final → 8 Cierre `history.md`. Detalle y orquestación: `/sdd`.
+1 Spec → 2 QA spec → 3 Plan/tareas → 4 QA arquitectura → 5 QA tareas → 6 TDD → 7 QA final → 8 Cierre `history/`. Detalle y orquestación: `/sdd`.
 
 ## 8. Comandos
 `/validation-trace`, `/validation-properties`, `/sdd-archive`, `/sdd-update`, `/ui-check`, `/mcp-mode`.

@@ -4,7 +4,10 @@ Este comando analiza una base de código existente para generar masivamente la d
 
 ## Instrucción para la IA
 
-Invocando las reglas de `@1-planner.md`, primero lee el bloque `## Perfil técnico` de `AGENTS.md` (si no existe, ejecuta `/init` antes). Luego analiza la aplicación recorriendo las carpetas de `structure` (persistencia, modelos/entidades, servicios, controladores/endpoints, interfaz, autorización, rutas) y ejecuta la ingeniería inversa siguiendo estos pasos:
+## PASO 0 — Lectura obligatoria
+Abre con tu herramienta de lectura: `subagents/1-planner.md`, `skills/sdd-docs-generator/references/history-index-template.md`, `domain-history-template.md`, `spec-template.md`, `plan-template.md` y `tasks-template.md`. Luego lee `## Perfil técnico` de `AGENTS.md` (si no existe, ejecuta `/init` antes).
+
+Analiza la aplicación recorriendo las carpetas de `structure` (persistencia, modelos/entidades, servicios, controladores/endpoints, interfaz, autorización, rutas) y ejecuta la ingeniería inversa siguiendo estos pasos:
 
 ### 0. Herramientas del stack (antes de mapear)
 Si `conventions` incluye `laravel` (o el framework es Laravel) y `laravel/boost` **no** está instalado:
@@ -26,8 +29,9 @@ No ejecutes mutaciones de BD ni cambies código de la aplicación durante el ret
 - Identifica el **código propio compartido** entre módulos (clases abstractas, bases, traits, helpers o componentes que usan dos o más módulos; nada del framework ni de las exclusiones "DRY en este stack") y propón agregarlo a `## Código Compartido` de `AGENTS.md`. No lo escribas sin aprobación.
 - Registra en la deuda técnica de cada módulo las reglas de negocio duplicadas que detectes (sin corregirlas), según "Qué cuenta como duplicación" de `global-sdd.md`, sección 2.2.
 
-### 2. `history.md` de cada módulo (lo que ya existe)
-- Crea `history.md` con la entrada `## Iteración 1 — AAAA-MM-DD — Retrofit` según `history-template.md`.
+### 2. `history/` de cada módulo (lo que ya existe)
+- Agrupa lo existente por dominio (auth, billing…). Crea **obligatoriamente** `history/index.md` (`history-index-template.md`) y un `history/<dominio>.md` por dominio con la entrada `## Iteración 1 — AAAA-MM-DD — Retrofit` según `domain-history-template.md`.
+- **Prohibido** inventar `history/tareas_completadas.md` u otros nombres.
 - Deduce las Historias de Usuario (`HU-x`) a partir de los flujos reales (rutas, pantallas, roles) e inclúyelas en "Historias cerradas" con sus criterios `CA-x.y` cuando el comportamiento esté probado.
 - Incluye los Requisitos Funcionales (`RF-x`) en notación EARS extraídos del código real, cada uno con su prioridad MoSCoW estimada y la `HU-x` que cubre, sus decisiones de diseño y técnicas, la arquitectura implementada y las tareas ya construidas como `- [x]`.
 - Marca cada RF sin tests como `sin tests → Tx`.
@@ -50,4 +54,4 @@ No ejecutes mutaciones de BD ni cambies código de la aplicación durante el ret
 ### 6. `tasks.md` de cada módulo
 - Solo tareas `- [ ]`: lo que falta construir o probar (tests faltantes, validaciones, políticas de acceso no creadas, deuda).
 - Cada tarea con **Prioridad** (blocker/required/optional/nice-to-have), **Propiedades validadas**, **Tests asociados** y **Hecho cuando**.
-- La numeración continúa después de las tareas archivadas en `history.md`.
+- La numeración continúa después de las tareas archivadas en `history/`.

@@ -3,7 +3,7 @@
 **Módulo**: `NNN-[id-nombre-modulo]`
 **Ruta**: `specs/NNN-[id-nombre-modulo]/`
 
-> Solo tareas pendientes. Al cerrar la iteración, las tareas `- [x]` se mueven a `history.md` (nunca se borran). La numeración continúa desde el máximo histórico.
+> Solo tareas pendientes. Al cerrar la iteración, las tareas `- [x]` se mueven a `history/<dominio>.md` (nunca se borran). La numeración continúa desde el máximo histórico.
 
 ---
 

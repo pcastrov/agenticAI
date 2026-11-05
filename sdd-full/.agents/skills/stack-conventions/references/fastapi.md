@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Convenciones FastAPI
 
-> Fuente: `.agents/skills/stack-conventions/references/fastapi.md`. Las decisiones propias del proyecto van en **Convenciones** de `AGENTS.md` y tienen prioridad. Aplica a código nuevo o modificado.
+> Fuente: `skills/stack-conventions/references/fastapi.md`. Las decisiones propias del proyecto van en **Convenciones** de `AGENTS.md` y tienen prioridad. Aplica a código nuevo o modificado.
 
 ## 1. Responsabilidades y Estructura
 - **Debe**: Endpoints delgados agrupados en `APIRouter` por dominio: reciben el esquema validado, obtienen dependencias con `Depends` y delegan en un servicio.
