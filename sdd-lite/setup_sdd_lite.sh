@@ -79,8 +79,7 @@ export default function (pi: any) {
   const commands = [__COMMANDS__];
 
   commands.forEach((cmd) => {
-    pi.registerCommand({
-      name: cmd,
+    pi.registerCommand(cmd, {
       description: `Ejecuta el flujo SDD: ${cmd}`,
       handler: async (args: string[], ctx: any) => {
         ctx.sendUserMessage(`Por favor, lee y ejecuta paso a paso las instrucciones definidas en __ROOT__/commands/${cmd}.md de este repositorio.`);
