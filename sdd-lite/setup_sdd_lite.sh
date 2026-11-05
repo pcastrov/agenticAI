@@ -81,8 +81,14 @@ export default function (pi: any) {
   commands.forEach((cmd) => {
     pi.registerCommand(cmd, {
       description: `Ejecuta el flujo SDD: ${cmd}`,
-      handler: async (args: string[], ctx: any) => {
-        ctx.sendUserMessage(`Por favor, lee y ejecuta paso a paso las instrucciones definidas en __ROOT__/commands/${cmd}.md de este repositorio.`);
+      handler: async (args: string, ctx: any) => {
+        const extra = args?.trim() ? `\n\nContexto adicional del usuario: ${args.trim()}` : '';
+        const prompt = `Por favor, lee y ejecuta paso a paso las instrucciones definidas en __ROOT__/commands/${cmd}.md de este repositorio.${extra}`;
+        if (ctx.isIdle()) {
+          pi.sendUserMessage(prompt);
+        } else {
+          pi.sendUserMessage(prompt, { deliverAs: 'followUp' });
+        }
       }
     });
   });
