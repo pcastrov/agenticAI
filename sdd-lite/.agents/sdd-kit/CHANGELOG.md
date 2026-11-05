@@ -1,5 +1,18 @@
 # Changelog — SDD Lite
 
+## 2.0.1 — 2026-11-04
+
+### Cambiado
+- Comandos Lite (`architect`, `implement`, `sdd`, `sdd-archive`, `review`, `retrofit`, `sdd-update`): **PASO 0 de lectura obligatoria** del subagente y de las plantillas con la herramienta de archivos (agnóstico a hosts que no expanden `@archivo`).
+- Spec: la sección **Tareas** (`- [ ]`) dentro de `spec.md` es obligatoria; Lite no usa `plan.md`/`tasks.md` sueltos.
+- Cierre: solo `history/index.md` + `history/<dominio>.md` (shards ≤100 líneas); **prohibido** inventar `tareas_completadas.md`.
+- Tras marcar todas las tareas `[x]`, `/implement` y `/review` recuerdan `/sdd-archive`.
+
+### Migración
+`/sdd-update` o reinstalar Lite. No cambia specs existentes; corrige el comportamiento del agente en las siguientes corridas.
+
+---
+
 ## 2.0.0 — 2026-11-04
 
 Refactor integral: estándar ligero agnóstico al editor (modelos locales 8B–14B).

@@ -4,6 +4,19 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 4.0.1 — 2026-11-04
+
+### Cambiado
+- Comandos Full (`architect`, `implement`, `sdd`, `sdd-archive`, `review`, `retrofit`, `validation-*`): **PASO 0 de lectura obligatoria** del subagente y de las plantillas con la herramienta de archivos (agnóstico a hosts que no expanden `@archivo`).
+- Fase plan: **`plan.md` y `tasks.md` son obligatorios en el mismo paso**; sin `tasks.md` la fase está incompleta.
+- Cierre: solo `history/index.md` + `history/<dominio>.md`; **prohibido** inventar `tareas_completadas.md` u otros nombres.
+- Tras marcar todas las tareas `[x]`, `/implement` y `/review` recuerdan el siguiente paso: `/sdd-archive`.
+
+### Migración
+Actualiza el paquete Full con `/sdd-update` (o reinstala). No cambia la estructura de specs existentes; corrige el comportamiento del agente en las siguientes corridas.
+
+---
+
 ## 4.0.0 — 2026-11-04
 
 Estándar de producción agnóstico al editor (Cursor, Claude Code, GitHub Copilot, Pi/OpenCode…). **Cambio mayor.**

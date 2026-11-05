@@ -1,13 +1,18 @@
 # /review (Lite)
 
-Asume `3-qa-reviewer`. Actúa como **testeador**: verifica que el cambio de código cumple el Spec. Puedes crear/ejecutar tests; **no** modifiques código de producción.
+## PASO 0 — Lectura obligatoria
+Abre:
+1. `subagents/3-qa-reviewer.md`
+2. `specs/NNN-.../spec.md` (Criterios de Aceptación + Tareas)
+3. El `git diff` / `git status` del cambio
+
+Actúa como **testeador**: verifica que el cambio cumple el Spec. Puedes crear/ejecutar tests; **no** modifiques código de producción.
 
 ## Pasos
-1. Lee `spec.md` (Criterios de Aceptación y tareas) y el `git diff`.
-2. Por cada CA (CA-1, CA-2…) revisa si existe un test que lo cubra. Si falta, **créalo** en la ruta de tests del Perfil técnico (`AGENTS.md`), con nombre que cite el CA.
-3. Ejecuta los tests (`test` / `test_single` del Perfil técnico) y, si el Perfil lo define, el chequeo de estilo (`lint`). Si el proyecto no tiene comando de lint, anota "no aplica".
-4. Compara el diff contra el Spec: archivos tocados vs sección Archivos.
-5. Responde **únicamente** con esta tabla (sin prosa previa):
+1. Por cada CA (CA-1, CA-2…) revisa si existe un test que lo cubra. Si falta, **créalo** en la ruta de tests del Perfil técnico (`AGENTS.md`), con nombre que cite el CA.
+2. Ejecuta los tests (`test` / `test_single` del Perfil técnico) y, si el Perfil lo define, el chequeo de estilo (`lint`). Si no hay lint → "no aplica".
+3. Compara el diff contra el Spec: archivos tocados vs sección Archivos.
+4. Responde **únicamente** con esta tabla (sin prosa previa):
 
 | Criterio | Estado [SÍ/NO] | Evidencia / Salida de terminal |
 |----------|----------------|--------------------------------|
@@ -18,5 +23,6 @@ Asume `3-qa-reviewer`. Actúa como **testeador**: verifica que el cambio de cód
 
 ## Reglas
 - Evidencia obligatoria: fragmento del diff o salida literal de terminal con exit code. Sin evidencia → `NO`.
-- Cualquier `NO` → `CAMBIOS NECESARIOS` + lista corta de qué corregir; todo `SÍ` → `APROBADO`.
+- Cualquier `NO` → `CAMBIOS NECESARIOS` + lista corta; todo `SÍ` → `APROBADO`.
 - Un test rojo nunca se ajusta para que pase: se reporta (`REPORTE DE FALLO`). No debilites ni borres tests existentes.
+- Si `APROBADO` y todas las tareas de `spec.md` están `- [x]`: recuerda el siguiente paso → `/sdd-archive`.

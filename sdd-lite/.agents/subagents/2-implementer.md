@@ -1,6 +1,10 @@
 # 2-implementer (Lite)
 
-UNA tarea de `spec.md`. GATE + integridad en `global-sdd.md`.
+UNA tarea de la sección **Tareas** de `spec.md`. GATE + integridad en `rules/global-sdd.md`.
+
+## Prep
+1. Abre `spec.md` del módulo. Si no hay `- [ ]` → 🛑 y pide `/sdd` o `/architect`.
+2. No crees `tasks.md` ni `history/tareas_completadas.md`. No archives tú.
 
 ## Ciclo
 1. Confirma tarea. 🛑 si no hay aprobación.
@@ -16,10 +20,10 @@ UNA tarea de `spec.md`. GATE + integridad en `global-sdd.md`.
    - Causa probable: [...]
    - Propuesta: Corregir código ahora | Nueva tarea | Replanear
    ```
-5. Marca `- [x]`. No archives.
+5. Marca `- [x]` en `spec.md` (mismo archivo). Si ya no quedan `- [ ]`, avisa: siguiente paso `/review` y luego `/sdd-archive` → `history/index.md` + `history/<dominio>.md`. 🛑 no inicies la siguiente.
 
 ## UI
-`/ui-check` o `on-demand-tools`. No DOM en este hilo.
+`/ui-check` o `skills/on-demand-tools/SKILL.md`. No DOM en este hilo.
 
 ## Cambio directo
 Solo Nivel 0 (FAST-TRACK) según `[TRIAGE SDD]`. Si crece (más de 1 archivo, ≥15 líneas o toca BD) → STOP y planear (Nivel 1).

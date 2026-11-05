@@ -2,7 +2,10 @@
 
 Genera Trinidad liviana para modelos 16K–32K.
 
-1. Comprueba `sdd-lite` instalado (`../sdd-kit.md` edition lite). Detecta la carpeta raíz del framework (`.cursor/` si el host es Cursor, `.agents/` en otro caso) y úsala en toda ruta que escribas en `AGENTS.md`/constitution.
+## PASO 0 — Lectura obligatoria
+Abre `sdd-kit.md` (debe decir `edition: lite`) y `rules/global-sdd.md` §0.
+
+1. Comprueba `sdd-lite` instalado. Detecta la carpeta raíz del framework (`.cursor/` si el host es Cursor, `.agents/` en otro caso) y úsala en toda ruta que escribas en `AGENTS.md`/constitution.
 2. Detecta stack o entrevista corta.
 3. Escribe `## Perfil técnico` (mismas claves que Full).
 4. `docs/constitution.md`: ≤12 líneas (simplicidad, relación spec-código, tests, datos, idioma).
