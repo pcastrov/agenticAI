@@ -1,12 +1,33 @@
 # Changelog — SDD Lite
 
+## 2.0.5 — 2026-11-05
+
+### Cambiado
+- **Nomenclatura**: carpetas reales `001-<id>/` (nunca `NNN-...` literal). `/sdd-init` no crea módulos de ejemplo.
+
+### Migración
+`/sdd-update`. Renombra `specs/NNN-...` si ya se materializó el placeholder.
+
+---
+
+## 2.0.4 — 2026-11-05
+
+### Cambiado
+- OpenCode: genera `.opencode/commands/*.md` (slash commands).
+- **`/init` → `/sdd-init`** en todos los hosts (evita choque con `/init` de OpenCode).
+
+### Migración
+Reinstalar o `/sdd-update`. Usa **`/sdd-init`**.
+
+---
+
 ## 2.0.3 — 2026-11-05
 
 ### Cambiado
-- GATE incrustado en `AGENTS.md` (`/init`); OpenCode: `opencode.json` → `instructions` con `global-sdd.md`. Misma causa raíz que Full (hosts sin `alwaysApply`).
+- GATE en `AGENTS.md`; OpenCode `opencode.json` → `instructions`.
 
 ### Migración
-`/sdd-update` o reinstalar Lite + `/init`.
+`/sdd-update` o reinstalar Lite + `/sdd-init`.
 
 ---
 

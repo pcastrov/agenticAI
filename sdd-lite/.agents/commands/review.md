@@ -3,7 +3,7 @@
 ## PASO 0 — Lectura obligatoria
 Abre:
 1. `subagents/3-qa-reviewer.md`
-2. `specs/NNN-.../spec.md` (Criterios de Aceptación + Tareas)
+2. `specs/<NNN>-<id>/spec.md` ruta real (ej. `001-...`) — Criterios de Aceptación + Tareas
 3. El `git diff` / `git status` del cambio
 
 Actúa como **testeador**: verifica que el cambio cumple el Spec. Puedes crear/ejecutar tests; **no** modifiques código de producción.

@@ -1,4 +1,4 @@
-# /init (Lite)
+# /sdd-init (Lite)
 
 Genera Trinidad liviana para modelos 16K–32K.
 
@@ -21,4 +21,5 @@ Abre `sdd-kit.md` (debe decir `edition: lite`) y `rules/global-sdd.md` §0.
 6. Laravel: opcional Boost con `"guidelines": false`, `"mcp": true`. MCP navegador: off (ver `/mcp-mode`).
 7. `MEMORY.md` ≤40 líneas.
 8. 🛑 Aprueba antes de escribir.
-9. Copia guías lite de `conventions` a `../rules/stack-*.md` (`.mdc` si el host es Cursor) si aplica.
+9. Copia guías lite de `conventions` a `rules/stack-*.md` (`.mdc` si el host es Cursor) si aplica.
+10. **`specs/`**: no crees módulos de ejemplo ni carpetas `NNN-...`. Solo `specs/` vacía si hace falta. El primer módulo real (`001-<id>/`) lo crean `/sdd`, `/architect` o `/retrofit`.

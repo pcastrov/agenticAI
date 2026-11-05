@@ -9,6 +9,7 @@ Usa tu herramienta de lectura de archivos y abre, en este orden:
    - Tareas → `tasks-template.md` (MODO 2b).
    - Cierre → `history-index-template.md` **y** `domain-history-template.md`.
 3. Si el módulo ya existe: activos del modo. Historial: solo `history/index.md` y el dominio tocado.
+4. Módulo nuevo: carpeta real `specs/<NNN>-<id-kebab>/` (ej. `001-api-tasks`). 🚫 no crees `NNN-...` literal; `/sdd-init` no deja módulos de ejemplo.
 
 Si la petición es ambigua: máximo 5 preguntas y espera. No generes código de aplicación.
 Si el usuario pidió trabajo **sin** `/architect` pero es Nivel 1: igual aplica Triage (`global-sdd` §0) y estas paradas.

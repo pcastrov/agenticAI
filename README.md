@@ -54,14 +54,14 @@ En PowerShell también vale el primer argumento sin nombre: `.\setup_sdd_full.ps
 
 El script hace tres cosas (en este orden):
 1. Pregunta tu agente.
-2. Instala el paquete en **`.cursor/`** si usas Cursor, o en **`.agents/`** si usas otro (mismo contenido; solo cambia el nombre). Crea un archivo **puente** solo donde hace falta: `.github/copilot-instructions.md` (Copilot) y `CLAUDE.md` (Claude Code). Cursor, Pi y OpenCode leen su carpeta directo. En Cursor, las reglas pasan a `.mdc`. La opción **Pi** genera `.pi/extensions/sdd-commands.ts`. La opción **OpenCode** escribe `opencode.json` con `instructions: [".agents/rules/global-sdd.md"]` (OpenCode no usa el `alwaysApply` de Cursor). Tras `/init`, el **GATE Triage queda incrustado al inicio de `AGENTS.md`** — imprescindible en OpenCode/Pi para que un pedido en lenguaje natural no salte el SDD.
+2. Instala el paquete en **`.cursor/`** si usas Cursor, o en **`.agents/`** si usas otro (mismo contenido; solo cambia el nombre). Crea un archivo **puente** solo donde hace falta: `.github/copilot-instructions.md` (Copilot) y `CLAUDE.md` (Claude Code). Cursor, Pi y OpenCode leen su carpeta directo. En Cursor, las reglas pasan a `.mdc`. La opción **Pi** genera `.pi/extensions/sdd-commands.ts`. La opción **OpenCode** escribe `opencode.json` (`instructions` → `global-sdd.md`) y **`.opencode/commands/<cmd>.md`** por cada comando del kit (OpenCode no trata `.agents/commands/` como slash; su `/init` built-in es otro comando). Tras **`/sdd-init`**, el **GATE** queda al inicio de `AGENTS.md`.
 3. (Opcional) Te deja **solo la guía de tu framework** (Laravel/Filament/NativePHP, Django, FastAPI, Flutter) y borra el resto para ahorrar tokens. Si saltas el paso o no hay guía, el agente usa buenas prácticas estándar del lenguaje, sin error.
 
-4. **En el chat de tu agente** ejecuta `/init` (genera `AGENTS.md`, `docs/constitution.md`, `MEMORY.md`). Luego:
+4. **En el chat de tu agente** Ejecuta `/sdd-init` (genera `AGENTS.md`, `docs/constitution.md`, `MEMORY.md`). Luego:
    - Full: `/sdd` para planear y construir; código existente → `/retrofit`.
    - Lite: `/sdd` → `/implement` → `/sdd-archive`.
 
-**Sin script**: copia el contenido de `sdd-full/.agents/` (o `sdd-lite/.agents/`) a `.cursor/` (Cursor) o `.agents/` (otros) en la raíz de tu proyecto y ejecuta `/init`.
+**Sin script**: copia el contenido de `sdd-full/.agents/` (o `sdd-lite/.agents/`) a `.cursor/` (Cursor) o `.agents/` (otros) en la raíz de tu proyecto y Ejecuta `/sdd-init`.
 
 ### Actualizar
 En el chat: `/sdd-update`. Detecta tu carpeta (`.cursor/` o `.agents/`) y actualiza **en el sitio**, sin renombrarla. Solo sobrescribe archivos base del paquete (reglas, comandos, plantillas). **Nunca toca** tus skills ni restaura guías de framework que borraste. Corrige en `AGENTS.md` las rutas al framework según tu herramienta y, si tus specs tienen un `history.md` antiguo, te **pregunta** si migrarlo a `history/index.md` + `history/<dominio>.md`.

@@ -7,7 +7,7 @@ Edición del kit para **modelos locales** en hardware modesto. El presupuesto de
 - Modelos **8B–14B** que quepan ahí (cuantizados), p. ej. **Qwen 2.5 Coder 14B**, y otros **9B / 8B** coder/instruct
 - Cliente de agente: **Pi** (ideal, más liviano) u **OpenCode**; también Cursor, VS Code + Copilot/Ollama (más overhead)
 
-Versión del paquete: **2.0.3** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
+Versión del paquete: **2.0.4** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
 
 No instales Full y Lite a la vez. Comparativa y tokens: [README de la raíz](../README.md).
 
@@ -28,7 +28,7 @@ sdd-lite/
     │   └── CHANGELOG.md
     ├── rules/
     │   └── global-sdd.md     ← Triage Gate + integridad de tests (versión Lite)
-    ├── commands/             ← slash commands (/init, /sdd, …)
+    ├── commands/             ← slash commands (/sdd-init, /sdd, …)
     ├── subagents/            ← planner / implementer / QA (condensados)
     └── skills/
         ├── sdd-docs-generator/   ← plantillas tabulares + shards ≤100 líneas
@@ -36,7 +36,7 @@ sdd-lite/
         └── on-demand-tools/      ← CLI UI/devtools bajo demanda (0 tokens en reposo)
 ```
 
-### Qué genera el kit en **tu proyecto** (después de `/init` y `/sdd`)
+### Qué genera el kit en **tu proyecto** (después de `/sdd-init` y `/sdd`)
 
 ```text
 tu-proyecto/
@@ -45,7 +45,7 @@ tu-proyecto/
 ├── MEMORY.md
 ├── docs/constitution.md
 └── specs/
-    └── NNN-nombre-modulo/
+    └── 001-nombre-modulo/   ← número real + id kebab (nunca "NNN-...")
         ├── spec.md              ← tabular (Entradas / Salidas / CA / tareas)
         └── history/
             ├── index.md         ← ≤30 líneas (solo índice de dominios)
@@ -60,7 +60,7 @@ Lite **no** usa `plan.md` / `tasks.md` separados: las tareas viven dentro de `sp
 
 | Comando | Para qué |
 |---------|----------|
-| `/init` | Trinidad liviana: `AGENTS.md` + constitution corta + `MEMORY.md` + Perfil técnico. |
+| `/sdd-init` | Trinidad liviana: `AGENTS.md` + constitution corta + `MEMORY.md` + Perfil técnico. |
 | `/sdd` | Planear: Triage (Nivel 0 directo \| Nivel 1 Spec tabular **sin código**) y espera aprobación. |
 | `/architect` | Planner Lite: spec unificada, iterar o archivar shards de dominio. |
 | `/implement` | Una tarea `- [ ]` de `spec.md` con TDD; marca `- [x]`; no archiva. |
@@ -113,13 +113,13 @@ Desde la raíz de **tu proyecto**:
 
 El script instala en **`.cursor/`** (Cursor) o **`.agents/`** (otros), crea el puente solo si hace falta (Copilot / Claude) y puede dejar solo la guía de tu framework.
 
-Menú del instalador: **1** Cursor · **2** Copilot · **3** Claude Code · **4** Pi (`.pi/extensions/…`) · **5** OpenCode (`opencode.json` + GATE en `AGENTS.md` tras `/init`).
+Menú del instalador: **1** Cursor · **2** Copilot · **3** Claude Code · **4** Pi (`.pi/extensions/…`) · **5** OpenCode (`opencode.json` + `.opencode/commands/*.md` + GATE en `AGENTS.md`).
 
 Manual: copia el contenido de [`.agents`](.agents/) a `.cursor/` o `.agents/`.
 
 ## Flujo rápido
 
-`/init` → Triage (también sin `/sdd`) → Spec + 🛑 OK → `[CADENCIA TDD]` A|B → `/implement` → `/review` → `/sdd-archive`
+`/sdd-init` → Triage (también sin `/sdd`) → Spec + 🛑 OK → `[CADENCIA TDD]` A|B → `/implement` → `/review` → `/sdd-archive`
 
 ## Tokens / MCP
 

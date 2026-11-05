@@ -2,7 +2,7 @@
 
 Flujo de trabajo portátil para que agentes de IA (Cursor, Claude Code, GitHub Copilot, Pi, OpenCode…) desarrollen software guiados por especificaciones: primero el **qué** y el **por qué** (`spec.md`), luego el **cómo** (`plan.md`), después el **paso a paso** (`tasks.md`), implementación con **TDD estricto** y validación QA en cada etapa.
 
-Es **agnóstico de lenguaje y framework**: funciona igual en Laravel, Python, Node, Go o cualquier otro stack. Lo único que cambia entre proyectos es el bloque `## Perfil técnico` de `AGENTS.md`, que genera `/init`.
+Es **agnóstico de lenguaje y framework**: funciona igual en Laravel, Python, Node, Go o cualquier otro stack. Lo único que cambia entre proyectos es el bloque `## Perfil técnico` de `AGENTS.md`, que genera `/sdd-init`.
 
 Inspirado en el flujo de specs de distintas metodologías (requisitos EARS, diseño, tareas y propiedades de corrección), adaptado a subagentes.
 
@@ -20,7 +20,7 @@ Origen: [github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI) �
 
 1. Copia el contenido de **`sdd-full/.agents/`** a la raíz de tu proyecto como **`.cursor/`** (Cursor) o **`.agents/`** (otros), o ejecuta `setup_sdd_full.sh` / `setup_sdd_full.ps1`, que eligen el nombre y crean el puente que haga falta. No mezcles con Lite.
 2. En `sdd-kit.md`: `source: https://github.com/pcastrov/agenticAI` y `package_path: sdd-full/.agents` (o ruta local a `…/sdd-full`).
-3. Ejecuta `/init` → `AGENTS.md`, `docs/constitution.md`, `MEMORY.md`.
+3. Ejecuta `/sdd-init` → `AGENTS.md`, `docs/constitution.md`, `MEMORY.md`.
 4. Código existente → `/retrofit`. Cambios → `/sdd`.
 5. Actualizar: `/sdd-update` (compara **`sdd-full/.agents/`** del clone contra tu carpeta en el sitio, `.cursor/` o `.agents/`).
 
@@ -60,7 +60,7 @@ La skill `stack-conventions` contiene una guía de código idiomático por frame
 
 Las guías se usan de dos formas:
 - **En el flujo SDD**: el planner, el implementador y el QA leen solo las guías de la clave `conventions`.
-- **Como regla automática**: `/init` copia esas guías a `rules/stack-[nombre].md`, y el host (p. ej. Cursor) las adjunta al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca.
+- **Como regla automática**: `/sdd-init` copia esas guías a `rules/stack-[nombre].md`, y el host (p. ej. Cursor) las adjunta al editar archivos del stack, también fuera de `/sdd`. `/sdd-update` las refresca.
 
 Orden de prioridad: `docs/constitution.md`, luego **Convenciones** de `AGENTS.md` (lo propio del proyecto), luego las guías y por último los Principios Generales. Las guías aplican al código nuevo o modificado; alinear código viejo se propone como tarea.
 
@@ -79,7 +79,7 @@ Quién lo revisa y cuándo:
 **Todo es sugerencia.** Ningún agente une, extrae, reutiliza ni modifica código por su cuenta, porque el código puede ser así a propósito. Cada hallazgo es una `CONSULTA DE SIMPLICIDAD` con el principio, las opciones ("mejorarlo así" o "dejarlo igual") y su impacto, y el agente espera tu decisión. En QA estas consultas no bloquean el veredicto. Si decides dejarlo igual, el motivo se anota en `AGENTS.md` o `MEMORY.md` para no volver a preguntarlo.
 
 **Alcance acotado.** Nunca se recorre todo el proyecto. Solo se busca en dos zonas:
-- el catálogo `## Código Compartido` de `AGENTS.md`, con bases y helpers propios que usan varios módulos (lo crean `/init` y `/retrofit`);
+- el catálogo `## Código Compartido` de `AGENTS.md`, con bases y helpers propios que usan varios módulos (lo crean `/sdd-init` y `/retrofit`);
 - los archivos del módulo activo.
 
 Solo cuenta el código propio: archivos versionados en las carpetas de `structure`, sin `vendor/`, código generado ni las exclusiones de cada stack. Si algo genérico no está en el catálogo, el agente pregunta en vez de buscarlo.
@@ -88,7 +88,7 @@ Solo cuenta el código propio: archivos versionados en las carpetas de `structur
 
 ### Revisión de diseño (sugerencia)
 
-Al **crear código propio** (servicios, policies, helpers, etc.), planner / implementer / QA pueden emitir una `CONSULTA DE DISEÑO` (dónde, qué vi, sugerencia + impacto, alternativa dejar igual). No es checklist SOLID ni re-auditoría de lo idiomático del framework. Nadie refactoriza por iniciativa propia; en QA no bloquea. Detalle en `global-sdd`, sección 2.3. `/init` proyecta este régimen (y el de integridad de tests) a `AGENTS.md` y `docs/constitution.md`; `/sdd-update` verifica que sigan presentes.
+Al **crear código propio** (servicios, policies, helpers, etc.), planner / implementer / QA pueden emitir una `CONSULTA DE DISEÑO` (dónde, qué vi, sugerencia + impacto, alternativa dejar igual). No es checklist SOLID ni re-auditoría de lo idiomático del framework. Nadie refactoriza por iniciativa propia; en QA no bloquea. Detalle en `global-sdd`, sección 2.3. `/sdd-init` proyecta este régimen (y el de integridad de tests) a `AGENTS.md` y `docs/constitution.md`; `/sdd-update` verifica que sigan presentes.
 
 La regla global del flujo (`rules/global-sdd.md`) lleva `alwaysApply: true` para que el host la cargue siempre.
 
@@ -97,15 +97,20 @@ La regla global del flujo (`rules/global-sdd.md`) lleva `alwaysApply: true` para
 ## Estructura de specs
 
 ```text
-specs/NNN-[id-nombre-modulo]/
+specs/001-[id-nombre-modulo]/   # ejemplo: 001-api-tasks (nunca "NNN-..." literal)
 ├── spec.md     # Índice "Ya implementado" + HU con criterios DADO/CUANDO/ENTONCES, RF (EARS + MoSCoW), RN, RNF, restricciones, integraciones, casos límite, propiedades, trazabilidad
 ├── plan.md     # Estructura vigente + arquitectura de lo pendiente, trazabilidad RF ↔ archivo, decisiones técnicas
 ├── tasks.md    # Solo tareas pendientes: prioridad, propiedades validadas, tests asociados, "Hecho cuando"
-├── history/\r\n│   ├── index.md      # Mapa maestro (~20 líneas) → dominios\r\n│   └── <dominio>.md  # Histórico append-only por dominio (decisiones íntegras)
+├── history/
+│   ├── index.md      # Mapa maestro (~20 líneas) → dominios
+│   └── <dominio>.md  # Histórico append-only por dominio (decisiones íntegras)
 └── diagramas/
     ├── HU-01-negocio.md   # Secuencia para cualquier persona (va con spec.md)
     └── HU-01-tecnico.md   # Secuencia por capas y archivos (va con plan.md)
 ```
+
+`/sdd-init` no crea módulos bajo `specs/`. El primer módulo lo crean `/sdd`, `/architect` o `/retrofit` con `001-<id-kebab>/`.
+
 
 ### Diagramas de secuencia (Mermaid)
 
@@ -173,7 +178,7 @@ Nunca se ignora el rojo. Crear tests nuevos (TDD) sí está permitido. El QA rev
 
 | Comando | Propósito |
 |---------|-----------|
-| `/init` | Detecta stack o entrevista; genera Trinidad y Perfil técnico |
+| `/sdd-init` | Detecta stack o entrevista; genera Trinidad y Perfil técnico |
 | `/sdd` | Flujo completo (8 fases) |
 | `/retrofit` | Ingeniería inversa de código existente a `specs/` |
 | `/architect` | Subagente planner (modos 1-6) |
@@ -202,7 +207,7 @@ subagents/1-planner.md
 subagents/2-implementer.md
 subagents/3-qa-reviewer.md
 commands/sdd.md
-commands/init.md
+commands/sdd-init.md
 commands/retrofit.md
 commands/architect.md
 commands/implement.md
@@ -235,9 +240,9 @@ skills/stack-conventions/references/flutter.md
 
 Herramientas, skills de terceros o configuración propios de un stack (p. ej. Laravel Boost, skills de Flutter/Dart, auditores de seguridad de un framework, linters, comandos de setup de entorno, `mcp.json`). No van dentro del paquete SDD; se instalan en cada proyecto.
 
-Con Laravel, `/init` y `/retrofit` proponen **Laravel Boost** con MCP (`Search Docs`, esquema) y **`guidelines: false`** para no inflar `AGENTS.md`. Las reglas de código viven en `stack-conventions`. Playwright/Chrome DevTools: `/mcp-mode` + `/ui-check`, no siempre-on. Otros stacks: solo sugiere.
+Con Laravel, `/sdd-init` y `/retrofit` proponen **Laravel Boost** con MCP (`Search Docs`, esquema) y **`guidelines: false`** para no inflar `AGENTS.md`. Las reglas de código viven en `stack-conventions`. Playwright/Chrome DevTools: `/mcp-mode` + `/ui-check`, no siempre-on. Otros stacks: solo sugiere.
 
-Las **guías de convenciones** (`stack-conventions`) sí van en el paquete: son texto, se cargan solo si están en `conventions` y las reglas `stack-*.md` que genera `/init` son del proyecto.
+Las **guías de convenciones** (`stack-conventions`) sí van en el paquete: son texto, se cargan solo si están en `conventions` y las reglas `stack-*.md` que genera `/sdd-init` son del proyecto.
 
 ## Cómo evolucionar el paquete
 

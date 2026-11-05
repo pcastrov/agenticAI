@@ -6,6 +6,7 @@ Abre:
 2. `rules/global-sdd.md` §0
 3. Plantilla del modo en `skills/sdd-docs-generator/references/`
 4. Si el módulo existe: `spec.md` (+ `history/index.md` si archivas)
+5. Módulo nuevo: `specs/001-<id-kebab>/` (siguiente número libre). 🚫 no crees `NNN-...` literal.
 
 Sin `/architect` pero pedido Nivel 1 → igual Triage + estas paradas. No generes código de app.
 

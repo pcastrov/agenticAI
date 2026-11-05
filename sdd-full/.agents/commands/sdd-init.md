@@ -1,4 +1,4 @@
-# /init - Inicializador de Gobernanza (AGENTS, MEMORY, Constitución y SDD)
+# /sdd-init - Inicializador de Gobernanza (AGENTS, MEMORY, Constitución y SDD)
 
 Este comando prepara cualquier proyecto de software (existente o nuevo, en cualquier lenguaje o framework) para trabajar con el flujo SDD. Genera la "Trinidad de Contexto": `AGENTS.md`, `MEMORY.md` y `docs/constitution.md`, incluyendo el bloque `## Perfil técnico` que consumen los subagentes.
 
@@ -14,7 +14,7 @@ Este comando prepara cualquier proyecto de software (existente o nuevo, en cualq
 ### PASO 1: Verificar el Flujo SDD
 1. Comprueba que existan `rules/global-sdd.md`, `subagents/1-planner.md` y `sdd-kit.md`. **Detecta la carpeta raíz del framework** (`.cursor/` si el host es Cursor, `.agents/` en otro caso; la que contenga `sdd-kit.md`) y úsala como `<raíz>` al escribir cualquier ruta en `AGENTS.md`, constitution o puentes. Nunca escribas la otra. Las reglas llevan la extensión del host: **`.mdc` en Cursor**, `.md` en los demás (`rules/global-sdd.mdc` / `rules/stack-[nombre].mdc` vs `.md`).
 2. Lee la versión instalada en `sdd-kit.md`.
-   - **Si falta el flujo**: indica al usuario que copie la carpeta `.agents/` del paquete `sdd-kit` (ver `sdd-kit/README.md` del paquete) y vuelve a ejecutar `/init`. No lo recrees de memoria.
+   - **Si falta el flujo**: indica al usuario que copie la carpeta `.agents/` del paquete `sdd-kit` (ver `sdd-kit/README.md` del paquete) y vuelve a ejecutar `/sdd-init`. No lo recrees de memoria.
    - **Si existe**: informa la versión e indica que se puede actualizar con `/sdd-update`.
 3. Si existen `AGENTS.md`, `MEMORY.md` o `docs/constitution.md`, léelos primero para preservar decisiones, contexto e historia.
 
@@ -174,6 +174,11 @@ Crea o actualiza (máximo ~50 líneas):
 - **Estado actual**, **Decisiones (y por qué)**, **Aprendizajes y errores a evitar**.
 - **Próximos pasos**: si hay código sin specs, ingeniería inversa con `/retrofit`.
 
+### PASO 9: `specs/` (sin módulos de ejemplo)
+- 🚫 **PROHIBIDO** crear `specs/NNN-...`, `specs/001-ejemplo` u otros módulos placeholder.
+- Opcional: crear solo la carpeta vacía `specs/` si no existe.
+- El primer módulo real (`001-<id-kebab>/`) lo crean `/sdd`, `/architect` o `/retrofit` con nomenclatura de `global-sdd` §6.
+
 ---
 
 ## Formato de Salida
@@ -191,6 +196,7 @@ Crea o actualiza (máximo ~50 líneas):
 
 | Comando | Propósito |
 |---------|-----------|
+| `/sdd-init` | Trinidad de contexto (`AGENTS.md`, constitution, `MEMORY.md`) |
 | `/sdd` | Flujo completo SDD (8 fases) |
 | `/retrofit` | Ingeniería inversa de código existente |
 | `/architect` | Subagente planner |

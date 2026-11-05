@@ -1,6 +1,8 @@
 # [Nombre del módulo]
 
-**Módulo**: `NNN-[id]` | **Estado**: Borrador | Aprobado | **Tope**: ~150 líneas
+> Plantilla: sustituye por carpeta real (`001-api-tasks`). 🚫 No crees `NNN-...` literal.
+
+**Módulo**: `001-[id]` | **Estado**: Borrador | Aprobado | **Tope**: ~150 líneas
 Historial: `history/index.md` (solo si hace falta).
 
 ## 1. Spec atómico

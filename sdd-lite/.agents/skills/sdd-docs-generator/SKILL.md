@@ -11,3 +11,5 @@ Lee solo la plantilla necesaria en `references/`:
 - `domain-shard-template.md` — ficha atómica por dominio, solo endpoints y contratos JSON (máx 100 líneas)
 
 Idioma: español. IDs estables. Al cerrar: ficha en `history/<dominio>.md` + 1 fila en `history/index.md`.
+
+**Nomenclatura**: carpeta real `specs/001-<id-kebab>/` (siguiente número libre). Al copiar plantillas, sustituye placeholders; 🚫 no crees `NNN-...` literal.

@@ -1,7 +1,9 @@
 # Especificación Funcional: [Nombre del Módulo]
 
-**Estado**: Borrador | Aprobado · **Módulo**: `NNN-[id-nombre-modulo]`
-**Histórico**: `specs/NNN-[id-nombre-modulo]/history/index.md` · **Diagramas**: `specs/NNN-[id-nombre-modulo]/diagramas/`
+> Plantilla: sustituye `NNN-[id-nombre-modulo]` por la carpeta real (`001-api-tasks`, …). 🚫 No crees `NNN-...` literal.
+
+**Estado**: Borrador | Aprobado · **Módulo**: `001-[id-nombre-modulo]`
+**Histórico**: `specs/001-[id-nombre-modulo]/history/index.md` · **Diagramas**: `specs/001-[id-nombre-modulo]/diagramas/`
 
 > Cada requisito: **claro**, **útil** (cubre una HU), **comprobable** (CA o propiedad), **trazable** (ID estable) y **actualizado** (no contradice lo implementado).
 

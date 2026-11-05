@@ -1,6 +1,6 @@
 # Histórico de dominio: [Dominio] — [Nombre del Módulo]
 
-**Archivo**: `specs/NNN-[id-nombre-modulo]/history/[dominio].md` · Índice: `history/index.md`
+**Archivo**: `specs/001-[id-nombre-modulo]/history/[dominio].md` (ruta real) · Índice: `history/index.md`
 
 > Append-only. Nunca se edita ni se borra una iteración anterior; solo se agregan nuevas al final.
 > **No se resume**: las decisiones arquitectónicas se conservan íntegras. La segmentación por dominio es lo que mantiene el contexto pequeño.

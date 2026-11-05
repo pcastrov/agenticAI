@@ -1,6 +1,6 @@
 ---
 name: sdd-docs-generator
-description: Plantillas y reglas de formato para la documentación SDD en specs/ (spec.md, plan.md, tasks.md, history/ y diagramas de secuencia Mermaid). Usar al crear o editar cualquier archivo dentro de specs/NNN-modulo/.
+description: Plantillas y reglas de formato para la documentación SDD en specs/ (spec.md, plan.md, tasks.md, history/ y diagramas de secuencia Mermaid). Usar al crear o editar cualquier archivo dentro de specs/<NNN>-<id>/ (ej. 001-api-tasks).
 ---
 
 # SDD Docs Generator Skill
@@ -9,7 +9,10 @@ description: Plantillas y reglas de formato para la documentación SDD en specs/
 Skill encargada de proveer las plantillas estándar y guías de formato para la documentación de Spec-Driven Development (SDD). Es agnóstica de lenguaje y framework: los detalles del stack se toman del bloque `## Perfil técnico` de `AGENTS.md`.
 
 ## Cuándo Usar Esta Skill
-Actívala cuando necesites estructurar, redactar o formatear cualquier archivo dentro de `specs/NNN-[id-nombre-modulo]/` (`spec.md`, `plan.md`, `tasks.md`, `history/*.md` y `diagramas/*.md`).
+Actívala cuando necesites estructurar, redactar o formatear cualquier archivo dentro de `specs/<NNN>-<id-kebab>/` (ej. `specs/001-api-tasks/` — `NNN` en plantillas es **placeholder**, nunca nombre de carpeta).
+
+## Materializar plantillas
+Al copiar cualquier `references/*-template.md`, sustituye `NNN-[id-nombre-modulo]` / `NNN-[id]` por la ruta real (`001-api-tasks`, etc.). 🚫 No crees carpetas literales `NNN-...`.
 
 ---
 

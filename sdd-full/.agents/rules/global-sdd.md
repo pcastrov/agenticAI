@@ -6,7 +6,7 @@ alwaysApply: true
 # Global Rule: Spec-Driven Development (SDD) & Engineering Standards
 
 ## 0. GATE OBLIGATORIO ANTES DE EDITAR O EJECUTAR
-> **OpenCode / Pi / chat libre:** este archivo solo se aplica si el host lo carga. Por eso `/init` **copia el GATE a `AGENTS.md`** (primera sección) y, en OpenCode, `opencode.json` → `instructions` apunta aquí. Si `AGENTS.md` no tiene el bloque GATE, **no edites código** hasta corregirlo con `/init` o `/sdd-update`.
+> **OpenCode / Pi / chat libre:** este archivo solo se aplica si el host lo carga. Por eso `/sdd-init` **copia el GATE a `AGENTS.md`** (primera sección) y, en OpenCode, `opencode.json` → `instructions` apunta aquí. Si `AGENTS.md` no tiene el bloque GATE, **no edites código** hasta corregirlo con `/sdd-init` o `/sdd-update`.
 
 Aplica a **toda** petición (con o **sin** slash `/sdd`, `/implement`, etc.), antes de `Write` / `StrReplace` / `Edit` / mutaciones por `Bash` sobre código o tests:
 
@@ -104,12 +104,18 @@ Antes de implementar código, **verifica si existe** un archivo de convención d
 ## 6. Estructura de Módulos (`specs/`)
 
 ```text
-specs/NNN-[id-nombre-modulo]/
+specs/001-api-tasks/          # ejemplo REAL (nunca uses "NNN" literal)
 ├── spec.md | plan.md | tasks.md | diagramas/
 └── history/
     ├── index.md          # mapa maestro (~20 líneas): dominio → archivo
     └── <dominio>.md      # un archivo por dominio (auth, billing…)
 ```
+
+### Nomenclatura de carpeta (obligatoria)
+- Formato: `specs/<NNN>-<id-kebab>/` donde `<NNN>` es **tres dígitos** (`001`, `002`, …) e `<id-kebab>` es un id corto en minúsculas con guiones (ej. `api-tasks`, `auth-login`).
+- En plantillas, `NNN-[id-nombre-modulo]` es **solo un placeholder de documentación**. 🚫 **PROHIBIDO** crear carpetas o rutas literales llamadas `NNN-...`, `NNN-modulo`, `[id-nombre-modulo]`, etc.
+- Al crear un módulo nuevo: lista `specs/`, toma el máximo número existente + 1 (si no hay ninguno → `001`), y elige el id según el dominio real (retrofit / `/sdd` / planner). Ejemplo: `specs/001-gestor-tareas/`.
+- `/sdd-init` **no** crea módulos bajo `specs/`; como mucho puede dejar `specs/` vacío. El primer módulo lo crean `/sdd`, `/architect` o `/retrofit` con nombre real.
 
 Diagramas vigentes se actualizan in-place. Lectura: activos primero; del historial lee `history/index.md` y **solo** el dominio relevante, buscando por ID/keyword. Cierre: mover al `history/<dominio>.md` correspondiente; **nunca borrar ni resumir** decisiones arquitectónicas (se segmentan por dominio, no se compactan). IDs `HU`/`RF`/`RN`/`P`/`T`/`S` estables.
 

@@ -1,7 +1,9 @@
 # Lista de Tareas Ejecutables: [Nombre del Módulo]
 
-**Módulo**: `NNN-[id-nombre-modulo]`
-**Ruta**: `specs/NNN-[id-nombre-modulo]/`
+> Plantilla: usa carpeta real (`001-...`). 🚫 No uses `NNN-...` literal.
+
+**Módulo**: `001-[id-nombre-modulo]`
+**Ruta**: `specs/001-[id-nombre-modulo]/`
 
 > Solo tareas pendientes. Al cerrar la iteración, las tareas `- [x]` se mueven a `history/<dominio>.md` (nunca se borran). La numeración continúa desde el máximo histórico.
 

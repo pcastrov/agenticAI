@@ -1,5 +1,5 @@
 <!--
-Diagrama de secuencia TÉCNICO: specs/NNN-[id-nombre-modulo]/diagramas/HU-XX-tecnico.md
+Diagrama de secuencia TÉCNICO: specs/001-[id-nombre-modulo]/diagramas/HU-XX-tecnico.md (ruta real; no uses NNN literal)
 Audiencia: desarrollo y QA.
 Reglas:
 - Mismo flujo que HU-XX-negocio.md, desglosado en las capas de plan.md (sección 1 y 2).

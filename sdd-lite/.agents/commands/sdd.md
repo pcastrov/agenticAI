@@ -7,7 +7,7 @@ Abre:
 1. `rules/global-sdd.md` §0
 2. `subagents/1-planner.md`
 3. `skills/sdd-docs-generator/references/spec-template.md`
-4. Si el módulo existe: `specs/NNN-.../spec.md` (+ `history/index.md` solo si hace falta)
+4. Si el módulo existe: `specs/<NNN>-<id>/spec.md` con ruta real (ej. `001-api-tasks`) (+ `history/index.md` solo si hace falta). 🚫 no uses `NNN-...` literal.
 
 ## Flujo
 1. TRIAGE: si solo preguntan → responde sin editar.

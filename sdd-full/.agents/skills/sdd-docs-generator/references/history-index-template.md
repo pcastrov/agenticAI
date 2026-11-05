@@ -1,6 +1,6 @@
 # Índice de historial: [Nombre del Módulo]
 
-**Archivo**: `specs/NNN-[id-nombre-modulo]/history/index.md` · Tope ~20 líneas · Solo enruta; el detalle vive en cada dominio.
+**Archivo**: `specs/001-[id-nombre-modulo]/history/index.md` (ruta real) · Tope ~20 líneas · Solo enruta; el detalle vive en cada dominio.
 
 | Dominio | Archivo | HU | RF | Iteraciones | Última |
 |---------|---------|----|----|-------------|--------|

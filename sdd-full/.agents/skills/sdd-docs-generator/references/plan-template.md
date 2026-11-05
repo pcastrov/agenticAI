@@ -1,6 +1,8 @@
 # Plan de Diseño Técnico: [Nombre del Módulo]
 
-**Módulo**: `NNN-[id-nombre-modulo]` · **Basado en**: `specs/NNN-[id-nombre-modulo]/spec.md` · **Stack**: `## Perfil técnico` de `AGENTS.md`
+> Plantilla: usa carpeta real (`001-...`). 🚫 No uses `NNN-...` literal.
+
+**Módulo**: `001-[id-nombre-modulo]` · **Basado en**: `specs/001-[id-nombre-modulo]/spec.md` · **Stack**: `## Perfil técnico` de `AGENTS.md`
 
 > Solo arquitectura de los RF pendientes. Lo cerrado vive en `history/<dominio>.md`.
 
