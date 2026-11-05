@@ -122,17 +122,35 @@ Crea o actualiza **7 principios innegociables, cortos y verificables** (máximo 
 7. **Idioma**: Código, variables y comentarios en **Inglés**; documentación en `specs/`, UI e interfaces al usuario en **Español** (ajustable si el usuario indica otro).
 
 ### PASO 7: Resto de `AGENTS.md`
-Crea o actualiza con datos reales del proyecto. **No copies** los textos largos de `global-sdd` (GATE, DRY, formatos de consulta): esa regla ya es `alwaysApply`. En `AGENTS.md` solo hechos del proyecto + punteros cortos:
+Crea o actualiza con datos reales del proyecto. **No** copies formatos largos de DRY/diseño (siguen en `global-sdd`). **Sí** incrusta el GATE abajo: Cursor tiene `alwaysApply`, pero **OpenCode, Pi y el chat libre solo leen `AGENTS.md` de forma fiable**; un puntero de 3 líneas no basta (el modelo programa sin abrir `rules/`).
 
-- **Nombre y Descripción**, **Stack y Estructura**, **Comandos**, **Convenciones**, **Reglas de Dominio**.
-- Encabezado operativo corto (obligatorio):
+- Pon **`## Gobernanza SDD (GATE)` como primera sección** tras el título (antes de Perfil / Stack). Sustituye `<raíz>` por `.cursor` o `.agents` según el host.
+- Luego: **Nombre y Descripción**, **Stack y Estructura**, **Comandos**, **Convenciones**, **Reglas de Dominio**.
 
   ```markdown
-  ## Gobernanza SDD (puntero)
-  - Antes de editar código/tests: GATE y `[TRIAGE SDD]` en `<raíz>/rules/global-sdd.md` §0.
-  - Integridad de tests (incl. Playwright / ui_check): `global-sdd` §2.1 — no acomodar el rojo; Reporte de Fallo + cierre.
-  - Simplicidad / diseño: `global-sdd` §2.2–2.3 — solo como consulta.
-  - UI/MCP: `/ui-check` y `/mcp-mode`; no DOM en el hilo de código.
+  ## Gobernanza SDD (GATE — obligatorio en cada turno)
+  Detalle: `<raíz>/rules/global-sdd.md`. Este bloque aplica **aunque el usuario no escriba `/sdd`**.
+
+  Antes de cualquier Write/Edit/Bash que mute código o tests:
+  1. Solo pregunta/análisis → **no** edites.
+  2. Emite el bloque y **detente** si Nivel 1 o si falta aprobación:
+     ```
+     [TRIAGE SDD]
+     - Nivel: 0 FAST-TRACK | 1 SDD-REQUIRED
+     - Motivo: [1 línea]
+     - Spec/tarea: [ruta o "ninguna aún"]
+     - Aprobación: n/a (Nivel 0) | pendiente | ya aprobada (cita al usuario)
+     ```
+  3. **Nivel 0**: ≤1 archivo, sin contrato/modelo/BD/seguridad/deps nuevas → puedes editar.
+  4. **Nivel 1**: **PROHIBIDO** código o diffs en ese turno. Flujo: `spec.md` → 🛑 OK → `plan.md` → 🛑 OK → `tasks.md` → 🛑 OK → cadencia → TDD.
+  5. Antes del TDD (si hay ≥2 tareas):
+     ```
+     [CADENCIA TDD]
+     A) Una por una — me detengo tras cada tarea
+     B) Todas seguidas — hasta fin de lote o fallo
+     ```
+     Sin respuesta clara → **A**.
+  6. Test/UI rojo → `REPORTE DE FALLO`; no debilitar tests. UI/MCP: `/ui-check`, `/mcp-mode`.
   ```
 
 - **`## Código Compartido`**: catálogo de código **propio** reutilizable (DRY; ver `global-sdd` §2.2):
@@ -161,7 +179,7 @@ Crea o actualiza (máximo ~50 líneas):
 ## Formato de Salida
 1. Resumen del **Stack Detectado** (o de las respuestas de la entrevista) y versión del flujo SDD instalada.
 2. Borrador de `## Perfil técnico` y `docs/constitution.md` (principios cortos; sin duplicar `global-sdd`).
-3. Borrador de `AGENTS.md`: puntero **Gobernanza SDD** + **Código Compartido** + dominio/stack.
+3. Borrador de `AGENTS.md`: bloque **Gobernanza SDD (GATE)** completo al inicio + **Código Compartido** + dominio/stack.
 4. Guías `conventions`, `stack-*.md` y verificación sugerida.
 5. Si Laravel: Boost con **`guidelines: false`**, MCP on; higiene MCP (sin Playwright/DevTools siempre-on).
 6. 🛑 **DETENTE Y ESPERA** aprobación antes de escribir/instalar.

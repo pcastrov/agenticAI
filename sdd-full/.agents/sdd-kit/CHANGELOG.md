@@ -4,12 +4,20 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 4.0.3 — 2026-11-05
+
+### Cambiado
+- **OpenCode/Pi:** el GATE ya no depende solo de `alwaysApply` (Cursor). `/init` incrusta el bloque completo `## Gobernanza SDD (GATE)` al **inicio** de `AGENTS.md`. Instalador opción OpenCode crea/fusiona `opencode.json` → `instructions: [".agents/rules/global-sdd.md"]`. `/sdd-update` repara Gobernanza corta y `opencode.json`.
+
+### Migración
+`/sdd-update` (acepta arreglar `AGENTS.md` + `opencode.json`) o reinstalar opción 5 + `/init`.
+
+---
+
 ## 4.0.2 — 2026-11-04
 
 ### Cambiado
-- Triage **aunque el usuario no escriba `/sdd`**: cualquier pedido de cambio pasa por `[TRIAGE SDD]` (`global-sdd` §0).
-- Paradas explícitas: 🛑 tras `spec.md`, 🛑 tras `plan.md` (MODO 2a), 🛑 tras `tasks.md` (MODO 2b).
-- Antes del TDD: `[CADENCIA TDD]` A una-a-una | B lote (default A); en A se pregunta tras cada tarea.
+- Triage **aunque el usuario no escriba `/sdd`**; paradas tras spec/plan/tasks; `[CADENCIA TDD]` A|B.
 
 ### Migración
 `/sdd-update` o reinstalar Full.

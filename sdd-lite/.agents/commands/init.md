@@ -9,7 +9,15 @@ Abre `sdd-kit.md` (debe decir `edition: lite`) y `rules/global-sdd.md` §0.
 2. Detecta stack o entrevista corta.
 3. Escribe `## Perfil técnico` (mismas claves que Full).
 4. `docs/constitution.md`: ≤12 líneas (simplicidad, relación spec-código, tests, datos, idioma).
-5. `AGENTS.md`: hechos + Perfil + Código Compartido vacío + **Gobernanza** (3 líneas apuntando a `<raíz>/rules/global-sdd.md` GATE). Sin Boost guidelines.
+5. `AGENTS.md`: **primero** el bloque GATE (abajo), luego hechos + Perfil + Código Compartido. OpenCode/Pi leen `AGENTS.md` (no confíes solo en `rules/`). Sin Boost guidelines.
+
+   ```markdown
+   ## Gobernanza SDD (GATE)
+   Detalle: `<raíz>/rules/global-sdd.md`. Aplica **sin** `/sdd`.
+   Antes de editar código/tests: emite `[TRIAGE SDD]` (0 FAST-TRACK | 1 SDD-REQUIRED).
+   Nivel 1 → Spec tabular + 🛑 OK; **prohibido** código en ese turno.
+   Luego `[CADENCIA TDD]` A una-a-una | B lote (default A). Test rojo → REPORTE DE FALLO.
+   ```
 6. Laravel: opcional Boost con `"guidelines": false`, `"mcp": true`. MCP navegador: off (ver `/mcp-mode`).
 7. `MEMORY.md` ≤40 líneas.
 8. 🛑 Aprueba antes de escribir.

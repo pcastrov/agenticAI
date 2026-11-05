@@ -54,7 +54,7 @@ En PowerShell también vale el primer argumento sin nombre: `.\setup_sdd_full.ps
 
 El script hace tres cosas (en este orden):
 1. Pregunta tu agente.
-2. Instala el paquete en **`.cursor/`** si usas Cursor, o en **`.agents/`** si usas otro (mismo contenido; solo cambia el nombre). Crea un archivo **puente** solo donde hace falta: `.github/copilot-instructions.md` (Copilot) y `CLAUDE.md` (Claude Code). Cursor, Pi y OpenCode leen su carpeta directo. En Cursor, además, las reglas se convierten a `.mdc` (el formato que Cursor acepta). La opción **Pi** genera además `.pi/extensions/sdd-commands.ts` (slash commands que apuntan a los `.md`). La opción **OpenCode** solo instala `.agents/`, sin esa extensión.
+2. Instala el paquete en **`.cursor/`** si usas Cursor, o en **`.agents/`** si usas otro (mismo contenido; solo cambia el nombre). Crea un archivo **puente** solo donde hace falta: `.github/copilot-instructions.md` (Copilot) y `CLAUDE.md` (Claude Code). Cursor, Pi y OpenCode leen su carpeta directo. En Cursor, las reglas pasan a `.mdc`. La opción **Pi** genera `.pi/extensions/sdd-commands.ts`. La opción **OpenCode** escribe `opencode.json` con `instructions: [".agents/rules/global-sdd.md"]` (OpenCode no usa el `alwaysApply` de Cursor). Tras `/init`, el **GATE Triage queda incrustado al inicio de `AGENTS.md`** — imprescindible en OpenCode/Pi para que un pedido en lenguaje natural no salte el SDD.
 3. (Opcional) Te deja **solo la guía de tu framework** (Laravel/Filament/NativePHP, Django, FastAPI, Flutter) y borra el resto para ahorrar tokens. Si saltas el paso o no hay guía, el agente usa buenas prácticas estándar del lenguaje, sin error.
 
 4. **En el chat de tu agente** ejecuta `/init` (genera `AGENTS.md`, `docs/constitution.md`, `MEMORY.md`). Luego:

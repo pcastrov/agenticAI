@@ -37,9 +37,10 @@ Si la extensión instalada no corresponde al host (p. ej. Cursor con `.md`, u ot
    - `rules/stack-*.md`: refrescar desde `skills/stack-conventions/references/` solo si no fueron personalizadas.
 6. **No toques**: skills/archivos creados por el usuario (REGLA DE PROTECCIÓN), comandos/reglas ajenos al paquete, `specs/` (salvo paso 8, con aprobación), `MEMORY.md`, dominio de `AGENTS.md`, ni README/CHANGELOG de la raíz del proyecto.
 7. **Corregir `AGENTS.md` y `docs/constitution.md` según el host en uso** (proponer; no borrar dominio):
-   - Todo puntero a la carpeta del framework (p. ej. "Gobernanza SDD") debe usar la **carpeta y extensión del host**: `.cursor/rules/global-sdd.mdc` si es Cursor, `.agents/rules/global-sdd.md` si no. Si apuntan a la otra, corrígelos. Si no existen, agrégalos.
-   - Constitution: integridad de tests (incl. E2E/`ui_check`) + revisión de diseño como sugerencia + Triage (Nivel 0/1).
-   - `AGENTS.md`: puntero corto a `global-sdd` §0 / §2.1–2.3; no reinyectar textos largos.
+   - Rutas del framework: `.cursor/rules/global-sdd.mdc` (Cursor) o `.agents/rules/global-sdd.md` (otros).
+   - Constitution: integridad de tests + revisión de diseño + Triage.
+   - **`AGENTS.md` — GATE obligatorio**: si solo hay un puntero de 2–3 líneas a `global-sdd`, **reemplázalo** por el bloque completo `## Gobernanza SDD (GATE)` de `/init` (PASO 7). Debe quedar **al inicio** del archivo. Motivo: OpenCode/Pi cargan `AGENTS.md`, no el `alwaysApply` de Cursor.
+   - **OpenCode**: si existe `opencode.json` o el usuario usa OpenCode, asegúrate de que `instructions` incluya `".agents/rules/global-sdd.md"` (o `.cursor/...` si aplica). Crea `opencode.json` mínimo si no existe y el host es OpenCode. No borres otras claves del usuario.
    - Si existe `<laravel-boost-guidelines>`: propone eliminarlo o ≤5 líneas y `boost.json` con `"guidelines": false`, `"mcp": true`.
    - Higiene MCP: `/mcp-mode` y `/ui-check`.
    - Solo escribe tras confirmación.

@@ -2,7 +2,7 @@
 
 Edición para herramientas agénticas avanzadas (**Cursor, Claude Code, GitHub Copilot, Pi, OpenCode**) y modelos frontier (ventanas grandes). Flujo completo: Triage + 8 fases, subagentes, diagramas, propiedades y QA a ciegas.
 
-Versión del paquete: **4.0.2** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía del flujo: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
+Versión del paquete: **4.0.3** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía del flujo: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
 
 No combines con **SDD Lite**. Comparativa Full vs Lite: [README de la raíz](../README.md).
 
@@ -111,7 +111,9 @@ Con script (indica la ruta de **tu proyecto**; sin ella, el script muestra un ej
 
 Sin script: copia el contenido de `.agents/` a `.cursor/` (Cursor) o `.agents/` (otros) y ejecuta `/init`.
 
-Menú del instalador: **1** Cursor · **2** Copilot · **3** Claude Code · **4** Pi (genera `.pi/extensions/sdd-commands.ts`) · **5** OpenCode (solo `.agents/`, sin extensión de Pi).
+Menú del instalador: **1** Cursor · **2** Copilot · **3** Claude Code · **4** Pi (`.pi/extensions/sdd-commands.ts`) · **5** OpenCode (`opencode.json` → `instructions` carga `rules/global-sdd.md`).
+
+**Importante (OpenCode / Pi):** el Triage no vive solo en `rules/` (eso es `alwaysApply` de Cursor). Tras `/init`, el GATE queda **incrustado al inicio de `AGENTS.md`**. Sin ese bloque, el modelo suele programar sin SDD.
 
 ## Uso rápido
 

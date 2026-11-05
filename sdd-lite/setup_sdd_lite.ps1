@@ -105,7 +105,32 @@ switch ($choice) {
         Write-Host '[+] Extension de Pi generada en .pi/extensions/sdd-commands.ts' -ForegroundColor Green
         Write-Host "    Comandos registrados: $list" -ForegroundColor DarkGray
     }
-    '5' { Write-Host "[+] OpenCode: $root/ es soportada nativamente (sin extension de Pi)." -ForegroundColor Green }
+    '5' {
+        $instr = "$root/rules/global-sdd.md"
+        $cfgPath = 'opencode.json'
+        if (Test-Path -LiteralPath $cfgPath) {
+            try {
+                $cfg = Get-Content -LiteralPath $cfgPath -Raw -Encoding UTF8 | ConvertFrom-Json
+                $list = @()
+                if ($cfg.instructions) { $list = @($cfg.instructions) }
+                if ($list -notcontains $instr) { $list += $instr }
+                $cfg | Add-Member -NotePropertyName instructions -NotePropertyValue $list -Force
+                $cfg | ConvertTo-Json -Depth 20 | Set-Content -Path $cfgPath -Encoding UTF8
+            } catch {
+                Write-Host "[!] No se pudo fusionar opencode.json existente; anade manualmente instructions: [\"$instr\"]" -ForegroundColor Yellow
+            }
+        } else {
+            $json = @"
+{
+  "`$schema": "https://opencode.ai/config.json",
+  "instructions": ["$instr"]
+}
+"@
+            Set-Content -Path $cfgPath -Value $json -Encoding UTF8
+        }
+        Write-Host "[+] OpenCode: $root/ instalado + opencode.json instructions -> $instr" -ForegroundColor Green
+        Write-Host '    Tras /init, el GATE tambien queda incrustado en AGENTS.md (obligatorio).' -ForegroundColor DarkGray
+    }
 }
 
 $ref = "$root/skills/stack-conventions/references"

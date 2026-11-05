@@ -99,7 +99,31 @@ EOF
         echo "[+] Extensión de Pi generada en .pi/extensions/sdd-commands.ts"
         echo "    Comandos registrados: $LIST"
         ;;
-    5) echo "[+] OpenCode: $ROOT/ es soportada nativamente (sin extensión de Pi)." ;;
+    5)
+        INSTR="$ROOT/rules/global-sdd.md"
+        if [ -f opencode.json ] && command -v python3 >/dev/null 2>&1; then
+            python3 - "$INSTR" <<'PY'
+import json, sys
+path = "opencode.json"
+instr = sys.argv[1]
+with open(path, encoding="utf-8") as f:
+    cfg = json.load(f)
+lst = list(cfg.get("instructions") or [])
+if instr not in lst:
+    lst.append(instr)
+cfg["instructions"] = lst
+with open(path, "w", encoding="utf-8") as f:
+    json.dump(cfg, f, indent=2)
+    f.write("\n")
+PY
+        elif [ -f opencode.json ]; then
+            echo "[!] Existe opencode.json; añade manualmente a instructions: \"$INSTR\""
+        else
+            printf '%s\n' '{' '  "$schema": "https://opencode.ai/config.json",' "  \"instructions\": [\"$INSTR\"]" '}' > opencode.json
+        fi
+        echo "[+] OpenCode: $ROOT/ instalado + opencode.json instructions → $INSTR"
+        echo "    Tras /init, el GATE también queda incrustado en AGENTS.md (obligatorio)."
+        ;;
 esac
 
 REF="$ROOT/skills/stack-conventions/references"

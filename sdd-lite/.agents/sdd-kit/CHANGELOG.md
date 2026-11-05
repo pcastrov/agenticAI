@@ -1,9 +1,19 @@
 # Changelog — SDD Lite
 
+## 2.0.3 — 2026-11-05
+
+### Cambiado
+- GATE incrustado en `AGENTS.md` (`/init`); OpenCode: `opencode.json` → `instructions` con `global-sdd.md`. Misma causa raíz que Full (hosts sin `alwaysApply`).
+
+### Migración
+`/sdd-update` o reinstalar Lite + `/init`.
+
+---
+
 ## 2.0.2 — 2026-11-04
 
 ### Cambiado
-- Triage **aunque no escriban `/sdd`**; 🛑 tras el Spec; `[CADENCIA TDD]` A/B antes de implementar (default A).
+- Triage sin `/sdd`; 🛑 tras Spec; `[CADENCIA TDD]` A|B.
 
 ### Migración
 `/sdd-update` o reinstalar Lite.
