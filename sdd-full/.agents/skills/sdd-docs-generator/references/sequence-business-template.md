@@ -1,5 +1,5 @@
 <!--
-Diagrama de secuencia de NEGOCIO: specs/NNN-[id-nombre-modulo]/diagramas/HU-XX-negocio.md
+Diagrama de secuencia de NEGOCIO: specs/001-[id-nombre-modulo]/diagramas/HU-XX-negocio.md (ruta real; no uses NNN literal)
 Audiencia: cualquier persona (usuarios, negocio, QA, desarrollo).
 Reglas:
 - Participantes: actores (roles), el "Sistema" como caja negra y los sistemas externos de la sección 7 de spec.md.

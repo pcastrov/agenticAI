@@ -13,8 +13,8 @@ Abre con tu herramienta de lectura:
 3. 🛑 Resumen de lo que vas a archivar + confirmación explícita **antes** de escribir.
 4. Ejecuta planner **MODO 6**:
    - Agrupa lo cerrado por **dominio** (ej. `tasks`, `auth`).
-   - Crea o actualiza `specs/NNN-.../history/<dominio>.md` con la plantilla (texto íntegro de RF/HU/decisiones; append-only).
-   - Crea o actualiza `specs/NNN-.../history/index.md` (una fila por dominio).
+   - Crea o actualiza `specs/<NNN>-<id>/history/<dominio>.md` (ruta real, ej. `001-api-tasks`) con la plantilla (texto íntegro de RF/HU/decisiones; append-only).
+   - Crea o actualiza `specs/<NNN>-<id>/history/index.md` (una fila por dominio).
    - Actualiza activos (`Ya implementado`, quita `[x]` archivados de `tasks.md`).
 
 ## Prohibido

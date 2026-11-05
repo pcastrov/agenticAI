@@ -25,7 +25,7 @@ No ejecutes mutaciones de BD ni cambies código de la aplicación durante el ret
 
 ### 1. Mapeo e Identificación de Módulos
 - Agrupa la lógica del proyecto en módulos de negocio.
-- Asigna a cada módulo una carpeta en `specs/NNN-[id-nombre-modulo]/` (empezando por `001-`).
+- Asigna a cada módulo una carpeta **real** `specs/<NNN>-<id-kebab>/` empezando en `001-` (ej. `specs/001-api-tasks/`, `specs/002-billing/`). Sustituye el placeholder de las plantillas; 🚫 no crees carpetas llamadas `NNN-...`.
 - Identifica el **código propio compartido** entre módulos (clases abstractas, bases, traits, helpers o componentes que usan dos o más módulos; nada del framework ni de las exclusiones "DRY en este stack") y propón agregarlo a `## Código Compartido` de `AGENTS.md`. No lo escribas sin aprobación.
 - Registra en la deuda técnica de cada módulo las reglas de negocio duplicadas que detectes (sin corregirlas), según "Qué cuenta como duplicación" de `global-sdd.md`, sección 2.2.
 
@@ -49,7 +49,7 @@ No ejecutes mutaciones de BD ni cambies código de la aplicación durante el ret
 - Arquitectura y mitigaciones de lo pendiente, con **Trazabilidad Arquitectónica** (archivo ↔ RF) y **Mapeo de Propiedades ↔ Tests**.
 
 ### 5. Diagramas de cada módulo
-- En `specs/NNN-[id-nombre-modulo]/diagramas/`, un diagrama de negocio (`HU-x-negocio.md`) y uno técnico (`HU-x-tecnico.md`) por cada flujo principal, según las plantillas `sequence-*-template.md` de la skill. Describen el comportamiento real del código, incluidos los casos límite que maneja.
+- En `specs/<NNN>-<id-kebab>/diagramas/` (ruta real, ej. `specs/001-api-tasks/diagramas/`), un diagrama de negocio (`HU-x-negocio.md`) y uno técnico (`HU-x-tecnico.md`) por cada flujo principal, según las plantillas `sequence-*-template.md` de la skill. Describen el comportamiento real del código, incluidos los casos límite que maneja.
 
 ### 6. `tasks.md` de cada módulo
 - Solo tareas `- [ ]`: lo que falta construir o probar (tests faltantes, validaciones, políticas de acceso no creadas, deuda).

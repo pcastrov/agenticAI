@@ -39,7 +39,7 @@ tu-proyecto/
 ├── MEMORY.md
 ├── docs/constitution.md
 └── specs/
-    └── NNN-nombre-modulo/
+    └── 001-nombre-modulo/   ← número real + id kebab (nunca "NNN-...")
         ├── spec.md            ← qué / por qué (tabular)
         ├── plan.md            ← cómo / arquitectura
         ├── tasks.md           ← checklist TDD (- [ ] / - [x])

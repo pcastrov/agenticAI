@@ -4,6 +4,17 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 4.0.5 — 2026-11-05
+
+### Cambiado
+- **Nomenclatura de módulos**: `NNN` en plantillas es placeholder. Carpetas reales = `001-<id-kebab>/`, `002-...`. Prohibido crear `specs/NNN-...` literal.
+- **`/sdd-init`**: no crea módulos de ejemplo bajo `specs/` (solo carpeta vacía opcional). Primer módulo → `/sdd`, `/architect` o `/retrofit`.
+
+### Migración
+`/sdd-update`. Si ya existe una carpeta literal `specs/NNN-...`, renómbrala a `001-<id>/` (o el número que corresponda).
+
+---
+
 ## 4.0.4 — 2026-11-05
 
 ### Cambiado

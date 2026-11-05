@@ -45,7 +45,7 @@ tu-proyecto/
 ├── MEMORY.md
 ├── docs/constitution.md
 └── specs/
-    └── NNN-nombre-modulo/
+    └── 001-nombre-modulo/   ← número real + id kebab (nunca "NNN-...")
         ├── spec.md              ← tabular (Entradas / Salidas / CA / tareas)
         └── history/
             ├── index.md         ← ≤30 líneas (solo índice de dominios)

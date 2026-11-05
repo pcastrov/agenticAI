@@ -174,6 +174,11 @@ Crea o actualiza (máximo ~50 líneas):
 - **Estado actual**, **Decisiones (y por qué)**, **Aprendizajes y errores a evitar**.
 - **Próximos pasos**: si hay código sin specs, ingeniería inversa con `/retrofit`.
 
+### PASO 9: `specs/` (sin módulos de ejemplo)
+- 🚫 **PROHIBIDO** crear `specs/NNN-...`, `specs/001-ejemplo` u otros módulos placeholder.
+- Opcional: crear solo la carpeta vacía `specs/` si no existe.
+- El primer módulo real (`001-<id-kebab>/`) lo crean `/sdd`, `/architect` o `/retrofit` con nomenclatura de `global-sdd` §6.
+
 ---
 
 ## Formato de Salida

@@ -97,15 +97,20 @@ La regla global del flujo (`rules/global-sdd.md`) lleva `alwaysApply: true` para
 ## Estructura de specs
 
 ```text
-specs/NNN-[id-nombre-modulo]/
+specs/001-[id-nombre-modulo]/   # ejemplo: 001-api-tasks (nunca "NNN-..." literal)
 ├── spec.md     # Índice "Ya implementado" + HU con criterios DADO/CUANDO/ENTONCES, RF (EARS + MoSCoW), RN, RNF, restricciones, integraciones, casos límite, propiedades, trazabilidad
 ├── plan.md     # Estructura vigente + arquitectura de lo pendiente, trazabilidad RF ↔ archivo, decisiones técnicas
 ├── tasks.md    # Solo tareas pendientes: prioridad, propiedades validadas, tests asociados, "Hecho cuando"
-├── history/\r\n│   ├── index.md      # Mapa maestro (~20 líneas) → dominios\r\n│   └── <dominio>.md  # Histórico append-only por dominio (decisiones íntegras)
+├── history/
+│   ├── index.md      # Mapa maestro (~20 líneas) → dominios
+│   └── <dominio>.md  # Histórico append-only por dominio (decisiones íntegras)
 └── diagramas/
     ├── HU-01-negocio.md   # Secuencia para cualquier persona (va con spec.md)
     └── HU-01-tecnico.md   # Secuencia por capas y archivos (va con plan.md)
 ```
+
+`/sdd-init` no crea módulos bajo `specs/`. El primer módulo lo crean `/sdd`, `/architect` o `/retrofit` con `001-<id-kebab>/`.
+
 
 ### Diagramas de secuencia (Mermaid)
 

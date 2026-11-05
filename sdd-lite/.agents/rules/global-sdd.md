@@ -29,12 +29,14 @@ Aplica aunque el usuario **no** escriba `/sdd` ni `/implement`.
 
 ## 2. Specs (presupuesto tokens)
 ```text
-specs/NNN-modulo/
+specs/001-api-tasks/     # ejemplo REAL — nunca crees "NNN-..." literal
 ├── spec.md              # activo, tabular, máx ~150 líneas
 └── history/
     ├── index.md         # tabla dominio → shard, máx 30 líneas
     └── <dominio>.md     # ficha atómica por dominio, máx 100 líneas
 ```
+- Nombre: `specs/<NNN>-<id-kebab>/` con `<NNN>` = `001`, `002`… (siguiente libre) e id real del módulo. `NNN` en plantillas es placeholder, **no** nombre de carpeta.
+- `/sdd-init` no crea módulos en `specs/`; el nombre real lo ponen `/sdd`, `/architect` o `/retrofit`.
 - Lee solo `spec.md` por defecto.
 - Historial: consulta `history/index.md` y abre **un solo** shard de dominio si hace falta.
 - Shard lleno (100 líneas) → condensa entradas viejas del mismo dominio; no crees archivos extra.

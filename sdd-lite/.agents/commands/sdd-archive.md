@@ -5,7 +5,7 @@ Abre:
 1. `subagents/1-planner.md` (modo Archivar)
 2. `skills/sdd-docs-generator/references/history-index-template.md`
 3. `skills/sdd-docs-generator/references/domain-shard-template.md`
-4. `specs/NNN-.../spec.md` (y `history/index.md` si existe)
+4. `specs/<NNN>-<id>/spec.md` ruta real (ej. `001-...`) (y `history/index.md` si existe)
 
 ## Pasos
 1. Verifica tests en verde (Exit Code 0) o avisa y ofrece `/review` antes.

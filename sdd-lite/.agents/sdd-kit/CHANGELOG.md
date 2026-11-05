@@ -1,5 +1,15 @@
 # Changelog — SDD Lite
 
+## 2.0.5 — 2026-11-05
+
+### Cambiado
+- **Nomenclatura**: carpetas reales `001-<id>/` (nunca `NNN-...` literal). `/sdd-init` no crea módulos de ejemplo.
+
+### Migración
+`/sdd-update`. Renombra `specs/NNN-...` si ya se materializó el placeholder.
+
+---
+
 ## 2.0.4 — 2026-11-05
 
 ### Cambiado

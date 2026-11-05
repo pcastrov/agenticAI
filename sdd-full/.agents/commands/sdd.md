@@ -41,4 +41,4 @@ Muestra `[TRIAGE SDD]`. Nivel 0 → implementer MODO C. Nivel 1 → fases abajo 
 Nunca se acepta debilitar un test existente sin aprobación explícita (`global-sdd` §2.1).
 
 ## Transmisión de contexto
-En cada fase: objetivo; petición original; rutas en `specs/NNN-.../`; resultado de la fase anterior; cadencia elegida (si aplica).
+En cada fase: objetivo; petición original; rutas reales en `specs/<NNN>-<id>/` (ej. `specs/001-api-tasks/` — nunca `NNN-...` literal); resultado de la fase anterior; cadencia elegida (si aplica).

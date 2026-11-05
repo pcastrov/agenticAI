@@ -4,7 +4,7 @@
 Abre:
 1. `subagents/2-implementer.md`
 2. `rules/global-sdd.md` §0
-3. `specs/NNN-.../spec.md` (sección **Tareas**)
+3. `specs/<NNN>-<id>/spec.md` ruta real (ej. `001-...`) — sección **Tareas**
 
 Sin `- [ ]` → 🛑; pide `/sdd` o `/architect`. No crees `tasks.md` (Lite: tareas en `spec.md`).
 

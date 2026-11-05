@@ -45,6 +45,6 @@ Si la extensión instalada no corresponde al host (p. ej. Cursor con `.md`, u ot
    - Si existe `<laravel-boost-guidelines>`: propone eliminarlo o ≤5 líneas y `boost.json` con `"guidelines": false`, `"mcp": true`.
    - Higiene MCP: `/mcp-mode` y `/ui-check`.
    - Solo escribe tras confirmación.
-8. **Migración de historial (pregunta siempre)**: si algún `specs/NNN-.../` tiene `history.md` monolítico, **pregunta** si migrarlo. Con "sí", invoca `@1-planner.md` para separarlo en `history/index.md` + `history/<dominio>.md` **sin resumir ni perder decisiones**; muestra el plan de dominios antes de escribir y no borres `history.md` hasta que el usuario confirme el resultado. Con "no", déjalo (sigue siendo legible por ID) y recuérdalo en el resumen.
+8. **Migración de historial (pregunta siempre)**: si algún módulo real bajo `specs/<NNN>-<id>/` tiene `history.md` monolítico, **pregunta** si migrarlo. Con "sí", invoca `@1-planner.md` para separarlo en `history/index.md` + `history/<dominio>.md` **sin resumir ni perder decisiones**; muestra el plan de dominios antes de escribir y no borres `history.md` hasta que el usuario confirme el resultado. Con "no", déjalo (sigue siendo legible por ID) y recuérdalo en el resumen.
 9. 🛑 Resumen (archivos reemplazados, preservados y omitidos por la protección; correcciones de `AGENTS.md`; migraciones) + confirmación antes de escribir.
 10. Actualiza `version` y `source` en `sdd-kit.md` (deja `source` en la URL pública del repo o la ruta a `sdd-full` usada).
