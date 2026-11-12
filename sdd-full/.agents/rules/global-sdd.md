@@ -8,11 +8,45 @@ alwaysApply: true
 ## 0. GATE OBLIGATORIO ANTES DE EDITAR O EJECUTAR
 > **OpenCode / Pi / chat libre:** este archivo solo se aplica si el host lo carga. Por eso `/sdd-init` **copia el GATE a `AGENTS.md`** (primera sección) y, en OpenCode, `opencode.json` → `instructions` apunta aquí. Si `AGENTS.md` no tiene el bloque GATE, **no edites código** hasta corregirlo con `/sdd-init` o `/sdd-update`.
 
-Aplica a **toda** petición (con o **sin** slash `/sdd`, `/implement`, etc.), antes de `Write` / `StrReplace` / `Edit` / mutaciones por `Bash` sobre código o tests:
+Aplica a **toda** petición — preguntas, bugs y features, con o **sin** slash `/sdd`, `/implement`, etc. — **antes** de diagnosticar a fondo, proponer fixes/migraciones/refactors o usar `Write` / `StrReplace` / `Edit` / mutaciones por `Bash` sobre código o tests.
 
-1. **Pregunta vs acción**: si el usuario solo pregunta, consulta o pide analizar → **PROHIBIDO** tocar archivos. Solo responde.
-2. **Sin `/sdd` también aplica**: si la instrucción implica crear/cambiar funcionalidad, bugfix, API, BD, multi-archivo o refactor → **igual** emites `[TRIAGE SDD]` en el Turno 1. No hace falta que el usuario escriba `/sdd`.
-3. **REGLA ZERO — TRIAGE GATE (Turno 1, obligatorio)**: antes de modificar código fuente o tests **detente y clasifica** en el chat:
+Orden mental: **MEMORY → AGENTS → ¿título de carpeta `specs/` encaja? → si sí, solo ese módulo → ¿ya estaba? → ¿merece SDD? → TRIAGE SDD → Nivel 0 o Nivel 1**.
+
+### 0.1 Turno 0 — ANCLAJE (obligatorio, antes del triage)
+Emite este bloque en el chat **antes** de `[TRIAGE SDD]` y **antes** de proponer diffs, migraciones o diseño nuevo:
+
+```
+[ANCLAJE]
+- MEMORY: leído; hallazgo: … | ninguno relevante
+- AGENTS: [hecho relevante en una línea]
+- Spec candidato(s) por título: [ruta(s)] | ninguna
+- Dentro del candidato (sección 0 / tasks / history index → dominio): … | nada
+- ¿Ya estaba hecho o decidido?: sí → [explicar; no reinventar] | no → seguir
+- ¿Merece spec (nuevo o ampliar)?: sí → Nivel 1 | no → Nivel 0 (+ huella MEMORY al cerrar si aporta)
+```
+
+**Cómo leer (presupuesto de tokens)**
+1. **`MEMORY.md`**: siempre, lectura corta (estado / decisiones / aprendizajes). ¿Ya se decidió o se hizo?
+2. **`AGENTS.md`**: pasada corta (dominio, límites, “preguntar antes”).
+3. **Specs — solo por título**: 🚫 **PROHIBIDO** abrir o buscar en todos los módulos.
+   - Mira el índice (`specs/README.md` o **nombres de carpetas** `specs/NNN-id/`) y elige candidatos cuyo **título o id** encaje con el tema (ej. usuarios → `001-multitenancy-usuarios-shield`). No abras `004`, `005`, etc. si el tema no es ese.
+   - Si ningún título encaja → Spec = ninguna → decidir Nivel 0 o abrir SDD nuevo.
+   - Si hay 1 o 2 candidatos → entrar **solo** ahí.
+   - Dentro del módulo, en este orden: `spec.md` **sección 0** (ya implementado) y RF/RNF vigentes si aplican → `tasks.md` → `history/index.md` y **solo un** `history/<dominio>.md` si el índice apunta al ID. No leas todos los dominios ni blueprints legado salvo que la tarea lo pida.
+
+**Reglas duras del anclaje**
+- No proponer migración, tenancy, auth o contratos que contradigan MEMORY, AGENTS o el spec candidato **sin citar el gap**.
+- No inventar diseño nuevo si ya está definido en MEMORY o en el spec candidato.
+- Si el usuario dice “ya lo hicimos / está en el seed / está en memory”, verifica MEMORY y el spec candidato **antes** de contradecir o implementar lo contrario.
+- MEMORY no sustituye `history/` del módulo: history guarda el detalle; MEMORY guarda punteros y trampas recientes.
+- No convertir MEMORY en bitácora de cada cambio.
+
+### 0.2 Turno 1 — TRIAGE GATE (si hay que editar código o tests)
+Tras el anclaje, **detente y clasifica** en el chat:
+
+1. **Pregunta vs acción**: si el usuario solo pregunta, consulta o pide analizar → tras el ANCLAJE, **PROHIBIDO** tocar archivos. Solo responde.
+2. **Sin `/sdd` también aplica**: si la instrucción implica crear/cambiar funcionalidad, bugfix, API, BD, multi-archivo o refactor → **igual** emites `[TRIAGE SDD]`. No hace falta que el usuario escriba `/sdd`.
+3. **REGLA ZERO — TRIAGE**:
    ```
    [TRIAGE SDD]
    - Nivel: 0 FAST-TRACK | 1 SDD-REQUIRED
@@ -20,8 +54,8 @@ Aplica a **toda** petición (con o **sin** slash `/sdd`, `/implement`, etc.), an
    - Spec/tarea: [ruta o "ninguna aún"]
    - Aprobación: n/a (Nivel 0) | pendiente | ya aprobada (cita la frase del usuario)
    ```
-   - **FAST-TRACK (Nivel 0)**: ≤ 1 archivo, arreglo menor, sin impacto de arquitectura (sin cambios de contrato, modelo de datos, seguridad ni dependencias). Permite edición inmediata explicando el motivo brevemente.
-   - **SDD-REQUIRED (Nivel 1)**: lógica de negocio, base de datos o multi-archivo. **TERMINANTEMENTE PROHIBIDO emitir bloques de código o diffs** en este turno: entra al flujo SDD (spec → plan → tasks → TDD) y pide **aprobación explícita** en cada parada. Aprobación `pendiente` → **DETENTE**, sin herramientas de escritura sobre código.
+   - **FAST-TRACK (Nivel 0)**: arreglo sencillo que no merece spec (típicamente ≤ 1 archivo, sin impacto de arquitectura: sin cambios de contrato, modelo de datos, seguridad ni dependencias). Permite edición inmediata explicando el motivo. Al **cerrar**, si aportó decisión o aprendizaje que no deba olvidarse → **una línea mínima** en `MEMORY.md` (Decisión o Aprendizaje).
+   - **SDD-REQUIRED (Nivel 1)**: lógica de negocio, BD, multi-archivo, duda, o no hay spec y lo merece. **TERMINANTEMENTE PROHIBIDO emitir bloques de código o diffs** en este turno: entra al flujo SDD (spec → plan → tasks → TDD) y pide **aprobación explícita** en cada parada. Aprobación `pendiente` → **DETENTE**, sin herramientas de escritura sobre código.
    - Duda entre Nivel 0 y 1 → Nivel 1.
 4. **Paradas de fase (Nivel 1)**: 🛑 tras crear/actualizar `spec.md`; 🛑 tras `plan.md`; 🛑 tras `tasks.md`. No encadenes la siguiente fase sin OK del usuario.
 5. **Cadencia TDD**: antes de la primera tarea pendiente, pregunta:
@@ -42,9 +76,10 @@ Principios inmutables para todos los agentes, subagentes, comandos y skills. Agn
 
 ## 2. Invocación Obligatoria del Flujo SDD
 Ante cambio, bugfix, funcionalidad o refactor (**aunque el usuario no escriba `/sdd`**):
-- 🚫 **PROHIBIDO** modificar código sin pasar por la evaluación SDD (sección 0).
-- ⚙️ Aplica el mismo flujo que `/sdd`: escanea `specs/` → Triage → spec / plan / tasks (con paradas) o cambio directo Nivel 0 (MODO C) tras confirmación.
-- 🛑 Presenta el Triage y espera; en Nivel 1 no toques código hasta tener spec (y luego plan/tasks) aprobados.
+- 🚫 **PROHIBIDO** modificar código sin pasar por ANCLAJE + evaluación SDD (sección 0).
+- ⚙️ Aplica el mismo flujo que `/sdd`: `[ANCLAJE]` (MEMORY → AGENTS → candidato por **título**) → Triage → spec / plan / tasks (con paradas) o cambio directo Nivel 0 (MODO C) tras confirmación.
+- 🛑 Presenta Anclaje y Triage; en Nivel 1 no toques código hasta tener spec (y luego plan/tasks) aprobados.
+- 🚫 **PROHIBIDO** barrer todos los `spec.md` ni todos los `history/<dominio>.md`.
 
 ### 2.1 Integridad de los Tests (obligatorio)
 - Un test/verificación que falla se **reporta**, no se acomoda. 🚫 **PROHIBIDO ignorar el rojo**.
@@ -91,9 +126,9 @@ CONSULTA DE DISEÑO
 - Código: según `docs/constitution.md`.
 
 ## 4. Fuentes de Contexto (Trinidad)
-- **`AGENTS.md`**: hechos del proyecto + `## Perfil técnico` + `## Código Compartido`. **No** duplicar aquí las secciones 0–2.3 de esta regla.
+- **`MEMORY.md`**: estado, decisiones y aprendizajes. **Entrada obligatoria del anclaje (Turno 0)** — siempre se consulta (lectura corta). No es bitácora de cada cambio; guarda punteros y trampas recientes. El detalle vive en `history/` del módulo.
+- **`AGENTS.md`**: hechos del proyecto + `## Perfil técnico` + `## Código Compartido` + dominio/límites. Pasada corta en el anclaje. **No** duplicar aquí las secciones 0–2.3 de esta regla.
 - **`docs/constitution.md`**: principios no negociables (prevalecen).
-- **`MEMORY.md`**: estado, decisiones, aprendizajes.
 
 ## 5. Perfil Técnico
 Claves en `AGENTS.md`: `language`, `framework`, `database`, `test`, `test_single`, `lint`, `run`, `migrate`, `structure`, `ui_check`, `security_audit_skill`, `conventions`. Si falta una necesaria → detente y pregunta. Prioridad convenciones: constitution > Convenciones de `AGENTS.md` > guías `conventions` > Principios Generales de `stack-conventions`.
@@ -117,7 +152,7 @@ specs/001-api-tasks/          # ejemplo REAL (nunca uses "NNN" literal)
 - Al crear un módulo nuevo: lista `specs/`, toma el máximo número existente + 1 (si no hay ninguno → `001`), y elige el id según el dominio real (retrofit / `/sdd` / planner). Ejemplo: `specs/001-gestor-tareas/`.
 - `/sdd-init` **no** crea módulos bajo `specs/`; como mucho puede dejar `specs/` vacío. El primer módulo lo crean `/sdd`, `/architect` o `/retrofit` con nombre real.
 
-Diagramas vigentes se actualizan in-place. Lectura: activos primero; del historial lee `history/index.md` y **solo** el dominio relevante, buscando por ID/keyword. Cierre: mover al `history/<dominio>.md` correspondiente; **nunca borrar ni resumir** decisiones arquitectónicas (se segmentan por dominio, no se compactan). IDs `HU`/`RF`/`RN`/`P`/`T`/`S` estables.
+Diagramas vigentes se actualizan in-place. **Lectura corta (tokens)**: elige el módulo por **título/id de carpeta** (no abras todos); dentro: sección 0 + RF/RNF vigentes → `tasks.md` → `history/index.md` y **solo** el dominio que el índice indique. Cierre: mover al `history/<dominio>.md` correspondiente; **nunca borrar ni resumir** decisiones arquitectónicas (se segmentan por dominio, no se compactan). Si el aprendizaje no cabe solo en history, deja un **puntero** en `MEMORY.md`. IDs `HU`/`RF`/`RN`/`P`/`T`/`S` estables.
 
 ## 7. Flujo SDD (Fases 1-8)
 1 Spec → 2 QA spec → 3 Plan/tareas → 4 QA arquitectura → 5 QA tareas → 6 TDD → 7 QA final → 8 Cierre `history/`. Detalle y orquestación: `/sdd`.

@@ -26,13 +26,23 @@ Origen: [github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI) �
 
 ---
 
+## Anclaje (Turno 0)
+
+Antes del triage y de proponer diffs o migraciones, el agente emite `[ANCLAJE]` con este orden de lectura (presupuesto de tokens):
+
+**MEMORY → AGENTS → ¿el título de alguna carpeta `specs/` encaja? → si sí, solo ese módulo → ¿ya estaba? → ¿merece SDD? → TRIAGE → Nivel 0 | 1**
+
+- `MEMORY.md`: siempre, lectura corta (estado / decisiones / aprendizajes). No es bitácora de cada cambio.
+- Specs: **prohibido** abrir todos los módulos; solo candidatos cuyo **título o id** encaje (1–2). Dentro: sección 0 → `tasks` → `history/index` → un dominio.
+- Detalle: `rules/global-sdd.md` §0.1. Tras `/sdd-update`, comprueba que `AGENTS.md` muestre ANCLAJE.
+
 ## Trinidad de contexto
 
 | Archivo | Contiene | Cambia |
 |---------|----------|--------|
+| `MEMORY.md` | Estado, decisiones y aprendizajes (punteros; entrada del anclaje) | Cuando aporta algo que no deba olvidarse |
 | `AGENTS.md` | Hechos del proyecto: stack, versiones, estructura, comandos, convenciones, reglas de dominio y `## Perfil técnico` | Cuando cambia el stack |
 | `docs/constitution.md` | 6 principios no negociables (puede citar el stack, nunca versiones ni comandos) | Casi nunca |
-| `MEMORY.md` | Estado actual, decisiones y aprendizajes | Por iteración |
 
 ### Perfil técnico
 
@@ -105,23 +115,23 @@ specs/001-[id-nombre-modulo]/   # ejemplo: 001-api-tasks (nunca "NNN-..." litera
 │   ├── index.md      # Mapa maestro (~20 líneas) → dominios
 │   └── <dominio>.md  # Histórico append-only por dominio (decisiones íntegras)
 └── diagramas/
-    ├── HU-01-negocio.md   # Secuencia para cualquier persona (va con spec.md)
+    ├── HU-01-negocio.md   # Flowchart para cliente/negocio (va con spec.md)
     └── HU-01-tecnico.md   # Secuencia por capas y archivos (va con plan.md)
 ```
 
 `/sdd-init` no crea módulos bajo `specs/`. El primer módulo lo crean `/sdd`, `/architect` o `/retrofit` con `001-<id-kebab>/`.
 
 
-### Diagramas de secuencia (Mermaid)
+### Diagramas (Mermaid): flujo de cliente + secuencia de desarrollo
 
-Cada historia tiene dos diagramas del mismo flujo:
+Cada historia tiene dos diagramas del **mismo** flujo, con tipos distintos:
 
-- **Negocio**: actores, el "Sistema" como caja negra y los sistemas externos, con mensajes en lenguaje natural. Cada caso límite es un bloque `alt` y cada mensaje cita el `RF` o `RN` que lo exige. Lo entiende cualquier persona.
-- **Técnico**: el mismo flujo desglosado en las capas del plan (interfaz, servicio, autorización, persistencia, integraciones), con transacciones y errores.
+- **Negocio / cliente** (`HU-x-negocio.md`): Mermaid **`flowchart`**. Pasos y decisiones en lenguaje natural; el "Sistema" es caja negra; casos límite como ramas. Plantilla: `flowchart-business-template.md`. Lo entiende cualquier persona.
+- **Técnico / desarrollo** (`HU-x-tecnico.md`): Mermaid **`sequenceDiagram`**. El mismo flujo desglosado en capas del plan (interfaz, servicio, autorización, persistencia, integraciones), con transacciones y errores. Plantilla: `sequence-technical-template.md`.
 
 Los diagramas describen el **flujo vigente**: se actualizan en su lugar y no se archivan; `history/` solo registra qué cambió.
 
-Cada diagrama es un archivo Markdown con un bloque ` ```mermaid ` (`sequenceDiagram`).
+Cada diagrama es un archivo Markdown con un bloque ` ```mermaid `.
 
 **Para visualizarlos** en Cursor o VS Code, abre el `.md` y usa la vista previa de Markdown (`Ctrl+Shift+V`, o `Ctrl+K` `V` para abrirla al lado). No requiere extensiones ni Java. GitHub y GitLab también los dibujan al abrir el archivo.
 
@@ -146,7 +156,7 @@ flowchart LR
 
 Cada fase se detiene a pedir aprobación del usuario antes de avanzar.
 
-**Antes de la fase 1**, `/sdd` evalúa si la petición merece especificación. Si es un cambio pequeño que no toca requisitos, reglas de negocio ni contratos (typo, estilos, un bug que viola un RF ya existente), lo dice con su justificación y propone un **cambio directo** (`2-implementer` MODO C), sin spec. El usuario decide.
+**Antes de la fase 1**, `/sdd` emite `[ANCLAJE]` (MEMORY → AGENTS → candidato por título) y luego evalúa si la petición merece especificación. Si es un cambio pequeño que no toca requisitos, reglas de negocio ni contratos (typo, estilos, un bug que viola un RF ya existente), lo dice con su justificación y propone un **cambio directo** (`2-implementer` MODO C), sin spec; al cerrar, huella mínima en MEMORY si aportó. El usuario decide.
 
 **Tests que fallan (obligatorio)**: nunca se modifica ni se debilita un test existente para que pase. Cada fallo produce un Reporte de Fallo y el rojo **siempre** queda cerrado con uno de:
 - Corregir código ahora, solo si es pequeño y está dentro de la tarea.
@@ -157,7 +167,7 @@ Nunca se ignora el rojo. Crear tests nuevos (TDD) sí está permitido. El QA rev
 
 | Subagente | Rol | Escribe en |
 |-----------|-----|------------|
-| `1-planner` | Especifica (HU + EARS), genera diagramas de secuencia, diseña, genera tareas, valida trazabilidad, genera propiedades, archiva iteraciones | Solo `specs/` |
+| `1-planner` | Especifica (HU + EARS), genera flowchart de negocio + secuencia técnica, diseña, genera tareas, valida trazabilidad, genera propiedades, archiva iteraciones | Solo `specs/` |
 | `2-implementer` | Una tarea a la vez con TDD (rojo → verde), usando el Perfil técnico | Código y tests |
 | `3-qa-reviewer` | Valida spec, arquitectura, tareas e implementación; emite `VEREDICTO: APROBADO` / `CAMBIOS NECESARIOS` | Nada (solo lectura) |
 
@@ -225,7 +235,7 @@ skills/sdd-docs-generator/references/plan-template.md
 skills/sdd-docs-generator/references/tasks-template.md
 skills/sdd-docs-generator/references/history-index-template.md
 skills/sdd-docs-generator/references/domain-history-template.md
-skills/sdd-docs-generator/references/sequence-business-template.md
+skills/sdd-docs-generator/references/flowchart-business-template.md
 skills/sdd-docs-generator/references/sequence-technical-template.md
 skills/stack-conventions/SKILL.md
 skills/stack-conventions/references/laravel.md

@@ -1,6 +1,6 @@
 ---
 name: sdd-docs-generator
-description: Plantillas y reglas de formato para la documentación SDD en specs/ (spec.md, plan.md, tasks.md, history/ y diagramas de secuencia Mermaid). Usar al crear o editar cualquier archivo dentro de specs/<NNN>-<id>/ (ej. 001-api-tasks).
+description: Plantillas y reglas de formato para la documentación SDD en specs/ (spec.md, plan.md, tasks.md, history/, diagrama de flujo de negocio y diagrama de secuencia técnico en Mermaid). Usar al crear o editar cualquier archivo dentro de specs/<NNN>-<id>/ (ej. 001-api-tasks).
 ---
 
 # SDD Docs Generator Skill
@@ -30,12 +30,12 @@ Según el documento que se vaya a generar o editar, lee únicamente el archivo c
    - Solo tareas pendientes, cada una con `RF-x`, prioridad, propiedades, tests y "Hecho cuando".
 4. **Histórico (`history/`)**: índice `references/history-index-template.md` (~20 líneas, enruta a dominios) + un archivo por dominio con `references/domain-history-template.md` (decisiones íntegras, sin resumir).
    - Una entrada por iteración cerrada, dentro del dominio que corresponda.
-5. **Diagrama de secuencia de negocio (`diagramas/HU-x-negocio.md`)**: `references/sequence-business-template.md`.
-   - Se genera junto con `spec.md`, uno por historia. Actores, "Sistema" como caja negra y sistemas externos; sin detalles técnicos.
-6. **Diagrama de secuencia técnico (`diagramas/HU-x-tecnico.md`)**: `references/sequence-technical-template.md`.
-   - Se genera junto con `plan.md`, uno por historia. Desglosa el diagrama de negocio en las capas del plan.
+5. **Diagrama de flujo de negocio / cliente (`diagramas/HU-x-negocio.md`)**: `references/flowchart-business-template.md`.
+   - Se genera junto con `spec.md`, uno por historia. Mermaid `flowchart`: lenguaje natural, "Sistema" como caja negra, decisiones y casos límite; sin detalles técnicos.
+6. **Diagrama de secuencia técnico / desarrollo (`diagramas/HU-x-tecnico.md`)**: `references/sequence-technical-template.md`.
+   - Se genera junto con `plan.md`, uno por historia. Mermaid `sequenceDiagram`: desglosa el mismo flujo del diagrama de negocio en las capas del plan.
 
-Los diagramas son archivos Markdown con un bloque ` ```mermaid ` (`sequenceDiagram`). Se visualizan con la vista previa de Markdown de Cursor o VS Code, sin extensiones.
+Los diagramas son archivos Markdown con un bloque ` ```mermaid `. Negocio = `flowchart`; técnico = `sequenceDiagram`. Vista previa de Markdown de Cursor o VS Code, sin extensiones.
 
 ---
 

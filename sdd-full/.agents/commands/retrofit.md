@@ -49,7 +49,7 @@ No ejecutes mutaciones de BD ni cambies código de la aplicación durante el ret
 - Arquitectura y mitigaciones de lo pendiente, con **Trazabilidad Arquitectónica** (archivo ↔ RF) y **Mapeo de Propiedades ↔ Tests**.
 
 ### 5. Diagramas de cada módulo
-- En `specs/<NNN>-<id-kebab>/diagramas/` (ruta real, ej. `specs/001-api-tasks/diagramas/`), un diagrama de negocio (`HU-x-negocio.md`) y uno técnico (`HU-x-tecnico.md`) por cada flujo principal, según las plantillas `sequence-*-template.md` de la skill. Describen el comportamiento real del código, incluidos los casos límite que maneja.
+- En `specs/<NNN>-<id-kebab>/diagramas/` (ruta real, ej. `specs/001-api-tasks/diagramas/`), por cada flujo principal: diagrama de **flujo** de negocio (`HU-x-negocio.md` ← `flowchart-business-template.md`) y diagrama de **secuencia** técnico (`HU-x-tecnico.md` ← `sequence-technical-template.md`). Describen el comportamiento real del código, incluidos los casos límite que maneja.
 
 ### 6. `tasks.md` de cada módulo
 - Solo tareas `- [ ]`: lo que falta construir o probar (tests faltantes, validaciones, políticas de acceso no creadas, deuda).

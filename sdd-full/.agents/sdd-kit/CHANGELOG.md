@@ -4,6 +4,68 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 4.1.0 — 2026-11-12
+
+### Agregado
+- **Compuerta ANCLAJE (Turno 0)** en `rules/global-sdd.md` §0.1: bloque `[ANCLAJE]` obligatorio **antes** del `[TRIAGE SDD]` y antes de proponer fixes, migraciones o refactors. Aplica a preguntas, bugs y features, con o sin `/sdd`.
+- Orden mental: **MEMORY → AGENTS → ¿título de carpeta `specs/` encaja? → solo ese módulo → ¿ya estaba? → ¿merece SDD? → TRIAGE → Nivel 0 | 1**.
+- Specs **solo por título**: mirar índice/nombres de carpetas; máximo 1–2 candidatos; dentro: sección 0 → `tasks.md` → `history/index.md` → un dominio. Prohibido barrer todos los `spec.md` / `history/<dominio>.md`.
+- Nivel 0: al cerrar, línea mínima en `MEMORY.md` si hubo decisión/aprendizaje. Archive/cierre: puntero en MEMORY si el aprendizaje no cabe solo en history.
+- GATE proyectado en `AGENTS.md` (`/sdd-init`, `/sdd-update`): ANCLAJE + TRIAGE; en **Siempre**, anclar antes de diagnosticar a fondo o editar.
+
+### Cambiado
+- Comandos `/sdd`, `/architect`, `/implement`, `/sdd-archive` y subagentes `1-planner` / `2-implementer`: MEMORY primero; specs por título.
+- Trinidad: MEMORY como entrada obligatoria del anclaje (estado/decisiones/aprendizajes; no bitácora).
+- **Diagramas**: `HU-x-negocio.md` pasa a Mermaid **`flowchart`** (cliente/negocio); `HU-x-tecnico.md` sigue como **`sequenceDiagram`** (desarrollo). Plantilla nueva `flowchart-business-template.md`; se elimina `sequence-business-template.md`.
+
+### Migración
+1. Ejecuta **`/sdd-update`** en cada proyecto consumidor.
+2. **Verifica** que `AGENTS.md` muestre el bloque `[ANCLAJE]` delante de `[TRIAGE SDD]` (si solo había el GATE viejo, el update lo reemplaza **sin borrar** el dominio del proyecto).
+3. No reescribe specs de proyectos; no exige MEMORY exhaustivo.
+4. Diagramas `HU-*-negocio.md` que aún sean `sequenceDiagram`: al tocar esa HU con `/architect` o `/sdd`, conviértelos a `flowchart` según la plantilla nueva (el técnico permanece secuencia).
+
+---
+
+## 4.0.9 — 2026-11-08
+
+### Cambiado
+- **Pi:** `.pi/extensions/sdd-commands.ts` inyecta el contenido de `commands/*.md` al invocar el slash (evita alucinaciones del tool `read` en modelos locales).
+
+### Migración
+Reinstalar opción **4** o regenerar la extensión Pi; reinicia Pi.
+
+---
+
+## 4.0.8 — 2026-11-08
+
+### Cambiado
+- Docs: ***delegate session*** Local vs Copilot; con modelos locales preferir Local.
+
+### Migración
+Solo docs.
+
+---
+
+## 4.0.7 — 2026-11-08
+
+### Cambiado
+- **GitHub Copilot (VS Code):** slash = skills en `.github/skills/` (delegate Copilot) y prompts en `.github/prompts/` (delegate Local).
+
+### Migración
+Reinstalar opción 2 o `/sdd-update`. Con modelos locales: delegate **Local**.
+
+---
+
+## 4.0.6 — 2026-11-08
+
+### Cambiado
+- Intento inicial de prompts `.github/prompts/` para Copilot (insuficiente: solo harness Local). Superseded by 4.0.7.
+
+### Migración
+Usa 4.0.7 (skills).
+
+---
+
 ## 4.0.5 — 2026-11-05
 
 ### Cambiado

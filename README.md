@@ -12,7 +12,7 @@ Este repo **no** es una app: son **dos ediciones** listas para instalar en tu pr
 
 | Principio | Qué significa en el kit |
 |-----------|--------------------------|
-| **SDD** | Triage en el Turno 1: Nivel 0 *FAST-TRACK* (≤1 archivo, cambio menor) edita directo; Nivel 1 *SDD-REQUIRED* **no emite código** hasta tener spec aprobada. |
+| **SDD** | Full 4.1+: **ANCLAJE** (Turno 0: MEMORY → AGENTS → spec por título) y luego Triage. Nivel 0 *FAST-TRACK* edita directo (+ huella MEMORY si aporta); Nivel 1 *SDD-REQUIRED* **no emite código** hasta tener spec aprobada. |
 | **DRY** | Antes de crear algo, se busca lo existente (`Código Compartido` + módulo activo). Reutilizar se **propone**, nunca se impone. |
 | **KISS** | Sin capas, abstracciones ni patrones que el requisito no necesite. |
 | **YAGNI** | Nada que ningún requisito (`RF`) pida hoy. |
@@ -30,7 +30,7 @@ DRY/KISS/YAGNI son **consultas** (`CONSULTA DE SIMPLICIDAD`): el agente pregunta
 | **Carpeta** | [`sdd-full/`](sdd-full/) | [`sdd-lite/`](sdd-lite/) |
 | **Para quién** | Cursor, Claude Code, GitHub Copilot / modelos frontier | Modelos **locales** 8B–14B en GPU modestas |
 | **Ventana típica** | 128K+ | **32K** (a veces 16K) con **Ollama** |
-| **Flujo** | Triage + 8 fases, 3 subagentes, diagramas Mermaid, propiedades, QA a ciegas | Triage + 3 pasos: planear → implementar → archivar |
+| **Flujo** | ANCLAJE + Triage + 8 fases; flowchart (cliente) + secuencia (dev); propiedades; QA a ciegas | Triage + 3 pasos: planear → implementar → archivar |
 | **Specs** | `spec.md` + `plan.md` + `tasks.md` + `history/index.md` + `history/<dominio>.md` | `spec.md` tabular + `history/index.md` + `history/<dominio>.md` (≤100 líneas) |
 | **Historial** | Íntegro, segmentado por dominio (no se resume) | Fichas atómicas por dominio (solo contratos y endpoints) |
 | **QA (`/review`)** | Auditoría a ciegas: diff vs spec + suite en terminal | Tabla determinista de 4 criterios con evidencia; crea tests faltantes |
@@ -64,7 +64,7 @@ El script hace tres cosas (en este orden):
 **Sin script**: copia el contenido de `sdd-full/.agents/` (o `sdd-lite/.agents/`) a `.cursor/` (Cursor) o `.agents/` (otros) en la raíz de tu proyecto y Ejecuta `/sdd-init`.
 
 ### Actualizar
-En el chat: `/sdd-update`. Detecta tu carpeta (`.cursor/` o `.agents/`) y actualiza **en el sitio**, sin renombrarla. Solo sobrescribe archivos base del paquete (reglas, comandos, plantillas). **Nunca toca** tus skills ni restaura guías de framework que borraste. Corrige en `AGENTS.md` las rutas al framework según tu herramienta y, si tus specs tienen un `history.md` antiguo, te **pregunta** si migrarlo a `history/index.md` + `history/<dominio>.md`.
+En el chat: `/sdd-update`. Detecta tu carpeta (`.cursor/` o `.agents/`) y actualiza **en el sitio**, sin renombrarla. Solo sobrescribe archivos base del paquete (reglas, comandos, plantillas). **Nunca toca** tus skills ni restaura guías de framework que borraste. Corrige en `AGENTS.md` las rutas al framework según tu herramienta (Full 4.1+: verifica que el GATE muestre **`[ANCLAJE]`** sin borrar el dominio) y, si tus specs tienen un `history.md` antiguo, te **pregunta** si migrarlo a `history/index.md` + `history/<dominio>.md`.
 
 ---
 

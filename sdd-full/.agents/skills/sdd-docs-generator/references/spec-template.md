@@ -92,4 +92,4 @@
 - [ ] Todo RF pendiente con pruebas automatizadas en verde (Exit Code 0).
 - [ ] Cada RF con prioridad MoSCoW y ≥1 HU; cada CA con ≥1 test.
 - [ ] Sin ambigüedades; propiedades validadas con tests.
-- [ ] Trazabilidad completa; diagramas de negocio actualizados.
+- [ ] Trazabilidad completa; diagramas de negocio actualizados (`flowchart` Mermaid en `diagramas/HU-*-negocio.md`).
