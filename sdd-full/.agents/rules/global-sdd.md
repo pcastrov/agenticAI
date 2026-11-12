@@ -6,7 +6,7 @@ alwaysApply: true
 # Global Rule: Spec-Driven Development (SDD) & Engineering Standards
 
 ## 0. GATE OBLIGATORIO ANTES DE EDITAR O EJECUTAR
-> **OpenCode / Pi / chat libre:** este archivo solo se aplica si el host lo carga. Por eso `/sdd-init` **copia el GATE a `AGENTS.md`** (primera sección) y, en OpenCode, `opencode.json` → `instructions` apunta aquí. Si `AGENTS.md` no tiene el bloque GATE, **no edites código** hasta corregirlo con `/sdd-init` o `/sdd-update`.
+> **Carga del GATE:** Cursor / OpenCode (`instructions`) / Claude·Copilot (puente) cargan esta regla; en `AGENTS.md` basta un **puntero compacto** a §0. **Pi / chat libre** sin auto-carga: `/sdd-init` incrusta el GATE **completo** en `AGENTS.md`. Si falta puntero o GATE, **no edites código** hasta `/sdd-init` o `/sdd-update`. Plantillas: `init-templates.md`.
 
 Aplica a **toda** petición — preguntas, bugs y features, con o **sin** slash `/sdd`, `/implement`, etc. — **antes** de diagnosticar a fondo, proponer fixes/migraciones/refactors o usar `Write` / `StrReplace` / `Edit` / mutaciones por `Bash` sobre código o tests.
 

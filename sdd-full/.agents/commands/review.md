@@ -1,10 +1,8 @@
 # /review — Auditoría a ciegas contra la Spec
 
-## PASO 0 — Lectura obligatoria
-Abre con tu herramienta de lectura:
-1. `subagents/3-qa-reviewer.md` (modo que pida el usuario: 1 spec | 2 implementación | 3 arquitectura | 4 tareas)
-2. `commands/review.md` no sustituye al subagente: sigue sus checklists.
-3. Del módulo: `spec.md` aprobado (+ `plan.md`/`tasks.md` según el modo). En MODO 2 también el `git diff` / `git status`.
+## PASO 0 — Lectura / delegación
+1. **Nativo** (Cursor / Claude Code / OpenCode): delega en **`sdd-qa-reviewer`** aislado (Task / `@sdd-qa-reviewer`). Pásale solo: modo (1–4), rutas `AGENTS.md` + `spec.md` (+ `plan.md`/`tasks.md` según modo) y, en MODO 2, que ejecute `git diff`/`status` + suite. Exige **primera línea** `VEREDICTO: …` y tabla corta.
+2. **Fallback** (Copilot / Pi): lee `subagents/3-qa-reviewer.md` en este hilo; recomienda **sesión limpia** tras el TDD.
 
 ## Auditoría de implementación (MODO 2): "a ciegas"
 El QA **no confía en lo que el implementador dice haber hecho**. Audita solo con evidencia:

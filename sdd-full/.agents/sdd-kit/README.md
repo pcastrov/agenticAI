@@ -34,7 +34,7 @@ Antes del triage y de proponer diffs o migraciones, el agente emite `[ANCLAJE]` 
 
 - `MEMORY.md`: siempre, lectura corta (estado / decisiones / aprendizajes). No es bitácora de cada cambio.
 - Specs: **prohibido** abrir todos los módulos; solo candidatos cuyo **título o id** encaje (1–2). Dentro: sección 0 → `tasks` → `history/index` → un dominio.
-- Detalle: `rules/global-sdd.md` §0.1. Tras `/sdd-update`, comprueba que `AGENTS.md` muestre ANCLAJE.
+- Detalle: `rules/global-sdd.md` §0.1. Tras `/sdd-update`: hosts con auto-carga → puntero compacto a §0 en `AGENTS.md`; Pi/chat libre → GATE completo con `[ANCLAJE]`.
 
 ## Trinidad de contexto
 
@@ -156,6 +156,8 @@ flowchart LR
 
 Cada fase se detiene a pedir aprobación del usuario antes de avanzar.
 
+**Higiene de tokens:** tras aprobar `tasks.md` (fin de planificación/QA de tareas), abre un **hilo limpio** para `/implement`. Cuando todas las tareas queden `- [x]`, otro hilo limpio para `/review`. El estado ya está en `spec.md`, `plan.md`, `tasks.md` y `MEMORY.md`.
+
 **Antes de la fase 1**, `/sdd` emite `[ANCLAJE]` (MEMORY → AGENTS → candidato por título) y luego evalúa si la petición merece especificación. Si es un cambio pequeño que no toca requisitos, reglas de negocio ni contratos (typo, estilos, un bug que viola un RF ya existente), lo dice con su justificación y propone un **cambio directo** (`2-implementer` MODO C), sin spec; al cerrar, huella mínima en MEMORY si aportó. El usuario decide.
 
 **Tests que fallan (obligatorio)**: nunca se modifica ni se debilita un test existente para que pase. Cada fallo produce un Reporte de Fallo y el rojo **siempre** queda cerrado con uno de:
@@ -165,11 +167,13 @@ Cada fase se detiene a pedir aprobación del usuario antes de avanzar.
 
 Nunca se ignora el rojo. Crear tests nuevos (TDD) sí está permitido. El QA revisa en el diff que no se hayan tocado tests sin justificación.
 
-| Subagente | Rol | Escribe en |
-|-----------|-----|------------|
-| `1-planner` | Especifica (HU + EARS), genera flowchart de negocio + secuencia técnica, diseña, genera tareas, valida trazabilidad, genera propiedades, archiva iteraciones | Solo `specs/` |
-| `2-implementer` | Una tarea a la vez con TDD (rojo → verde), usando el Perfil técnico | Código y tests |
-| `3-qa-reviewer` | Valida spec, arquitectura, tareas e implementación; emite `VEREDICTO: APROBADO` / `CAMBIOS NECESARIOS` | Nada (solo lectura) |
+| Subagente | Name nativo | Rol | Escribe en |
+|-----------|--------------|-----|------------|
+| `1-planner` | `sdd-planner` | Spec + flowchart negocio + plan/secuencia + tasks + cierre | Solo `specs/` |
+| `2-implementer` | `sdd-implementer` | Una tarea TDD (rojo → verde) | Código y tests |
+| `3-qa-reviewer` | `sdd-qa-reviewer` | Auditoría a ciegas; `VEREDICTO: APROBADO` / `CAMBIOS NECESARIOS` | Nada (solo lectura) |
+
+Proyección: `.cursor/agents/`, `.claude/agents/`, `.opencode/agents/` (`mode: subagent`). Copilot/Pi leen `subagents/`. Orquestadores delegan en contexto aislado cuando hay nativos.
 
 ### Calidad exigida
 - **5 atributos por requisito**: claro (una sola interpretación), útil (cubre una historia), comprobable (criterio de aceptación o propiedad), trazable (ID y origen) y actualizado (no contradice lo implementado). El QA los evalúa RF por RF.
@@ -235,6 +239,7 @@ skills/sdd-docs-generator/references/plan-template.md
 skills/sdd-docs-generator/references/tasks-template.md
 skills/sdd-docs-generator/references/history-index-template.md
 skills/sdd-docs-generator/references/domain-history-template.md
+skills/sdd-docs-generator/references/init-templates.md
 skills/sdd-docs-generator/references/flowchart-business-template.md
 skills/sdd-docs-generator/references/sequence-technical-template.md
 skills/stack-conventions/SKILL.md

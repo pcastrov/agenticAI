@@ -59,12 +59,49 @@ if [ "$choice" = "1" ]; then
     echo "[+] Reglas convertidas a .mdc (formato de Cursor)."
 fi
 
+# Proyecta subagentes nativos aislados (origen: $ROOT/subagents/; sin duplicar el kit fuente)
+project_native_agents() {
+    local dest="$1"
+    local add_mode="${2:-0}"
+    mkdir -p "$dest"
+    local pair src name srcf
+    for pair in "1-planner:sdd-planner" "2-implementer:sdd-implementer" "3-qa-reviewer:sdd-qa-reviewer"; do
+        src="${pair%%:*}"
+        name="${pair##*:}"
+        srcf="$ROOT/subagents/$src.md"
+        if [ ! -f "$srcf" ]; then
+            echo "[!] Falta $srcf; se omite $name."
+            continue
+        fi
+        if [ "$add_mode" = "1" ]; then
+            awk '
+                BEGIN { fm=0; done=0 }
+                /^---$/ {
+                    if (fm==0) { fm=1; print; next }
+                    if (fm==1 && done==0) { print "mode: subagent"; done=1; fm=2; print; next }
+                }
+                { print }
+            ' "$srcf" > "$dest/$name.md"
+        else
+            cp "$srcf" "$dest/$name.md"
+        fi
+    done
+    echo "[+] Subagentes nativos en $dest/ (sdd-planner, sdd-implementer, sdd-qa-reviewer)."
+}
+
 if [ "$choice" = "1" ]; then RULE_FILE="global-sdd.mdc"; else RULE_FILE="global-sdd.md"; fi
 POINTER="Sigue estrictamente la metodología SDD de \`$ROOT/\`: reglas y Triage en \`$ROOT/rules/$RULE_FILE\`, flujos en \`$ROOT/commands/\`, convenciones en \`$ROOT/skills/\`."
 case $choice in
-    1) echo "[+] Cursor lee $ROOT/ directamente; no se necesita archivo puente." ;;
-    2) mkdir -p .github; printf '%s\n' "# Reglas de AgenticAI SDD-Full" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado." ;;
-    3) printf '%s\n' "# Instrucciones del Repositorio" "" "$POINTER" > CLAUDE.md; echo "[+] CLAUDE.md generado." ;;
+    1)
+        echo "[+] Cursor lee $ROOT/ directamente; no se necesita archivo puente."
+        project_native_agents "$ROOT/agents" 0
+        ;;
+    2) mkdir -p .github; printf '%s\n' "# Reglas de AgenticAI SDD-Full" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado."; echo "[+] Copilot: subagentes desde $ROOT/subagents/ (sin carpeta nativa)." ;;
+    3)
+        printf '%s\n' "# Instrucciones del Repositorio" "" "$POINTER" > CLAUDE.md
+        echo "[+] CLAUDE.md generado."
+        project_native_agents ".claude/agents" 0
+        ;;
     4)
         echo "[+] Pi: $ROOT/ instalado. Generando extensión de slash commands..."
         # Solo Pi: registra cada comando de commands/ como slash command (la lógica sigue en los .md)
@@ -98,6 +135,7 @@ EOF
         sed -i.bak "s|__COMMANDS__|$LIST|; s|__ROOT__|$ROOT|" .pi/extensions/sdd-commands.ts && rm -f .pi/extensions/sdd-commands.ts.bak
         echo "[+] Extensión de Pi generada en .pi/extensions/sdd-commands.ts"
         echo "    Comandos registrados: $LIST"
+        echo "[+] Pi: subagentes desde $ROOT/subagents/ (sin carpeta nativa)."
         ;;
     5)
         # OpenCode: AGENTS.md + opencode.json instructions + .opencode/commands/*.md
@@ -138,7 +176,8 @@ EOF
         done
         echo "[+] OpenCode: $ROOT/ + opencode.json instructions → $INSTR"
         echo "[+] Slash commands en .opencode/commands/: $OC_LIST"
-        echo "    Tras /sdd-init, el GATE también queda incrustado en AGENTS.md (obligatorio)."
+        project_native_agents ".opencode/agents" 1
+        echo "    Tras /sdd-init: GATE compacto en AGENTS.md si instructions carga global-sdd."
         ;;
 esac
 

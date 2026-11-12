@@ -36,16 +36,26 @@ Si la extensión instalada no corresponde al host (p. ej. Cursor con `.md`, u ot
    - Al reemplazar `rules/global-sdd.md` o `rules/stack-*.md` del paquete, escribe el resultado con la extensión del host (`.mdc` en Cursor).
    - `rules/stack-*.md`: refrescar desde `skills/stack-conventions/references/` solo si no fueron personalizadas.
 6. **No toques**: skills/archivos creados por el usuario (REGLA DE PROTECCIÓN), comandos/reglas ajenos al paquete, `specs/` (salvo paso 8, con aprobación), `MEMORY.md`, dominio de `AGENTS.md`, ni README/CHANGELOG de la raíz del proyecto.
-7. **Corregir `AGENTS.md` y `docs/constitution.md` según el host en uso** (proponer; **no borrar dominio** del proyecto):
+7. **Corregir `AGENTS.md` y `docs/constitution.md` según el host en uso** (proponer; **no borrar dominio** del proyecto). Plantillas GATE: `skills/sdd-docs-generator/references/init-templates.md` §§1–2.
    - Rutas del framework: `.cursor/rules/global-sdd.mdc` (Cursor) o `.agents/rules/global-sdd.md` (otros).
    - Constitution: integridad de tests + revisión de diseño + Triage.
-   - **`AGENTS.md` — GATE obligatorio (ANCLAJE + TRIAGE)**: si solo hay un puntero de 2–3 líneas a `global-sdd`, o el GATE **no** incluye el bloque `[ANCLAJE]` (Turno 0) delante de `[TRIAGE SDD]`, **reemplaza/actualiza** con el bloque completo `## Gobernanza SDD (GATE)` de `/sdd-init` (PASO 7). Debe quedar **al inicio** del archivo. Conserva secciones de dominio/stack del proyecto. Motivo: OpenCode/Pi cargan `AGENTS.md`, no el `alwaysApply` de Cursor.
-   - Tras escribir: **verificar** que `AGENTS.md` muestre `[ANCLAJE]` y el orden MEMORY → AGENTS → spec por título.
+   - **`AGENTS.md` — GATE según host** (primera sección; no borrar dominio/stack):
+     - **Carga automática** (Cursor alwaysApply; OpenCode con `instructions` → `global-sdd.md`; Claude/Copilot con puente): escribe **GATE compacto** (§1). Si hay GATE completo duplicado → **reemplázalo** por el puntero de 3 líneas (ahorro de tokens; la fuente de verdad es `rules/global-sdd.md` §0).
+     - **Sin carga automática** (Pi o chat libre sin `instructions`/puente): escribe **GATE completo** (§2) con `[ANCLAJE]` + `[TRIAGE SDD]`. Si falta ANCLAJE → actualiza al completo.
+   - Tras escribir: verificar puntero a `global-sdd` §0 (hosts con auto-carga) **o** `[ANCLAJE]` en el GATE completo (Pi/chat libre).
    - **OpenCode**: si existe `opencode.json` / `.opencode/` o el usuario usa OpenCode: (1) `instructions` debe incluir `".agents/rules/global-sdd.md"`; (2) regenera `.opencode/commands/<nombre>.md` por cada `commands/*.md` del kit (template: leer y ejecutar esa ruta; `$ARGUMENTS`). OpenCode **no** lee `.agents/commands/` como slash — solo `.opencode/commands/`. No borres otras claves de `opencode.json`.
-   - **Rename `/init` → `/sdd-init`**: si aún existe `commands/init.md` (o `.opencode/commands/init.md` / registro Pi `init`), elimínalo tras instalar `sdd-init` para no chocar con el `/init` built-in de OpenCode.
+   - **Pi**: si existe `.pi/extensions/` o el usuario usa Pi: regenera `.pi/extensions/sdd-commands.ts` leyendo e **inyectando** el cuerpo de cada `commands/*.md` en el `sendUserMessage` (no solo pedir “lee el archivo”; modelos locales inventan placeholders).
+   - **GitHub Copilot (VS Code) — *delegate session***: regenera `.github/skills/<nombre>/SKILL.md` (`disable-model-invocation: true`) y `.github/prompts/<nombre>.prompt.md`. **Local** → prompts; **Copilot** → skills. Con modelos locales recomendar delegate **Local**.
+   - **Rename `/init` → `/sdd-init`**: si aún existe `commands/init.md` (o `.opencode/commands/init.md` / `.github/prompts/init.prompt.md` / registro Pi `init`), elimínalo tras instalar `sdd-init` para no chocar con el `/init` built-in de OpenCode.
    - Si existe `<laravel-boost-guidelines>`: propone eliminarlo o ≤5 líneas y `boost.json` con `"guidelines": false`, `"mcp": true`.
    - Higiene MCP: `/mcp-mode` y `/ui-check`.
    - Solo escribe tras confirmación.
 8. **Migración de historial (pregunta siempre)**: si algún módulo real bajo `specs/<NNN>-<id>/` tiene `history.md` monolítico, **pregunta** si migrarlo. Con "sí", invoca `@1-planner.md` para separarlo en `history/index.md` + `history/<dominio>.md` **sin resumir ni perder decisiones**; muestra el plan de dominios antes de escribir y no borres `history.md` hasta que el usuario confirme el resultado. Con "no", déjalo (sigue siendo legible por ID) y recuérdalo en el resumen.
-9. 🛑 Resumen (archivos reemplazados, preservados y omitidos por la protección; correcciones de `AGENTS.md`; migraciones) + confirmación antes de escribir.
-10. Actualiza `version` y `source` en `sdd-kit.md` (deja `source` en la URL pública del repo o la ruta a `sdd-full` usada).
+9. **Subagentes nativos aislados** (origen siempre `subagents/1-planner.md`, `2-implementer.md`, `3-qa-reviewer.md` del kit; destino con nombres `sdd-planner.md`, `sdd-implementer.md`, `sdd-qa-reviewer.md`):
+   - Si existe **`.cursor/agents/`** (o la raíz es `.cursor/`): actualiza `.cursor/agents/` copiando esos tres archivos (frontmatter `name`/`description` del origen; sin `mode`).
+   - Si existe **`.claude/agents/`** o hay `CLAUDE.md`: crea/actualiza `.claude/agents/` igual.
+   - Si existe **`.opencode/agents/`** o `opencode.json` / `.opencode/`: crea/actualiza `.opencode/agents/` e inserta `mode: subagent` en el frontmatter (tras `description`).
+   - Copilot / Pi: no crean carpeta nativa; siguen leyendo `<raíz>/subagents/`.
+   - No inventes contenido: copia desde el origen del paquete tras el paso 5.
+10. 🛑 Resumen (archivos reemplazados, preservados y omitidos por la protección; correcciones de `AGENTS.md`; proyecciones de agents; migraciones) + confirmación antes de escribir.
+11. Actualiza `version` y `source` en `sdd-kit.md` (deja `source` en la URL pública del repo o la ruta a `sdd-full` usada).

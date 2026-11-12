@@ -1,6 +1,6 @@
 ---
 name: sdd-docs-generator
-description: Plantillas y reglas de formato para la documentación SDD en specs/ (spec.md, plan.md, tasks.md, history/, diagrama de flujo de negocio y diagrama de secuencia técnico en Mermaid). Usar al crear o editar cualquier archivo dentro de specs/<NNN>-<id>/ (ej. 001-api-tasks).
+description: Plantillas y reglas de formato para la documentación SDD (Trinidad vía init-templates, spec.md, plan.md, tasks.md, history/, flowchart de negocio y secuencia técnico). Usar al crear o editar specs/<NNN>-<id>/ o al ejecutar /sdd-init.
 ---
 
 # SDD Docs Generator Skill
@@ -20,6 +20,8 @@ Al copiar cualquier `references/*-template.md`, sustituye `NNN-[id-nombre-modulo
 
 Según el documento que se vaya a generar o editar, lee únicamente el archivo correspondiente dentro de `references/`:
 
+0. **Trinidad `/sdd-init` (`AGENTS.md`, `MEMORY.md`, `docs/constitution.md`)**: `references/init-templates.md`.
+   - GATE compacto vs completo según host; Perfil técnico; Código Compartido; constitution; MEMORY. Solo al inicializar/actualizar gobernanza.
 1. **Especificaciones Funcionales (`spec.md`)**: `references/spec-template.md`.
    - Historias `HU-x` con prioridad MoSCoW y criterios de aceptación `CA-x.y` en formato DADO / CUANDO / ENTONCES.
    - Notación EARS en los Requisitos Funcionales (`RF-x`), cada uno con MoSCoW y la `HU-x` que cubre.

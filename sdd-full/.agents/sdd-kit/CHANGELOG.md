@@ -4,6 +4,25 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 4.2.0 — 2026-11-12
+
+### Agregado
+- **Subagentes nativos aislados**: frontmatter `name`/`description` en `subagents/` (`sdd-planner`, `sdd-implementer`, `sdd-qa-reviewer`).
+- Instaladores y `/sdd-update` proyectan a `.cursor/agents/`, `.claude/agents/` y `.opencode/agents/` (este último con `mode: subagent`). Copilot/Pi siguen en `<raíz>/subagents/`.
+- Comandos `/sdd`, `/architect`, `/implement`, `/review`: delegan al subagente nativo en contexto aislado cuando existe; fallback lee `subagents/` + sesión limpia.
+
+### Cambiado (tokens; supersede 4.1.1)
+- **Lazy loading `/sdd-init`**: plantillas Trinidad en `references/init-templates.md` (PASO 0).
+- **GATE en `AGENTS.md`**: puntero compacto si el host auto-carga `global-sdd`; GATE completo solo en Pi / chat libre.
+- **Higiene de contexto**: hilo limpio antes de `/implement` y `/review`.
+
+### Migración
+1. `/sdd-update` o reinstalar (opciones 1/3/5 regeneran agents nativos).
+2. Cursor/OpenCode/Claude/Copilot: `AGENTS.md` con **GATE compacto**; Pi: GATE completo.
+3. Comprueba `.cursor/agents/` o `.claude/agents/` o `.opencode/agents/` según host.
+
+---
+
 ## 4.1.0 — 2026-11-12
 
 ### Agregado
