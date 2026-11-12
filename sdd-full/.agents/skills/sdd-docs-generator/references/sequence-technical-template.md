@@ -1,8 +1,8 @@
 <!--
-Diagrama de secuencia TÉCNICO: specs/001-[id-nombre-modulo]/diagramas/HU-XX-tecnico.md (ruta real; no uses NNN literal)
+Diagrama de secuencia TÉCNICO (desarrollo): specs/001-[id-nombre-modulo]/diagramas/HU-XX-tecnico.md (ruta real; no uses NNN literal)
 Audiencia: desarrollo y QA.
 Reglas:
-- Mismo flujo que HU-XX-negocio.md, desglosado en las capas de plan.md (sección 1 y 2).
+- Tipo Mermaid: sequenceDiagram. El diagrama de cliente/negocio es flowchart (`HU-XX-negocio.md`); este desglosa el MISMO flujo en capas de plan.md.
 - Los nombres de participantes usan los archivos o componentes reales según `structure` del Perfil técnico.
 - Cada llamada relevante cita el RF que implementa; las validaciones citan la propiedad (Px) que protegen.
 - Los mismos casos límite del diagrama de negocio aparecen como bloques alt, con su código o tipo de error.

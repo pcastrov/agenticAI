@@ -51,8 +51,8 @@ operacion(entrada):
   emitir efectos (eventos, notificaciones)
 ```
 
-## 5. Diagramas de Secuencia Técnicos
-*(Uno por HU afectada, según `references/sequence-technical-template.md`; se actualizan in-place)*
+## 5. Diagramas de Secuencia Técnicos (desarrollo)
+*(Uno por HU afectada, según `references/sequence-technical-template.md`; mismo flujo que el flowchart de negocio; se actualizan in-place)*
 
 | Diagrama | HU | RF |
 |----------|----|----|

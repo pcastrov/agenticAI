@@ -2,7 +2,7 @@
 
 Edición para herramientas agénticas avanzadas (**Cursor, Claude Code, GitHub Copilot, Pi, OpenCode**) y modelos frontier (ventanas grandes). Flujo completo: Triage + 8 fases, subagentes, diagramas, propiedades y QA a ciegas.
 
-Versión del paquete: **4.0.4** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía del flujo: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
+Versión del paquete: **4.1.0** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía del flujo: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
 
 No combines con **SDD Lite**. Comparativa Full vs Lite: [README de la raíz](../README.md).
 
@@ -22,7 +22,7 @@ sdd-full/
     │   ├── README.md         ← guía detallada del flujo
     │   └── CHANGELOG.md
     ├── rules/
-    │   └── global-sdd.md     ← Triage Gate, DRY/KISS/YAGNI, integridad de tests
+    │   └── global-sdd.md     ← ANCLAJE + Triage Gate, DRY/KISS/YAGNI, integridad de tests
     ├── commands/             ← slash commands (/sdd-init, /sdd, …)
     ├── subagents/            ← roles: planner, implementer, QA
     └── skills/
@@ -43,7 +43,7 @@ tu-proyecto/
         ├── spec.md            ← qué / por qué (tabular)
         ├── plan.md            ← cómo / arquitectura
         ├── tasks.md           ← checklist TDD (- [ ] / - [x])
-        ├── diagramas/         ← Mermaid HU-x-negocio / HU-x-tecnico
+        ├── diagramas/         ← HU-x-negocio (flowchart) / HU-x-tecnico (secuencia)
         └── history/
             ├── index.md       ← índice ligero (~20 líneas)
             └── <dominio>.md   ← decisiones íntegras por dominio (sin compactar)
@@ -87,7 +87,7 @@ Los comandos deben **abrir estos archivos** (y las plantillas) con la herramient
 
 | Skill | Contenido | Uso |
 |-------|-----------|-----|
-| `sdd-docs-generator/` | Plantillas: `spec`, `plan`, `tasks`, `history-index`, `domain-history`, diagramas de secuencia | Obligatorias al crear docs SDD |
+| `sdd-docs-generator/` | Plantillas: `spec`, `plan`, `tasks`, `history-index`, `domain-history`, flowchart negocio + secuencia técnica | Obligatorias al crear docs SDD |
 | `stack-conventions/` | Guías opcionales: Laravel, Filament, NativePHP, Django, FastAPI, Flutter | Si no hay guía, el agente usa buenas prácticas del lenguaje **sin error** |
 
 ---
@@ -96,7 +96,7 @@ Los comandos deben **abrir estos archivos** (y las plantillas) con la herramient
 
 | Archivo | Qué impone |
 |---------|------------|
-| `global-sdd.md` | **§0 Triage Gate** (Nivel 0 FAST-TRACK / Nivel 1 SDD-REQUIRED), integridad de tests, consultas DRY/KISS/YAGNI y de diseño, historial por dominio, convenciones de framework opcionales |
+| `global-sdd.md` | **§0 ANCLAJE + Triage Gate** (MEMORY → título de spec → Nivel 0 / 1), integridad de tests, consultas DRY/KISS/YAGNI y de diseño, historial por dominio, convenciones de framework opcionales |
 
 Tras `/sdd-init`, pueden aparecer `rules/stack-*.md` (o `.mdc` en Cursor) copiadas desde `stack-conventions` según tu `conventions` en `AGENTS.md`.
 
@@ -115,8 +115,12 @@ Menú del instalador: **1** Cursor · **2** Copilot · **3** Claude Code · **4*
 
 **OpenCode vs Pi (slash commands):** Pi → `.pi/extensions/`. OpenCode → `.opencode/commands/` (no lee `.agents/commands/` como menú). El `/init` de OpenCode es el **nativo** del host; el del kit es **`/sdd-init`**.
 
-**GATE:** Tras `/sdd-init`, el Triage queda **incrustado al inicio de `AGENTS.md`** (OpenCode/Pi no usan el `alwaysApply` de Cursor).
+**GATE:** Tras `/sdd-init` / `/sdd-update`, **ANCLAJE + Triage** quedan **incrustados al inicio de `AGENTS.md`** (OpenCode/Pi no usan el `alwaysApply` de Cursor). Comprueba que `AGENTS.md` muestre `[ANCLAJE]`.
+
+### Orden de anclaje (tokens)
+
+`MEMORY` → `AGENTS` → ¿título de carpeta `specs/` encaja? → solo ese módulo → triage → Nivel 0 (código + huella MEMORY) o Nivel 1 (spec → plan → tasks).
 
 ## Uso rápido
 
-`/sdd-init` → `/sdd` (o pedido en lenguaje natural: el Triage aplica **igual** sin slash) · Paradas: OK de **spec** → OK de **plan** → OK de **tasks** → elige cadencia TDD (**A** una-a-una | **B** lote) → `/review` → `/sdd-archive` · Código existente → `/retrofit` · Actualizar → `/sdd-update`
+`/sdd-init` → pedido en lenguaje natural o `/sdd` (**ANCLAJE** luego Triage, con o sin slash) · Paradas Nivel 1: OK de **spec** → OK de **plan** → OK de **tasks** → cadencia TDD (**A** | **B**) → `/review` → `/sdd-archive` · Código existente → `/retrofit` · Actualizar → `/sdd-update` (verificar ANCLAJE en `AGENTS.md`)

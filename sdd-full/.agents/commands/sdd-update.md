@@ -31,15 +31,16 @@ Si la extensión instalada no corresponde al host (p. ej. Cursor con `.md`, u ot
    - Sin cambios locales → reemplazar.
    - Con cambios locales → diff + preguntar.
    - Nuevos del paquete → copiar.
-   - Eliminados del paquete → borrar solo si no fueron personalizados.
+   - Eliminados del paquete → borrar solo si no fueron personalizados (p. ej. `sequence-business-template.md` sustituido por `flowchart-business-template.md`).
    - **Convenciones opcionales**: si el usuario eliminó `skills/stack-conventions/` o archivos de `references/` (para ahorrar tokens), **no los restaures**; actualiza solo las guías que sigan presentes. Instálalas únicamente si el usuario lo pide.
    - Al reemplazar `rules/global-sdd.md` o `rules/stack-*.md` del paquete, escribe el resultado con la extensión del host (`.mdc` en Cursor).
    - `rules/stack-*.md`: refrescar desde `skills/stack-conventions/references/` solo si no fueron personalizadas.
 6. **No toques**: skills/archivos creados por el usuario (REGLA DE PROTECCIÓN), comandos/reglas ajenos al paquete, `specs/` (salvo paso 8, con aprobación), `MEMORY.md`, dominio de `AGENTS.md`, ni README/CHANGELOG de la raíz del proyecto.
-7. **Corregir `AGENTS.md` y `docs/constitution.md` según el host en uso** (proponer; no borrar dominio):
+7. **Corregir `AGENTS.md` y `docs/constitution.md` según el host en uso** (proponer; **no borrar dominio** del proyecto):
    - Rutas del framework: `.cursor/rules/global-sdd.mdc` (Cursor) o `.agents/rules/global-sdd.md` (otros).
    - Constitution: integridad de tests + revisión de diseño + Triage.
-   - **`AGENTS.md` — GATE obligatorio**: si solo hay un puntero de 2–3 líneas a `global-sdd`, **reemplázalo** por el bloque completo `## Gobernanza SDD (GATE)` de `/sdd-init` (PASO 7). Debe quedar **al inicio** del archivo. Motivo: OpenCode/Pi cargan `AGENTS.md`, no el `alwaysApply` de Cursor.
+   - **`AGENTS.md` — GATE obligatorio (ANCLAJE + TRIAGE)**: si solo hay un puntero de 2–3 líneas a `global-sdd`, o el GATE **no** incluye el bloque `[ANCLAJE]` (Turno 0) delante de `[TRIAGE SDD]`, **reemplaza/actualiza** con el bloque completo `## Gobernanza SDD (GATE)` de `/sdd-init` (PASO 7). Debe quedar **al inicio** del archivo. Conserva secciones de dominio/stack del proyecto. Motivo: OpenCode/Pi cargan `AGENTS.md`, no el `alwaysApply` de Cursor.
+   - Tras escribir: **verificar** que `AGENTS.md` muestre `[ANCLAJE]` y el orden MEMORY → AGENTS → spec por título.
    - **OpenCode**: si existe `opencode.json` / `.opencode/` o el usuario usa OpenCode: (1) `instructions` debe incluir `".agents/rules/global-sdd.md"`; (2) regenera `.opencode/commands/<nombre>.md` por cada `commands/*.md` del kit (template: leer y ejecutar esa ruta; `$ARGUMENTS`). OpenCode **no** lee `.agents/commands/` como slash — solo `.opencode/commands/`. No borres otras claves de `opencode.json`.
    - **Rename `/init` → `/sdd-init`**: si aún existe `commands/init.md` (o `.opencode/commands/init.md` / registro Pi `init`), elimínalo tras instalar `sdd-init` para no chocar con el `/init` built-in de OpenCode.
    - Si existe `<laravel-boost-guidelines>`: propone eliminarlo o ≤5 líneas y `boost.json` con `"guidelines": false`, `"mcp": true`.

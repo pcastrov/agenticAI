@@ -129,11 +129,24 @@ Crea o actualiza con datos reales del proyecto. **No** copies formatos largos de
 
   ```markdown
   ## Gobernanza SDD (GATE — obligatorio en cada turno)
-  Detalle: `<raíz>/rules/global-sdd.md`. Este bloque aplica **aunque el usuario no escriba `/sdd`**.
+  Detalle: `<raíz>/rules/global-sdd.md`. Este bloque aplica **aunque el usuario no escriba `/sdd`** (preguntas, bugs y features).
 
-  Antes de cualquier Write/Edit/Bash que mute código o tests:
-  1. Solo pregunta/análisis → **no** edites.
-  2. Emite el bloque y **detente** si Nivel 1 o si falta aprobación:
+  Orden: MEMORY → AGENTS → ¿título de `specs/` encaja? → módulo → ¿ya estaba? → ¿merece SDD? → TRIAGE → Nivel 0 | 1.
+
+  Antes de diagnosticar a fondo, proponer fixes/migraciones o cualquier Write/Edit/Bash que mute código o tests:
+  1. Solo pregunta/análisis → emite ANCLAJE; **no** edites.
+  2. **Turno 0 — ANCLAJE** (obligatorio; antes del triage):
+     ```
+     [ANCLAJE]
+     - MEMORY: leído; hallazgo: … | ninguno relevante
+     - AGENTS: [hecho relevante en una línea]
+     - Spec candidato(s) por título: [ruta(s)] | ninguna
+     - Dentro del candidato (sección 0 / tasks / history index → dominio): … | nada
+     - ¿Ya estaba hecho o decidido?: sí → [explicar; no reinventar] | no → seguir
+     - ¿Merece spec (nuevo o ampliar)?: sí → Nivel 1 | no → Nivel 0 (+ huella MEMORY al cerrar si aporta)
+     ```
+     Specs: mira solo nombres/índice; **prohibido** abrir todos los módulos. Dentro del candidato: sección 0 → tasks → history/index → un dominio.
+  3. **Turno 1 — TRIAGE** (si vas a editar). Emite y **detente** si Nivel 1 o falta aprobación:
      ```
      [TRIAGE SDD]
      - Nivel: 0 FAST-TRACK | 1 SDD-REQUIRED
@@ -141,16 +154,17 @@ Crea o actualiza con datos reales del proyecto. **No** copies formatos largos de
      - Spec/tarea: [ruta o "ninguna aún"]
      - Aprobación: n/a (Nivel 0) | pendiente | ya aprobada (cita al usuario)
      ```
-  3. **Nivel 0**: ≤1 archivo, sin contrato/modelo/BD/seguridad/deps nuevas → puedes editar.
-  4. **Nivel 1**: **PROHIBIDO** código o diffs en ese turno. Flujo: `spec.md` → 🛑 OK → `plan.md` → 🛑 OK → `tasks.md` → 🛑 OK → cadencia → TDD.
-  5. Antes del TDD (si hay ≥2 tareas):
+  4. **Nivel 0**: arreglo sencillo sin mérito de spec → puedes editar; al cerrar, línea mínima en MEMORY si hubo decisión/aprendizaje.
+  5. **Nivel 1**: **PROHIBIDO** código o diffs en ese turno. Flujo: `spec.md` → 🛑 OK → `plan.md` → 🛑 OK → `tasks.md` → 🛑 OK → cadencia → TDD. Duda 0/1 → Nivel 1.
+  6. Antes del TDD (si hay ≥2 tareas):
      ```
      [CADENCIA TDD]
      A) Una por una — me detengo tras cada tarea
      B) Todas seguidas — hasta fin de lote o fallo
      ```
      Sin respuesta clara → **A**.
-  6. Test/UI rojo → `REPORTE DE FALLO`; no debilitar tests. UI/MCP: `/ui-check`, `/mcp-mode`.
+  7. Test/UI rojo → `REPORTE DE FALLO`; no debilitar tests. UI/MCP: `/ui-check`, `/mcp-mode`.
+  8. No contradigas MEMORY/AGENTS/spec candidato sin citar el gap; no inventes camino paralelo si ya está decidido.
   ```
 
 - **`## Código Compartido`**: catálogo de código **propio** reutilizable (DRY; ver `global-sdd` §2.2):
@@ -166,13 +180,16 @@ Crea o actualiza con datos reales del proyecto. **No** copies formatos largos de
   - **Proyecto nuevo**: deja la tabla vacía con una fila de ejemplo comentada.
 - En **Convenciones**, anota solo lo propio del proyecto y sus desviaciones justificadas respecto a las guías de `conventions` (tienen prioridad sobre ellas); no copies las guías. Incluye la política DRY/KISS/YAGNI como consulta (`CONSULTA DE SIMPLICIDAD`) si aún no está.
 - **Forma de Trabajar**: flujo SDD con subagentes (`@1-planner.md`, `@2-implementer.md`, `@3-qa-reviewer.md`) y regla de histórico (`history/`, mover nunca borrar).
-- **Límites**: qué hacer siempre, qué preguntar antes y qué no hacer nunca (incluye: no debilitar tests; no refactor de diseño sin consulta).
+- **Límites**:
+  - **Siempre**: anclar (`[ANCLAJE]`: MEMORY → AGENTS → spec por título) **antes** de diagnosticar a fondo o editar; emitir Triage antes de mutar código/tests; no debilitar tests; consultar antes de refactor de diseño.
+  - Qué preguntar antes y qué no hacer nunca (incluye: no barrer todos los specs; no contradecir MEMORY/spec candidato sin citar gap).
 - **Verificación**: cómo dar una tarea por verificada en este proyecto.
 
 ### PASO 8: `MEMORY.md`
-Crea o actualiza (máximo ~50 líneas):
+Crea o actualiza (máximo ~50 líneas). Es **estado / decisiones / aprendizajes**, no bitácora de cada cambio; el detalle vive en `history/` del módulo.
 - **Estado actual**, **Decisiones (y por qué)**, **Aprendizajes y errores a evitar**.
 - **Próximos pasos**: si hay código sin specs, ingeniería inversa con `/retrofit`.
+- Se consulta **siempre** en el Turno 0 (ANCLAJE). Nivel 0 / archive pueden añadir una línea mínima si aportan algo que no deba olvidarse.
 
 ### PASO 9: `specs/` (sin módulos de ejemplo)
 - 🚫 **PROHIBIDO** crear `specs/NNN-...`, `specs/001-ejemplo` u otros módulos placeholder.
@@ -184,7 +201,7 @@ Crea o actualiza (máximo ~50 líneas):
 ## Formato de Salida
 1. Resumen del **Stack Detectado** (o de las respuestas de la entrevista) y versión del flujo SDD instalada.
 2. Borrador de `## Perfil técnico` y `docs/constitution.md` (principios cortos; sin duplicar `global-sdd`).
-3. Borrador de `AGENTS.md`: bloque **Gobernanza SDD (GATE)** completo al inicio + **Código Compartido** + dominio/stack.
+3. Borrador de `AGENTS.md`: bloque **Gobernanza SDD (GATE)** con **ANCLAJE + TRIAGE** al inicio + **Código Compartido** + dominio/stack.
 4. Guías `conventions`, `stack-*.md` y verificación sugerida.
 5. Si Laravel: Boost con **`guidelines: false`**, MCP on; higiene MCP (sin Playwright/DevTools siempre-on).
 6. 🛑 **DETENTE Y ESPERA** aprobación antes de escribir/instalar.
