@@ -1,5 +1,29 @@
 # Changelog — SDD Lite
 
+## 3.0.0 — 2026-11-12
+
+SDD Lite Compacto (Full Compacto para 8K–32K). **Cambio mayor.**
+
+### Agregado
+- **`[ANCLAJE]`** corto (Turno 0) antes del Triage; MEMORY activa (≤30 líneas).
+- **Micro-Spec**: 1 HU · ≤5 tareas · `spec.md` ~85 líneas; 2 paradas (Qué → 🛑 → Cómo+Tareas → 🛑) en un solo archivo.
+- **Subagentes nativos** `sdd-planner` / `sdd-implementer` / `sdd-qa-reviewer` → `.cursor/agents/`, `.claude/agents/`, `.opencode/agents/` (`mode: subagent`).
+- Aislamiento: nativo por Task; fallback Pi/Ollama → chat limpio + `continúa` tras cada tarea (cadencia A).
+- QA: runners silenciosos (`-q` / `--compact` / `--reporter=dot`).
+- GATE compacto en `AGENTS.md` si el host auto-carga `global-sdd` (Pi: GATE completo).
+
+### Cambiado
+- Topes: `AGENTS.md` ≤45; `MEMORY.md` ≤30; history sin cambios (index ≤30, dominio ≤100).
+- Instaladores: rutas de ayuda `sdd-lite/` (no `sdd-full/`); proyección de agents.
+- Comandos/subagentes ultra-concisos (≤50 líneas).
+
+### Migración
+1. `/sdd-update` o reinstalar Lite.
+2. Specs viejas: al iterar, divide en Micro-Specs (1 HU / ≤5 tareas) con 2 paradas.
+3. Cursor/Claude/OpenCode: confirma carpeta `agents/` nativa.
+
+---
+
 ## 2.0.5 — 2026-11-05
 
 ### Cambiado

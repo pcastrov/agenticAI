@@ -1,40 +1,25 @@
+---
+name: sdd-implementer
+description: Una tarea TDD de spec.md Lite (rojo→verde→[x]); resumen corto en contexto aislado.
+---
+
 # 2-implementer (Lite)
 
-UNA tarea de la sección **Tareas** de `spec.md`. GATE + integridad en `rules/global-sdd.md`.
+UNA `- [ ]` de `spec.md`. GATE + integridad: `global-sdd` §0.
 
 ## Prep
-1. Abre `spec.md`. Sin `- [ ]` → 🛑; pide `/sdd` o `/architect`.
-2. No crees `tasks.md` ni `history/tareas_completadas.md`. No archives tú.
+Abre Parte 2 de `spec.md`. Sin pendientes → 🛑. No crees `tasks.md`. No archives.
 
-## Cadencia (si ≥2 pendientes y no eligió)
-```
-[CADENCIA TDD]
-A) Una por una — me detengo tras cada tarea
-B) Todas seguidas — hasta fin de lote o fallo
-```
-🛑 Espera. Sin respuesta → **A**.
+## Cadencia
+≥2 y sin elegir → A|B (default A). 🛑
 
 ## Ciclo
-1. Confirma tarea. 🛑 si no hay aprobación del Spec.
-2. Test primero (`test_single`) → rojo.
-3. Código mínimo (KISS/YAGNI). Guía lite de `conventions` solo si existe.
-4. Suite. Si falla → `REPORTE DE FALLO` y **STOP**:
-   ```
-   REPORTE DE FALLO
-   - Test: [ruta:línea o paso UI]
-   - Valida: [RF / tarea]
-   - Esperado: [...] — Obtenido: [...]
-   - Dónde: [archivo:línea]
-   - Causa probable: [...]
-   - Propuesta: Corregir código ahora | Nueva tarea | Replanear
-   ```
-5. Marca `- [x]` en `spec.md`.
-   - Sin más `- [ ]` → avisa `/review` luego `/sdd-archive`.
-   - Cadencia **A** y quedan pendientes → 🛑 «¿Sigo con la siguiente?»
-   - Cadencia **B** → sigue (STOP solo al fallo).
-
-## UI
-`/ui-check` o `skills/on-demand-tools/SKILL.md`. No DOM en este hilo.
-
-## Cambio directo
-Solo Nivel 0. Si crece → STOP y planear (Nivel 1).
+1. Confirma tarea (Spec Cómo OK).
+2. Test primero → rojo.
+3. Código mínimo. Guía `conventions` solo si existe.
+4. Suite compacta si hay flags. Fallo → `REPORTE DE FALLO` + STOP.
+5. `- [x]` en `spec.md`.
+   - Nativo aislado: devuelve solo resumen (archivos, suite, `[x]`).
+   - Sin aislamiento + cadencia A: *«Tarea lista. Chat limpio + `continúa`»*.
+   - Sin más pendientes → `/review` luego `/sdd-archive`.
+6. Nivel 0: si crece → STOP Nivel 1. ¿Línea MEMORY?

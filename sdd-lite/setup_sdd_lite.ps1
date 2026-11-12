@@ -1,6 +1,6 @@
 # setup_sdd_lite.ps1 - Instalador de agenticAI SDD-Lite (Windows PowerShell)
 # Uso:
-#   powershell -ExecutionPolicy Bypass -File ruta\a\sdd-full\setup_sdd_lite.ps1 -ProjectPath "C:\ruta\a\tu-proyecto"
+#   powershell -ExecutionPolicy Bypass -File ruta\a\sdd-lite\setup_sdd_lite.ps1 -ProjectPath "C:\ruta\a\tu-proyecto"
 # Texto sin tildes a proposito (compatibilidad con PowerShell 5.1).
 
 param(
@@ -17,10 +17,10 @@ function Show-ProjectPathHelp {
     Write-Host 'Debes indicar la ruta del proyecto donde se instalara el kit (carpeta raiz de TU app, no la del ZIP).' -ForegroundColor Red
     Write-Host ''
     Write-Host 'Ejemplo:'
-    Write-Host '  powershell -ExecutionPolicy Bypass -File C:\descargas\agenticAI-main\sdd-full\setup_sdd_lite.ps1 -ProjectPath "C:\Users\tu\mi-proyecto"'
+    Write-Host '  powershell -ExecutionPolicy Bypass -File C:\descargas\agenticAI-main\sdd-lite\setup_sdd_lite.ps1 -ProjectPath "C:\Users\tu\mi-proyecto"'
     Write-Host ''
     Write-Host 'O con ruta relativa:'
-    Write-Host '  powershell -ExecutionPolicy Bypass -File .\sdd-full\setup_sdd_lite.ps1 -ProjectPath "..\mi-proyecto"'
+    Write-Host '  powershell -ExecutionPolicy Bypass -File .\sdd-lite\setup_sdd_lite.ps1 -ProjectPath "..\mi-proyecto"'
 }
 
 if ([string]::IsNullOrWhiteSpace($ProjectPath)) {
@@ -61,18 +61,40 @@ if ($choice -eq '1') {
     Write-Host '[+] Reglas convertidas a .mdc (formato de Cursor).' -ForegroundColor Green
 }
 
+function Project-NativeAgents {
+    param([string]$Dest, [switch]$OpenCodeMode)
+    New-Item -ItemType Directory -Force -Path $Dest | Out-Null
+    foreach ($p in @(
+        @{ Src = '1-planner'; Name = 'sdd-planner' },
+        @{ Src = '2-implementer'; Name = 'sdd-implementer' },
+        @{ Src = '3-qa-reviewer'; Name = 'sdd-qa-reviewer' }
+    )) {
+        $srcFile = Join-Path $root "subagents/$($p.Src).md"
+        if (-not (Test-Path -LiteralPath $srcFile)) { Write-Host "[!] Falta $srcFile"; continue }
+        $content = Get-Content -LiteralPath $srcFile -Raw -Encoding UTF8
+        if ($OpenCodeMode) { $content = [regex]::Replace($content, '(?m)^(description: .+)$', "`$1`nmode: subagent", 1) }
+        Set-Content -Path (Join-Path $Dest "$($p.Name).md") -Value $content -Encoding UTF8
+    }
+    Write-Host "[+] Subagentes nativos en $Dest/" -ForegroundColor Green
+}
+
 $ruleFile = if ($choice -eq '1') { 'global-sdd.mdc' } else { 'global-sdd.md' }
 $pointer = "Sigue estrictamente la metodologia SDD de ``$root/``: reglas y Triage en ``$root/rules/$ruleFile``, flujos en ``$root/commands/``, convenciones en ``$root/skills/``."
 switch ($choice) {
-    '1' { Write-Host "[+] Cursor lee $root/ directamente; no se necesita archivo puente." -ForegroundColor Green }
+    '1' {
+        Write-Host "[+] Cursor lee $root/ directamente; no se necesita archivo puente." -ForegroundColor Green
+        Project-NativeAgents -Dest (Join-Path $root 'agents')
+    }
     '2' {
         New-Item -ItemType Directory -Force -Path '.github' | Out-Null
         Set-Content -Path '.github/copilot-instructions.md' -Value ("# Reglas de AgenticAI SDD-Lite`n`n" + $pointer) -Encoding UTF8
         Write-Host '[+] .github/copilot-instructions.md generado.' -ForegroundColor Green
+        Write-Host "[+] Copilot: subagentes desde $root/subagents/." -ForegroundColor DarkGray
     }
     '3' {
         Set-Content -Path 'CLAUDE.md' -Value ("# Instrucciones del Repositorio`n`n" + $pointer) -Encoding UTF8
         Write-Host '[+] CLAUDE.md generado.' -ForegroundColor Green
+        Project-NativeAgents -Dest '.claude/agents'
     }
     '4' {
         Write-Host "[+] Pi: $root/ instalado. Generando extension de slash commands..." -ForegroundColor Green
@@ -104,6 +126,7 @@ switch ($choice) {
         Set-Content -Path '.pi/extensions/sdd-commands.ts' -Value $tsLines -Encoding UTF8
         Write-Host '[+] Extension de Pi generada en .pi/extensions/sdd-commands.ts' -ForegroundColor Green
         Write-Host "    Comandos registrados: $list" -ForegroundColor DarkGray
+        Write-Host "[+] Pi: subagentes desde $root/subagents/." -ForegroundColor DarkGray
     }
     '5' {
         $instr = "$root/rules/global-sdd.md"
@@ -145,7 +168,8 @@ switch ($choice) {
         }
         Write-Host "[+] OpenCode: $root/ + opencode.json instructions -> $instr" -ForegroundColor Green
         Write-Host "[+] Slash commands en .opencode/commands/: $($ocNames -join ', ')" -ForegroundColor Green
-        Write-Host '    Tras /sdd-init, el GATE tambien queda incrustado en AGENTS.md (obligatorio).' -ForegroundColor DarkGray
+        Project-NativeAgents -Dest '.opencode/agents' -OpenCodeMode
+        Write-Host '    Tras /sdd-init: GATE compacto en AGENTS.md si instructions carga global-sdd.' -ForegroundColor DarkGray
     }
 }
 

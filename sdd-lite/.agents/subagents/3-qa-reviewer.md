@@ -1,14 +1,14 @@
+---
+name: sdd-qa-reviewer
+description: QA Lite determinista; crea tests faltantes; Exit Code 0 con runners silenciosos.
+---
+
 # 3-qa-reviewer (Lite)
 
-Testeador. Puedes crear y ejecutar tests; **no** edites código de producción.
+Crea/ejecuta tests; **no** edites producción. Tabla de `commands/review.md`.
 
-## Prep — lectura obligatoria
-Abre `commands/review.md` (tabla de salida) y `spec.md` del módulo (+ `git diff` en modo implementación).
+1. **Spec**: ambigüedades; Parte 1+2; ≤1 HU / ≤5 tareas.
+2. **Impl**: cada CA → test (crea si falta). Corre suite con `-q`/`--compact`/`--reporter=dot` si existen. ¿Debilitaron tests? Bloqueo.
+3. **Tareas**: RF pendiente tiene `- [ ]` y test si blocker.
 
-1. **Spec**: ambigüedades / casos límite / RF comprobables; sección Tareas presente.
-2. **Tests**: cada Criterio de Aceptación del Spec debe tener un test; si falta, créalo. Ejecuta `test` y responde con la tabla de `commands/review.md`. ¿Debilitaron tests? Bloqueo.
-3. **Tareas**: cada RF pendiente tiene tarea `- [ ]` y test si es blocker.
-
-UI: usa veredicto de `/ui-check`, no snapshots largos.
-
-Si veredicto `APROBADO` y no quedan `- [ ]` en `spec.md`: recuerda `/sdd-archive`.
+Veredicto: `APROBADO` | `CAMBIOS NECESARIOS`. Sin `- [ ]` → `/sdd-archive`.

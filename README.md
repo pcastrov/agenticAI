@@ -12,7 +12,7 @@ Este repo **no** es una app: son **dos ediciones** listas para instalar en tu pr
 
 | Principio | Qué significa en el kit |
 |-----------|--------------------------|
-| **SDD** | Full 4.1+: **ANCLAJE** (Turno 0: MEMORY → AGENTS → spec por título) y luego Triage. Nivel 0 *FAST-TRACK* edita directo (+ huella MEMORY si aporta); Nivel 1 *SDD-REQUIRED* **no emite código** hasta tener spec aprobada. |
+| **SDD** | Full 4.2+: ANCLAJE + Triage + subagentes nativos. Lite 3.0: ANCLAJE corto + **Micro-Spec** (1 HU / ≤5 tareas, 2 paradas Qué/Cómo) para 8K–32K. Nivel 0 edita directo; Nivel 1 no emite código hasta spec OK. |
 | **DRY** | Antes de crear algo, se busca lo existente (`Código Compartido` + módulo activo). Reutilizar se **propone**, nunca se impone. |
 | **KISS** | Sin capas, abstracciones ni patrones que el requisito no necesite. |
 | **YAGNI** | Nada que ningún requisito (`RF`) pida hoy. |
@@ -25,16 +25,16 @@ DRY/KISS/YAGNI son **consultas** (`CONSULTA DE SIMPLICIDAD`): el agente pregunta
 
 ## Elige tu edición
 
-| | **SDD Full** (v4.0+) | **SDD Lite** (v2.0+) |
+| | **SDD Full** (v4.2+) | **SDD Lite Compacto** (v3.0+) |
 |---|---|---|
 | **Carpeta** | [`sdd-full/`](sdd-full/) | [`sdd-lite/`](sdd-lite/) |
-| **Para quién** | Cursor, Claude Code, GitHub Copilot / modelos frontier | Modelos **locales** 8B–14B en GPU modestas |
-| **Ventana típica** | 128K+ | **32K** (a veces 16K) con **Ollama** |
-| **Flujo** | ANCLAJE + Triage + 8 fases; flowchart (cliente) + secuencia (dev); propiedades; QA a ciegas | Triage + 3 pasos: planear → implementar → archivar |
-| **Specs** | `spec.md` + `plan.md` + `tasks.md` + `history/index.md` + `history/<dominio>.md` | `spec.md` tabular + `history/index.md` + `history/<dominio>.md` (≤100 líneas) |
-| **Historial** | Íntegro, segmentado por dominio (no se resume) | Fichas atómicas por dominio (solo contratos y endpoints) |
-| **QA (`/review`)** | Auditoría a ciegas: diff vs spec + suite en terminal | Tabla determinista de 4 criterios con evidencia; crea tests faltantes |
-| **Convenciones de framework** | Opcionales (Laravel, Filament, NativePHP, Django, FastAPI, Flutter) | Opcionales (versión condensada) |
+| **Para quién** | Frontier / ventanas grandes | Locales **8B–14B**, ventanas **8K–32K** |
+| **Ventana típica** | 128K+ | Ollama 8K–32K (Pi / OpenCode / Cursor) |
+| **Flujo** | ANCLAJE + Triage + fases; flowchart + secuencia; subagentes nativos | ANCLAJE + Micro-Spec (Qué🛑/Cómo🛑) + TDD aislado |
+| **Specs** | `spec` + `plan` + `tasks` + history íntegro | Un `spec.md` (1 HU · ≤5 tareas · ~85 líneas) + shards ≤100 |
+| **Memoria** | MEMORY + history detalle | MEMORY ≤30 (activa) + shards condensados |
+| **QA (`/review`)** | A ciegas: diff + suite | Tabla 4 criterios; crea tests; runners silenciosos |
+| **Convenciones** | Opcionales (stack-conventions) | Opcionales condensadas + `on-demand-tools` |
 
 **No instales Full y Lite a la vez** en el mismo proyecto.
 
