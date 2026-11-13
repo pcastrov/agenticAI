@@ -6,7 +6,8 @@ alwaysApply: true
 # SDD Lite
 
 ## 0. GATE (antes de editar)
-> Cursor/OpenCode/Claude/Copilot: `AGENTS.md` lleva **puntero** a esta regla. Pi/chat libre: GATE completo en `AGENTS.md`. Si falta, no edites hasta `/sdd-init` o `/sdd-update`.
+> Cursor / OpenCode (`instructions`) / Claude·Copilot (puente): `AGENTS.md` lleva **puntero** a §0. **Pi** / chat libre: GATE completo. Si falta, no edites hasta `/sdd-init` o `/sdd-update`.
+> **Hosts:** Lite instala en todos. Con **modelo local** (~8 GB) se recomienda Pi u OpenCode; Cursor/Copilot/Claude van bien con cloud o GPU **> ~8 GB**.
 
 Aplica con o **sin** `/sdd`. Antes de diagnosticar a fondo, proponer o editar:
 
@@ -29,7 +30,7 @@ Aplica con o **sin** `/sdd`. Antes de diagnosticar a fondo, proponer o editar:
 7. Antes de la 1.ª tarea: `[CADENCIA TDD]` A|B (default **A**). En A, 🛑 tras cada `- [x]`.
 8. Test/UI rojo → **STOP** + `REPORTE DE FALLO`. No acomodes tests.
 
-### Topes de contexto (8K–16K)
+### Topes de contexto (ventanas 8K / 16K / 32K)
 | Archivo | Máx. líneas | Notas |
 |---------|-------------|--------|
 | `AGENTS.md` | 45 | Perfil + estructura + reglas críticas (+ GATE puntero o completo) |

@@ -18,6 +18,7 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 - **GATE en `AGENTS.md`**: puntero compacto (3 líneas) si el host auto-carga `global-sdd`; GATE completo solo en Pi / chat libre.
 - **`MEMORY.md` ventana deslizante**: últimos 2–3 cambios/decisiones/trampas (máx. ~20 líneas); al archive/cierre Nivel 0 con 3 entradas → desplaza la más antigua (`history/` conserva el íntegro).
 - **Higiene de contexto**: aislamiento nativo o chat limpio antes de `/implement` y `/review`.
+- **Docs de tokens**: inventarios y rangos actualizados en README raíz, `sdd-full/README.md` y `sdd-kit/README.md` (estimaciones; varían).
 
 ### Migración
 1. `/sdd-update` o reinstalar (opciones 1/3/5 regeneran agents nativos).

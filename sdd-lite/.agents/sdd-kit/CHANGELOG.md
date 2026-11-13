@@ -7,20 +7,23 @@ SDD Lite Compacto (Full Compacto para 8K–32K). **Cambio mayor.**
 ### Agregado
 - **`[ANCLAJE]`** corto (Turno 0) antes del Triage; MEMORY activa (≤30 líneas).
 - **Micro-Spec**: 1 HU · ≤5 tareas · `spec.md` ~85 líneas; 2 paradas (Qué → 🛑 → Cómo+Tareas → 🛑) en un solo archivo.
-- **Subagentes nativos** `sdd-planner` / `sdd-implementer` / `sdd-qa-reviewer` → `.cursor/agents/`, `.claude/agents/`, `.opencode/agents/` (`mode: subagent`).
-- Aislamiento: nativo por Task; fallback Pi/Ollama → chat limpio + `continúa` tras cada tarea (cadencia A).
+- **Hosts**: Cursor · Copilot (VS Code) · Claude Code · Pi · OpenCode (instalador 1–5).
+- **Subagentes nativos** donde aplica; Pi/Copilot → `subagents/` + chat limpio.
+- Aislamiento: nativo por Task; fallback → chat limpio + `continúa` (cadencia A).
 - QA: runners silenciosos (`-q` / `--compact` / `--reporter=dot`).
-- GATE compacto en `AGENTS.md` si el host auto-carga `global-sdd` (Pi: GATE completo).
+- GATE compacto si el host auto-carga `global-sdd` (Pi: completo).
+- **Docs**: modelos locales → recomendar Pi/OpenCode; cloud → cualquier host; local + Cursor/Copilot/Claude si GPU >~8 GB.
 
 ### Cambiado
 - Topes: `AGENTS.md` ≤45; `MEMORY.md` ≤30; history sin cambios (index ≤30, dominio ≤100).
-- Instaladores: rutas de ayuda `sdd-lite/` (no `sdd-full/`); proyección de agents.
+- Instaladores alineados a Full (5 hosts) + nota de recomendación local vs cloud.
 - Comandos/subagentes ultra-concisos (≤50 líneas).
+- **Docs de tokens**: rangos en README Lite / kit y comparativa raíz (estimaciones; varían).
 
 ### Migración
 1. `/sdd-update` o reinstalar Lite.
 2. Specs viejas: al iterar, divide en Micro-Specs (1 HU / ≤5 tareas) con 2 paradas.
-3. Cursor/Claude/OpenCode: confirma carpeta `agents/` nativa.
+3. Confirma proyección nativa según host.
 
 ---
 

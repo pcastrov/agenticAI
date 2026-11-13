@@ -1,14 +1,18 @@
-# SDD Lite Compacto — 8K–32K
+# SDD Lite Compacto — 8K / 16K / 32K
+
+Micro-Spec para ventanas cortas. Instala en Cursor, Copilot (VS Code), Claude Code, Pi u OpenCode.
+
+**Recomendación:** modelos **locales** (~8 GB) → **Pi** / **OpenCode**. Modelos **cloud** → cualquier host. Local + Cursor/Copilot/Claude → mejor con GPU **> ~8 GB** (puedes subir contexto).
 
 Copia `sdd-lite/.agents/` → `.cursor/` (Cursor) o `.agents/` (otros). No combines con Full.
 
 ## Instalación
-1. `setup_sdd_lite.sh` / `.ps1` o copia manual.
-2. `/sdd-init` (GATE compacto si auto-carga `global-sdd`; Pi: completo).
+1. `setup_sdd_lite.sh` / `.ps1` (menú 1–5).
+2. `/sdd-init` (GATE compacto si el host auto-carga `global-sdd`; Pi: completo).
 3. `/sdd` → 2 paradas Micro-Spec → `/implement` → `/review` → `/sdd-archive`.
 4. `/sdd-update`.
 
-## Presupuesto
+## Presupuesto (líneas)
 | Pieza | Tope |
 |-------|------|
 | `AGENTS.md` | 45 líneas |
@@ -17,16 +21,24 @@ Copia `sdd-lite/.agents/` → `.cursor/` (Cursor) o `.agents/` (otros). No combi
 | `history/index.md` | 30 |
 | `history/<dominio>.md` | 100 |
 
-Turno ≈ 2–3.5K tokens. ANCLAJE → Triage → Micro-Spec.
+## Tokens (estimación)
+
+> **Estimaciones**; varían. Detalle: README raíz.
+
+| | Tok. est. |
+|--|-----------|
+| Kit `.agents/` en disco | ~7.97K |
+| Base fija / turno | ~1.5–1.6K |
+| Turno + subagente + `spec.md` | ~2–3.5K |
+| Feature Nivel 1 acumulada | ~30–65K |
 
 ## Archivos del paquete
 ```text
 sdd-kit.md · sdd-kit/README.md · sdd-kit/CHANGELOG.md
 rules/global-sdd.md
 subagents/1-planner.md · 2-implementer.md · 3-qa-reviewer.md
-commands/sdd-init · sdd · architect · implement · review · sdd-archive · sdd-update · retrofit · ui-check · mcp-mode
-skills/sdd-docs-generator/** · stack-conventions/** · on-demand-tools/SKILL.md
+commands/… · skills/…
 ```
 
 ## Hosts
-Nativos: `.cursor/agents/`, `.claude/agents/`, `.opencode/agents/`. Copilot/Pi: `subagents/` + chat limpio entre tareas.
+Nativos: `.cursor/agents/`, `.claude/agents/`, `.opencode/agents/` (`mode: subagent`). Copilot/Pi: `subagents/` + chat limpio entre tareas.

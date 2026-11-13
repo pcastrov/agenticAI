@@ -130,7 +130,18 @@ Menú del instalador: **1** Cursor · **2** Copilot · **3** Claude Code · **4*
 
 `MEMORY` → `AGENTS` → ¿título de carpeta `specs/` encaja? → solo ese módulo → triage → Nivel 0 (código + huella MEMORY) o Nivel 1 (spec → plan → tasks).
 
-**Hilos limpio:** tras aprobar tasks → nuevo chat para `/implement`; tras todas `- [x]` → nuevo chat para `/review`.
+**Nativo:** delega `/implement` y `/review` al subagente aislado. **Copilot/Pi:** chat limpio antes de esas fases.
+
+### Presupuesto de tokens (estimación)
+
+> Cifras **orientativas**; varían con tokenizer, specs, diff, tests, MCPs y el system prompt del host (**no** incluido). Detalle comparativo Full vs Lite: [README raíz](../README.md#estimación-de-tokens-orientativa).
+
+| | Estimación |
+|--|------------|
+| Kit en disco (`.agents/` / `.cursor/`) | ~**45.6K** tok. estáticos (no se cargan todos a la vez) |
+| Base fija / turno | ~**5.3–6.7K** (`global-sdd` + `AGENTS` + `MEMORY` + stack) |
+| Feature Nivel 1 (8–14 turnos) | ~**120–260K** acumulados · **~90–130K** con aislamiento / chat limpio en TDD y QA |
+| Nivel 0 (2–4 turnos) | ~**18–35K** |
 
 ## Uso rápido
 

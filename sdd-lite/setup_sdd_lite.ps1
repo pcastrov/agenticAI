@@ -39,6 +39,7 @@ Write-Host "Proyecto: $ProjectPath" -ForegroundColor DarkGray
 Write-Host "Configurando agenticAI $EditionLabel..." -ForegroundColor Cyan
 Write-Host ''
 Write-Host 'Que entorno principal vas a utilizar?'
+Write-Host '(Lite + modelos locales ~8 GB: se recomienda Pi u OpenCode; Cursor/Copilot/Claude OK con cloud o GPU >8 GB)' -ForegroundColor DarkGray
 Write-Host '1) Cursor (carpeta .cursor/)'
 Write-Host '2) GitHub Copilot (.github/copilot-instructions.md)'
 Write-Host '3) Claude Code (CLAUDE.md)'
@@ -61,21 +62,32 @@ if ($choice -eq '1') {
     Write-Host '[+] Reglas convertidas a .mdc (formato de Cursor).' -ForegroundColor Green
 }
 
+# Proyecta subagentes nativos aislados (origen: $root/subagents/; sin duplicar el kit fuente)
 function Project-NativeAgents {
-    param([string]$Dest, [switch]$OpenCodeMode)
+    param(
+        [Parameter(Mandatory = $true)][string]$Dest,
+        [switch]$OpenCodeMode
+    )
     New-Item -ItemType Directory -Force -Path $Dest | Out-Null
-    foreach ($p in @(
+    $pairs = @(
         @{ Src = '1-planner'; Name = 'sdd-planner' },
         @{ Src = '2-implementer'; Name = 'sdd-implementer' },
         @{ Src = '3-qa-reviewer'; Name = 'sdd-qa-reviewer' }
-    )) {
+    )
+    foreach ($p in $pairs) {
         $srcFile = Join-Path $root "subagents/$($p.Src).md"
-        if (-not (Test-Path -LiteralPath $srcFile)) { Write-Host "[!] Falta $srcFile"; continue }
+        if (-not (Test-Path -LiteralPath $srcFile)) {
+            Write-Host "[!] Falta $srcFile; se omite $($p.Name)." -ForegroundColor Yellow
+            continue
+        }
         $content = Get-Content -LiteralPath $srcFile -Raw -Encoding UTF8
-        if ($OpenCodeMode) { $content = [regex]::Replace($content, '(?m)^(description: .+)$', "`$1`nmode: subagent", 1) }
-        Set-Content -Path (Join-Path $Dest "$($p.Name).md") -Value $content -Encoding UTF8
+        if ($OpenCodeMode) {
+            $content = [regex]::Replace($content, '(?m)^(description: .+)$', "`$1`nmode: subagent", 1)
+        }
+        Set-Content -Path (Join-Path $Dest "$($p.Name).md") -Value $content -Encoding UTF8 -NoNewline
+        Add-Content -Path (Join-Path $Dest "$($p.Name).md") -Value '' -Encoding UTF8
     }
-    Write-Host "[+] Subagentes nativos en $Dest/" -ForegroundColor Green
+    Write-Host "[+] Subagentes nativos en $Dest/ (sdd-planner, sdd-implementer, sdd-qa-reviewer)." -ForegroundColor Green
 }
 
 $ruleFile = if ($choice -eq '1') { 'global-sdd.mdc' } else { 'global-sdd.md' }
@@ -89,7 +101,7 @@ switch ($choice) {
         New-Item -ItemType Directory -Force -Path '.github' | Out-Null
         Set-Content -Path '.github/copilot-instructions.md' -Value ("# Reglas de AgenticAI SDD-Lite`n`n" + $pointer) -Encoding UTF8
         Write-Host '[+] .github/copilot-instructions.md generado.' -ForegroundColor Green
-        Write-Host "[+] Copilot: subagentes desde $root/subagents/." -ForegroundColor DarkGray
+        Write-Host "[+] Copilot: subagentes desde $root/subagents/ (sin carpeta nativa)." -ForegroundColor DarkGray
     }
     '3' {
         Set-Content -Path 'CLAUDE.md' -Value ("# Instrucciones del Repositorio`n`n" + $pointer) -Encoding UTF8
@@ -126,9 +138,10 @@ switch ($choice) {
         Set-Content -Path '.pi/extensions/sdd-commands.ts' -Value $tsLines -Encoding UTF8
         Write-Host '[+] Extension de Pi generada en .pi/extensions/sdd-commands.ts' -ForegroundColor Green
         Write-Host "    Comandos registrados: $list" -ForegroundColor DarkGray
-        Write-Host "[+] Pi: subagentes desde $root/subagents/." -ForegroundColor DarkGray
+        Write-Host "[+] Pi: subagentes desde $root/subagents/ (sin carpeta nativa)." -ForegroundColor DarkGray
     }
     '5' {
+        # OpenCode: AGENTS.md + opencode.json instructions + .opencode/commands/*.md (slash commands)
         $instr = "$root/rules/global-sdd.md"
         $cfgPath = 'opencode.json'
         if (Test-Path -LiteralPath $cfgPath) {

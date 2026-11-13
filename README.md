@@ -1,6 +1,6 @@
 # SDD Kit
 
-Kit de **Spec-Driven Development (SDD)** para programar con agentes de IA de forma ordenada: primero el **qué** (spec), luego el **cómo**, después TDD y validación. Funciona con Cursor, Claude Code, GitHub Copilot, Pi y OpenCode.
+Kit de **Spec-Driven Development (SDD)** para programar con agentes de IA de forma ordenada: primero el **qué** (spec), luego el **cómo**, después TDD y validación. Ambos kits instalan en Cursor, Claude Code, GitHub Copilot (VS Code), Pi y OpenCode.
 
 **Repositorio**: [github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI) · **Licencia**: [MIT](LICENSE)
 
@@ -17,7 +17,7 @@ Este repo **no** es una app: son **dos ediciones** listas para instalar en tu pr
 | **KISS** | Sin capas, abstracciones ni patrones que el requisito no necesite. |
 | **YAGNI** | Nada que ningún requisito (`RF`) pida hoy. |
 | **Tests íntegros** | Un test rojo se reporta, nunca se debilita ni se ignora. QA valida con Exit Code 0 en terminal. |
-| **Un solo origen** | Mismo contenido para todos, con rutas relativas. Solo cambia el nombre de la carpeta según tu herramienta: `.cursor/` (Cursor) o `.agents/` (las demás). Cero duplicación. |
+| **Un solo origen** | Mismo contenido con rutas relativas. Carpeta: `.cursor/` (Cursor) o `.agents/` (resto). Cero duplicación en el repo fuente. |
 
 DRY/KISS/YAGNI son **consultas** (`CONSULTA DE SIMPLICIDAD`): el agente pregunta, tú decides.
 
@@ -28,8 +28,8 @@ DRY/KISS/YAGNI son **consultas** (`CONSULTA DE SIMPLICIDAD`): el agente pregunta
 | | **SDD Full** (v4.2+) | **SDD Lite Compacto** (v3.0+) |
 |---|---|---|
 | **Carpeta** | [`sdd-full/`](sdd-full/) | [`sdd-lite/`](sdd-lite/) |
-| **Para quién** | Frontier / ventanas grandes | Locales **8B–14B**, ventanas **8K–32K** |
-| **Ventana típica** | 128K+ | Ollama 8K–32K (Pi / OpenCode / Cursor) |
+| **Para quién** | Frontier / ventanas grandes | Compacto: locales **8B–14B** o cloud con topes bajos |
+| **Ventana típica** | 128K+ | **8K / 16K / 32K** (locales); cloud puede más |
 | **Flujo** | ANCLAJE + Triage + fases; flowchart + secuencia; subagentes nativos | ANCLAJE + Micro-Spec (Qué🛑/Cómo🛑) + TDD aislado |
 | **Specs** | `spec` + `plan` + `tasks` + history íntegro | Un `spec.md` (1 HU · ≤5 tareas · ~85 líneas) + shards ≤100 |
 | **Memoria** | MEMORY + history detalle | MEMORY ≤30 (activa) + shards condensados |
@@ -53,17 +53,18 @@ DRY/KISS/YAGNI son **consultas** (`CONSULTA DE SIMPLICIDAD`): el agente pregunta
 En PowerShell también vale el primer argumento sin nombre: `.\setup_sdd_full.ps1 "C:\Users\tu\mi-proyecto"`.
 
 El script hace tres cosas (en este orden):
-1. Pregunta tu agente.
-2. Instala el paquete en **`.cursor/`** si usas Cursor, o en **`.agents/`** si usas otro (mismo contenido; solo cambia el nombre). Crea un archivo **puente** solo donde hace falta: `.github/copilot-instructions.md` (Copilot) y `CLAUDE.md` (Claude Code). Cursor, Pi y OpenCode leen su carpeta directo. En Cursor, las reglas pasan a `.mdc`. La opción **Pi** genera `.pi/extensions/sdd-commands.ts`. La opción **OpenCode** escribe `opencode.json` (`instructions` → `global-sdd.md`) y **`.opencode/commands/<cmd>.md`** por cada comando del kit (OpenCode no trata `.agents/commands/` como slash; su `/init` built-in es otro comando). Tras **`/sdd-init`**, el **GATE** queda al inicio de `AGENTS.md`.
-3. (Opcional) Te deja **solo la guía de tu framework** (Laravel/Filament/NativePHP, Django, FastAPI, Flutter) y borra el resto para ahorrar tokens. Si saltas el paso o no hay guía, el agente usa buenas prácticas estándar del lenguaje, sin error.
 
+1. Pregunta tu agente: **1 Cursor · 2 Copilot · 3 Claude · 4 Pi · 5 OpenCode** (Full y Lite).
+2. Instala en `.cursor/` (Cursor) o `.agents/` (resto). Puentes si hace falta: `.github/copilot-instructions.md` (Copilot / VS Code), `CLAUDE.md` (Claude). Cursor → reglas `.mdc`. Pi → `.pi/extensions/sdd-commands.ts`. OpenCode → `opencode.json` + `.opencode/commands/<cmd>.md`. Tras `/sdd-init`, el **GATE** queda al inicio de `AGENTS.md`.
+3. (Opcional) Te deja **solo la guía de tu framework** (Laravel/Filament/NativePHP, Django, FastAPI, Flutter) y borra el resto para ahorrar tokens. Si saltas el paso o no hay guía, el agente usa buenas prácticas estándar del lenguaje, sin error.
 4. **En el chat de tu agente** Ejecuta `/sdd-init` (genera `AGENTS.md`, `docs/constitution.md`, `MEMORY.md`). Luego:
    - Full: `/sdd` para planear y construir; código existente → `/retrofit`.
    - Lite: `/sdd` → `/implement` → `/sdd-archive`.
 
-**Sin script**: copia el contenido de `sdd-full/.agents/` (o `sdd-lite/.agents/`) a `.cursor/` (Cursor) o `.agents/` (otros) en la raíz de tu proyecto y Ejecuta `/sdd-init`.
+**Sin script**: copia `sdd-full/.agents/` o `sdd-lite/.agents/` a `.cursor/` (Cursor) o `.agents/` (otros) y Ejecuta `/sdd-init`.
 
 ### Actualizar
+
 En el chat: `/sdd-update`. Detecta tu carpeta (`.cursor/` o `.agents/`) y actualiza **en el sitio**, sin renombrarla. Solo sobrescribe archivos base del paquete (reglas, comandos, plantillas). **Nunca toca** tus skills ni restaura guías de framework que borraste. Corrige en `AGENTS.md` las rutas al framework según tu herramienta (Full 4.1+: verifica que el GATE muestre **`[ANCLAJE]`** sin borrar el dominio) y, si tus specs tienen un `history.md` antiguo, te **pregunta** si migrarlo a `history/index.md` + `history/<dominio>.md`.
 
 ---
@@ -88,38 +89,58 @@ agenticAI/
 
 | Pieza | Objetivo |
 |-------|----------|
-| **Hardware** | GPU de consumo con **~8 GB VRAM** |
-| **Runtime** | **Ollama** |
-| **Contexto** | **32K** tokens (`num_ctx` ≈ 32768); a veces 16K |
-| **Modelos** | **8B–14B** cuantizados, p. ej. **Qwen 2.5 Coder 14B**, y variantes **9B / 8B** |
-| **Cliente (ideal)** | **Pi** (más liviano) · **OpenCode** · VS Code + Copilot/Ollama (más overhead) |
+| **Hardware (local)** | GPU de consumo **~8 GB VRAM** (diseño base) |
+| **Runtime local** | **Ollama** |
+| **Contexto local** | **8K / 16K / 32K** (`num_ctx`) según modelo — buen tokens/s; subir más suele bajar el throughput |
+| **Modelos locales** | **8B–14B** cuantizados, p. ej. **Qwen 2.5 Coder 7B**, y otros **9B / 8B o MoE** |
+| **Cliente recomendado (local)** | **Pi** (más liviano) · **OpenCode** |
+| **Cloud / no local** | Cursor · VS Code + Copilot · Claude Code (también Pi/OpenCode) — Lite compacto igual de útil |
+| **Local + Cursor/Copilot/Claude** | Mejor con GPU **> ~8 GB**; ahí suele ir bien e incluso **aumentar el contexto** |
 
 ---
 
 ## Estimación de tokens (orientativa)
 
-Aprox. en español/Markdown. Solo kit + docs SDD; **no** incluye código leído, historial del chat ni MCPs de terceros.
+> **Estimaciones.** Varían con tokenizer, idioma, tamaño real de `AGENTS`/`MEMORY`/specs, diff, salida de tests, MCPs y el **system prompt del cliente** (Cursor, Claude Code, OpenCode, Copilot, Pi…), que **no** está incluido abajo.
 
-### Full — turno típico (Laravel + Filament)
+### 1. Inventario estático en disco (por capa)
 
-| Escenario | Tokens aprox. |
-|-----------|----------------|
-| Base fija (regla global + `AGENTS.md` limpio, sin Boost guidelines) | **~2.5–3.5K** |
-| Implementar 1 tarea (stack ya adjunto) | **~8–11K** |
-| Planificar (plantillas + spec/plan) | **~12–16K** |
+| Capa                                  | Archivos (Full / Lite) | Full (tok. est.) | Lite (tok. est.) | Carga                           |
+| ------------------------------------- | ---------------------- | ---------------- | ---------------- | ------------------------------- |
+| Reglas `rules/global-sdd.md`          | 1 / 1                  | ~3 316           | ~862             | Siempre (`alwaysApply`)         |
+| Comandos `commands/*.md`              | 13 / 10                | ~11 956          | ~2 945           | Bajo demanda (1 comando)        |
+| Subagentes `subagents/*.md`           | 3 / 3                  | ~3 097           | ~935             | Por fase (1 rol)                |
+| Skill `stack-conventions`             | 7 / 7                  | ~9 560           | ~694             | Selectivo (1–2 guías)           |
+| Skill `sdd-docs-generator`            | 8 / 4                  | ~5 693           | ~1 083           | Por documento (1 plantilla)     |
+| Skill `on-demand-tools`               | 0 / 1                  | —                | ~325             | Bajo demanda (UI/BD/consola)    |
+| Metadatos `sdd-kit/`                  | 3 / 3                  | ~11 994          | ~1 130           | ~0 en operación (`/sdd-update`) |
+| **Total `.agents/` / `.cursor/`**     | **35 / 29**            | **~45 616**      | **~7 974**       | Sin `setup_`* ni README raíz    |
+| **Carpeta completa** (+ setup/README) | **38 / 32**            | **~51 988**      | **~14 007**      | Peso en el repo                 |
 
-### Lite — turno típico (Ollama 32K, p. ej. Qwen 2.5 Coder 14B / 8 GB VRAM)
+### 2. Consumo base fijo por turno (antes de leer código de tu app)
 
-| Escenario | Tokens aprox. |
-|-----------|----------------|
-| Turno normal (regla + subagente + guía + `spec.md`) | **~3.0–3.5K** |
-| + 1 shard de dominio | **~4.5–5.0K** |
+| Edición | Base fija aprox. | Desglose |
+|---------|------------------|----------|
+| **Full** | **~5.3–6.7K** | `global-sdd` ~3 316 + `AGENTS` ~600–1 000 + `MEMORY` ~250–500 + `rules/stack-`* ~1 100–1 900 |
+| **Lite** | **~1.5–1.6K** | `global-sdd` ~862 + `AGENTS` ~400 + `MEMORY` ~200 + convención condensada ~60–150 |
 
-Overhead del cliente (fuera del kit): **Pi** ~1.2–1.8K · **OpenCode** ~3.5–5K · Copilot Agent ~6.5–9K. Reserva ~3–4K para la respuesta. En 8B–14B evita llenar los 32K al tope (~70–75%).
+En Lite, el README del kit (~**3.0–3.5K**/turno) suma ya subagente + `spec.md` activo; encaja con base + lectura de fase.
+
+### 3. Acumulado por flujo (input + output, multi-turno)
+
+| Escenario | Turnos | Full | Lite |
+|-----------|--------|------|------|
+| Consulta / arquitectura | 1–2 | 8K–14K | 2.5K–4.5K |
+| Bugfix / Nivel 0 | 2–4 | 18K–35K | 5K–10K |
+| `/sdd-init` | 3–5 | 35K–55K | 12K–20K |
+| Feature Nivel 1 | 8–14 | 120K–260K · **90K–130K** con sesión limpia / subagente aislado antes de `/implement` y `/review` | 30K–65K |
+
+Overhead del cliente (fuera del kit, Lite): **Pi** ~1.2–1.8K · **OpenCode** ~3.5–5K. En 8B–14B con ventana **8K–32K**, reserva ~3–4K para la respuesta y evita llenar el contexto al tope (~70–75%).
 
 ---
 
 ## Tips para gastar menos
+
 1. Un hilo/chat por tarea.
 2. Planear con modelo fuerte; implementar con Auto / modelo más barato.
 3. `/mcp-mode code` por defecto; `/ui-check` solo para pantallas.
@@ -129,6 +150,7 @@ Overhead del cliente (fuera del kit): **Pi** ~1.2–1.8K · **OpenCode** ~3.5–
 ---
 
 ## Mantenimiento de este repo
+
 1. Cambios Full en `sdd-full/.agents/` (única fuente; no hay espejo `.cursor/`).
 2. Cambios Lite en `sdd-lite/.agents/` (única fuente).
 3. Al versionar: `sdd-kit.md` + entrada al tope de `sdd-kit/CHANGELOG.md` de la edición.

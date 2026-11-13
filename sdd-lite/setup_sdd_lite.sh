@@ -34,6 +34,7 @@ echo "Proyecto: $PROJECT_PATH"
 echo "Configurando agenticAI SDD-Lite..."
 echo ""
 echo "¿Qué entorno principal vas a utilizar?"
+echo "(Lite + modelos locales ~8 GB: se recomienda Pi u OpenCode; Cursor/Copilot/Claude OK con cloud o GPU >8 GB)"
 echo "1) Cursor (carpeta .cursor/)"
 echo "2) GitHub Copilot (.github/copilot-instructions.md)"
 echo "3) Claude Code (CLAUDE.md)"
@@ -59,21 +60,34 @@ if [ "$choice" = "1" ]; then
     echo "[+] Reglas convertidas a .mdc (formato de Cursor)."
 fi
 
+# Proyecta subagentes nativos aislados (origen: $ROOT/subagents/; sin duplicar el kit fuente)
 project_native_agents() {
     local dest="$1"
     local add_mode="${2:-0}"
     mkdir -p "$dest"
     local pair src name srcf
     for pair in "1-planner:sdd-planner" "2-implementer:sdd-implementer" "3-qa-reviewer:sdd-qa-reviewer"; do
-        src="${pair%%:*}"; name="${pair##*:}"; srcf="$ROOT/subagents/$src.md"
-        [ -f "$srcf" ] || { echo "[!] Falta $srcf"; continue; }
+        src="${pair%%:*}"
+        name="${pair##*:}"
+        srcf="$ROOT/subagents/$src.md"
+        if [ ! -f "$srcf" ]; then
+            echo "[!] Falta $srcf; se omite $name."
+            continue
+        fi
         if [ "$add_mode" = "1" ]; then
-            awk 'BEGIN{fm=0;d=0} /^---$/{if(fm==0){fm=1;print;next} if(fm==1&&d==0){print "mode: subagent";d=1;fm=2;print;next}} {print}' "$srcf" > "$dest/$name.md"
+            awk '
+                BEGIN { fm=0; done=0 }
+                /^---$/ {
+                    if (fm==0) { fm=1; print; next }
+                    if (fm==1 && done==0) { print "mode: subagent"; done=1; fm=2; print; next }
+                }
+                { print }
+            ' "$srcf" > "$dest/$name.md"
         else
             cp "$srcf" "$dest/$name.md"
         fi
     done
-    echo "[+] Subagentes nativos en $dest/"
+    echo "[+] Subagentes nativos en $dest/ (sdd-planner, sdd-implementer, sdd-qa-reviewer)."
 }
 
 if [ "$choice" = "1" ]; then RULE_FILE="global-sdd.mdc"; else RULE_FILE="global-sdd.md"; fi
@@ -83,7 +97,7 @@ case $choice in
         echo "[+] Cursor lee $ROOT/ directamente; no se necesita archivo puente."
         project_native_agents "$ROOT/agents" 0
         ;;
-    2) mkdir -p .github; printf '%s\n' "# Reglas de AgenticAI SDD-Lite" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado."; echo "[+] Copilot: subagentes desde $ROOT/subagents/." ;;
+    2) mkdir -p .github; printf '%s\n' "# Reglas de AgenticAI SDD-Lite" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado."; echo "[+] Copilot: subagentes desde $ROOT/subagents/ (sin carpeta nativa)." ;;
     3)
         printf '%s\n' "# Instrucciones del Repositorio" "" "$POINTER" > CLAUDE.md
         echo "[+] CLAUDE.md generado."
@@ -122,9 +136,10 @@ EOF
         sed -i.bak "s|__COMMANDS__|$LIST|; s|__ROOT__|$ROOT|" .pi/extensions/sdd-commands.ts && rm -f .pi/extensions/sdd-commands.ts.bak
         echo "[+] Extensión de Pi generada en .pi/extensions/sdd-commands.ts"
         echo "    Comandos registrados: $LIST"
-        echo "[+] Pi: subagentes desde $ROOT/subagents/."
+        echo "[+] Pi: subagentes desde $ROOT/subagents/ (sin carpeta nativa)."
         ;;
     5)
+        # OpenCode: AGENTS.md + opencode.json instructions + .opencode/commands/*.md
         INSTR="$ROOT/rules/global-sdd.md"
         if [ -f opencode.json ] && command -v python3 >/dev/null 2>&1; then
             python3 - "$INSTR" <<'PY'

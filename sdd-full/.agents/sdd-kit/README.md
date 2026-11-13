@@ -158,6 +158,23 @@ Cada fase se detiene a pedir aprobación del usuario antes de avanzar.
 
 **Higiene de tokens:** en Cursor/Claude/OpenCode, `/implement` y `/review` delegan al subagente nativo aislado. En Copilot/Pi, abre un **chat limpio** antes de `/implement` y antes de `/review`. El estado ya está en `spec.md`, `plan.md`, `tasks.md` y `MEMORY.md`.
 
+### Presupuesto de tokens (estimación)
+
+> **Estimaciones** (español/Markdown). No incluyen system prompt del cliente ni código/diff/tests de tu app. Pueden variar. Tabla completa: README de la raíz del repo.
+
+| Capa | Tok. est. en disco | Carga |
+|------|-------------------|--------|
+| `global-sdd` | ~3 316 | Siempre |
+| Comandos (13) | ~11 956 | 1 comando |
+| Subagentes (3) | ~3 097 | 1 rol / fase |
+| `stack-conventions` | ~9 560 | 1–2 guías |
+| `sdd-docs-generator` | ~5 693 | 1 plantilla |
+| `sdd-kit/` metadatos | ~11 994 | Solo `/sdd-update` |
+| **Total `.agents/`** | **~45.6K** | Lazy por capa |
+
+- **Base fija / turno:** ~5.3–6.7K (`global-sdd` + `AGENTS` ~600–1K + `MEMORY` ~250–500 + stack ~1.1–1.9K).
+- **Flujos acumulados:** consulta 8–14K · Nivel 0 18–35K · `/sdd-init` 35–55K · feature Nivel 1 120–260K (**90–130K** con sesión limpia / aislamiento en implement+review).
+
 **Antes de la fase 1**, `/sdd` emite `[ANCLAJE]` (MEMORY → AGENTS → candidato por título) y luego evalúa si la petición merece especificación. Si es un cambio pequeño que no toca requisitos, reglas de negocio ni contratos (typo, estilos, un bug que viola un RF ya existente), lo dice con su justificación y propone un **cambio directo** (`2-implementer` MODO C), sin spec; al cerrar, huella mínima en MEMORY si aportó. El usuario decide.
 
 **Tests que fallan (obligatorio)**: nunca se modifica ni se debilita un test existente para que pase. Cada fallo produce un Reporte de Fallo y el rojo **siempre** queda cerrado con uno de:
