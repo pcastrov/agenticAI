@@ -128,7 +128,7 @@ Crea o actualiza con datos reales del proyecto. **No** copies formatos largos de
 - **Verificación**: cómo dar una tarea por verificada en este proyecto.
 
 ### PASO 8: `MEMORY.md`
-Crea o actualiza según **sección 6** de `init-templates.md` (máx. ~50 líneas). Es **estado / decisiones / aprendizajes**, no bitácora; el detalle vive en `history/` del módulo. Se consulta **siempre** en el Turno 0 (ANCLAJE). Nivel 0 / archive pueden añadir una línea mínima si aportan algo que no deba olvidarse.
+Crea o actualiza según **sección 6** de `init-templates.md`. Es **ventana deslizante** de memoria reciente: solo los **últimos 2–3** cambios/decisiones/trampas (máx. **~20 líneas**). No bitácora; el histórico íntegro vive en `history/` del módulo. Se consulta **siempre** en el Turno 0 (ANCLAJE). Nivel 0 / `/sdd-archive`: si ya hay 3 entradas y hay que añadir otra, **desplaza** la más antigua.
 
 ### PASO 9: `specs/` (sin módulos de ejemplo)
 - 🚫 **PROHIBIDO** crear `specs/NNN-...`, `specs/001-ejemplo` u otros módulos placeholder.

@@ -2,8 +2,8 @@
 
 ## PASO 0 — Lectura / delegación (ANTES de editar código)
 1. Emite `[ANCLAJE]` + `[TRIAGE SDD]` si aún no están en el hilo. Si falta `tasks.md` (Nivel 1) → 🛑 pide `/architect` MODO 2b.
-2. **Nativo** (Cursor / Claude Code / OpenCode): delega en **`sdd-implementer`** aislado. Pásale solo: tarea o pedido, rutas `AGENTS.md` + `spec.md`/`plan.md`/`tasks.md`, cadencia A|B. Exige reporte corto (archivos tocados, suite, `- [x]`).
-3. **Fallback** (Copilot / Pi): lee `subagents/2-implementer.md` + `global-sdd` §0/§2.1 en este hilo; preferible **sesión limpia** tras la planificación.
+2. **Nativo** (Cursor / Claude Code / OpenCode): delega **cada tarea TDD** (y cada fix de QA) al subagente **`sdd-implementer`** aislado para no acumular ruido en el hilo principal. Pásale solo: tarea o pedido, rutas `AGENTS.md` + `spec.md`/`plan.md`/`tasks.md`, cadencia A|B (y, si aplica, el bloque `Diagnóstico y sugerencia` del QA). Exige reporte corto (archivos tocados, suite, `- [x]`).
+3. **Fallback** (Copilot / Pi): recomienda **chat limpio** antes de `/implement`; lee `subagents/2-implementer.md` + `global-sdd` §0/§2.1 en ese hilo.
 
 ## Cadencia (obligatoria si hay más de una `- [ ]`)
 Si el usuario aún no eligió, pregunta y **espera**:

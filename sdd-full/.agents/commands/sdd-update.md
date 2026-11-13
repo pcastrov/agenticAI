@@ -52,10 +52,11 @@ Si la extensión instalada no corresponde al host (p. ej. Cursor con `.md`, u ot
    - Solo escribe tras confirmación.
 8. **Migración de historial (pregunta siempre)**: si algún módulo real bajo `specs/<NNN>-<id>/` tiene `history.md` monolítico, **pregunta** si migrarlo. Con "sí", invoca `@1-planner.md` para separarlo en `history/index.md` + `history/<dominio>.md` **sin resumir ni perder decisiones**; muestra el plan de dominios antes de escribir y no borres `history.md` hasta que el usuario confirme el resultado. Con "no", déjalo (sigue siendo legible por ID) y recuérdalo en el resumen.
 9. **Subagentes nativos aislados** (origen siempre `subagents/1-planner.md`, `2-implementer.md`, `3-qa-reviewer.md` del kit; destino con nombres `sdd-planner.md`, `sdd-implementer.md`, `sdd-qa-reviewer.md`):
-   - Si existe **`.cursor/agents/`** (o la raíz es `.cursor/`): actualiza `.cursor/agents/` copiando esos tres archivos (frontmatter `name`/`description` del origen; sin `mode`).
-   - Si existe **`.claude/agents/`** o hay `CLAUDE.md`: crea/actualiza `.claude/agents/` igual.
-   - Si existe **`.opencode/agents/`** o `opencode.json` / `.opencode/`: crea/actualiza `.opencode/agents/` e inserta `mode: subagent` en el frontmatter (tras `description`).
-   - Copilot / Pi: no crean carpeta nativa; siguen leyendo `<raíz>/subagents/`.
+   - Copia el origen **tal cual** (frontmatter `name`/`description` + permisos por rol; **sin** añadir `model:` — heredan el del entorno).
+   - Cursor: `.cursor/agents/` (si la raíz es `.cursor/`, proyecta ahí; sin `mode`).
+   - Claude Code: `.claude/agents/` (si existe o hay `CLAUDE.md`).
+   - OpenCode: `.opencode/agents/` e inserta `mode: subagent` en el frontmatter (tras `description`).
+   - Copilot / Pi: no crean carpeta nativa; leen `<raíz>/subagents/`.
    - No inventes contenido: copia desde el origen del paquete tras el paso 5.
 10. 🛑 Resumen (archivos reemplazados, preservados y omitidos por la protección; correcciones de `AGENTS.md`; proyecciones de agents; migraciones) + confirmación antes de escribir.
 11. Actualiza `version` y `source` en `sdd-kit.md` (deja `source` en la URL pública del repo o la ruta a `sdd-full` usada).

@@ -116,20 +116,18 @@ Máximo ~18 líneas. Siete principios innegociables:
 
 ## 6. `MEMORY.md`
 
-Máximo ~50 líneas. Estado / decisiones / aprendizajes (no bitácora de cada cambio).
+**Ventana deslizante**: solo los **últimos 2–3** cambios, decisiones o trampas activas (máx. **~20 líneas** en total). No bitácora; el histórico íntegro vive en `specs/<modulo>/history/`. Al cerrar una iteración (`/sdd-archive` o Nivel 0 relevante), si ya hay 3 entradas → **reemplaza/desplaza** la más antigua.
 
 ```markdown
 # MEMORY
 
-## Estado actual
-- […]
+> Máx. 2–3 entradas recientes (~20 líneas). Lo antiguo → `history/`.
 
-## Decisiones (y por qué)
-- […]
+## Reciente (desliza al añadir)
+- [YYYY-MM-DD] Decisión/trampa/estado: …
+- [YYYY-MM-DD] …
+- [YYYY-MM-DD] …
 
-## Aprendizajes y errores a evitar
-- […]
-
-## Próximos pasos
+## Próximo (opcional, 1 línea)
 - [si hay código sin specs → `/retrofit`]
 ```

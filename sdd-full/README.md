@@ -82,13 +82,13 @@ Origen único: `subagents/1-planner.md`, `2-implementer.md`, `3-qa-reviewer.md` 
 | OpenCode | `.opencode/agents/sdd-*.md` con `mode: subagent` |
 | Copilot / Pi | Solo `<raíz>/subagents/` (sin carpeta nativa) |
 
-| Archivo | Rol |
-|---------|-----|
-| `1-planner.md` | Spec, plan, tasks, diagramas, cierre. **No escribe código de app.** |
-| `2-implementer.md` | Una tarea TDD; no debilita tests; no archiva. |
-| `3-qa-reviewer.md` | Auditoría a ciegas; solo lectura + suite. |
+| Archivo | Rol | Permisos |
+|---------|-----|----------|
+| `1-planner.md` | Spec, plan, tasks, diagramas, cierre | Escritura solo `specs/**` + `MEMORY.md` |
+| `2-implementer.md` | TDD + fixes de QA; no archiva | Único con escritura completa de código/tests |
+| `3-qa-reviewer.md` | Auditoría a ciegas; Exit Code 0; diagnóstico accionable | Lectura + Bash; **sin** editar archivos |
 
-En Cursor/Claude/OpenCode, `/sdd` y compañía **delegan** al subagente nativo aislado (Task / `@…`) con rutas mínimas.
+Sin `model:` fijo (heredan el del entorno). En Cursor/Claude/OpenCode, `/sdd` **delegan** al nativo aislado; en Copilot/Pi → chat limpio antes de `/implement` y `/review`.
 
 ---
 

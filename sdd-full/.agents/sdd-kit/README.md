@@ -32,7 +32,7 @@ Antes del triage y de proponer diffs o migraciones, el agente emite `[ANCLAJE]` 
 
 **MEMORY → AGENTS → ¿el título de alguna carpeta `specs/` encaja? → si sí, solo ese módulo → ¿ya estaba? → ¿merece SDD? → TRIAGE → Nivel 0 | 1**
 
-- `MEMORY.md`: siempre, lectura corta (estado / decisiones / aprendizajes). No es bitácora de cada cambio.
+- `MEMORY.md`: ventana deslizante (últimos 2–3 cambios/decisiones/trampas, ~20 líneas). No es bitácora; el histórico íntegro está en `history/`.
 - Specs: **prohibido** abrir todos los módulos; solo candidatos cuyo **título o id** encaje (1–2). Dentro: sección 0 → `tasks` → `history/index` → un dominio.
 - Detalle: `rules/global-sdd.md` §0.1. Tras `/sdd-update`: hosts con auto-carga → puntero compacto a §0 en `AGENTS.md`; Pi/chat libre → GATE completo con `[ANCLAJE]`.
 
@@ -40,7 +40,7 @@ Antes del triage y de proponer diffs o migraciones, el agente emite `[ANCLAJE]` 
 
 | Archivo | Contiene | Cambia |
 |---------|----------|--------|
-| `MEMORY.md` | Estado, decisiones y aprendizajes (punteros; entrada del anclaje) | Cuando aporta algo que no deba olvidarse |
+| `MEMORY.md` | Ventana 2–3 entradas (~20 líneas); entrada del anclaje | Al archive/Nivel 0 si aporta; desplaza la más antigua |
 | `AGENTS.md` | Hechos del proyecto: stack, versiones, estructura, comandos, convenciones, reglas de dominio y `## Perfil técnico` | Cuando cambia el stack |
 | `docs/constitution.md` | 6 principios no negociables (puede citar el stack, nunca versiones ni comandos) | Casi nunca |
 
@@ -156,7 +156,7 @@ flowchart LR
 
 Cada fase se detiene a pedir aprobación del usuario antes de avanzar.
 
-**Higiene de tokens:** tras aprobar `tasks.md` (fin de planificación/QA de tareas), abre un **hilo limpio** para `/implement`. Cuando todas las tareas queden `- [x]`, otro hilo limpio para `/review`. El estado ya está en `spec.md`, `plan.md`, `tasks.md` y `MEMORY.md`.
+**Higiene de tokens:** en Cursor/Claude/OpenCode, `/implement` y `/review` delegan al subagente nativo aislado. En Copilot/Pi, abre un **chat limpio** antes de `/implement` y antes de `/review`. El estado ya está en `spec.md`, `plan.md`, `tasks.md` y `MEMORY.md`.
 
 **Antes de la fase 1**, `/sdd` emite `[ANCLAJE]` (MEMORY → AGENTS → candidato por título) y luego evalúa si la petición merece especificación. Si es un cambio pequeño que no toca requisitos, reglas de negocio ni contratos (typo, estilos, un bug que viola un RF ya existente), lo dice con su justificación y propone un **cambio directo** (`2-implementer` MODO C), sin spec; al cerrar, huella mínima en MEMORY si aportó. El usuario decide.
 
@@ -169,7 +169,7 @@ Nunca se ignora el rojo. Crear tests nuevos (TDD) sí está permitido. El QA rev
 
 | Subagente | Name nativo | Rol | Escribe en |
 |-----------|--------------|-----|------------|
-| `1-planner` | `sdd-planner` | Spec + flowchart negocio + plan/secuencia + tasks + cierre | Solo `specs/` |
+| `1-planner` | `sdd-planner` | Spec + flowchart negocio + plan/secuencia + tasks + cierre | Solo `specs/**` + `MEMORY.md` |
 | `2-implementer` | `sdd-implementer` | Una tarea TDD (rojo → verde) | Código y tests |
 | `3-qa-reviewer` | `sdd-qa-reviewer` | Auditoría a ciegas; `VEREDICTO: APROBADO` / `CAMBIOS NECESARIOS` | Nada (solo lectura) |
 

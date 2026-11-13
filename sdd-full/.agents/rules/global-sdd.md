@@ -38,8 +38,8 @@ Emite este bloque en el chat **antes** de `[TRIAGE SDD]` y **antes** de proponer
 - No proponer migración, tenancy, auth o contratos que contradigan MEMORY, AGENTS o el spec candidato **sin citar el gap**.
 - No inventar diseño nuevo si ya está definido en MEMORY o en el spec candidato.
 - Si el usuario dice “ya lo hicimos / está en el seed / está en memory”, verifica MEMORY y el spec candidato **antes** de contradecir o implementar lo contrario.
-- MEMORY no sustituye `history/` del módulo: history guarda el detalle; MEMORY guarda punteros y trampas recientes.
-- No convertir MEMORY en bitácora de cada cambio.
+- MEMORY no sustituye `history/` del módulo: history guarda el detalle; MEMORY es ventana de 2–3 entradas (~20 líneas).
+- No convertir MEMORY en bitácora ni acumular más de 3 entradas activas.
 
 ### 0.2 Turno 1 — TRIAGE GATE (si hay que editar código o tests)
 Tras el anclaje, **detente y clasifica** en el chat:
@@ -54,7 +54,7 @@ Tras el anclaje, **detente y clasifica** en el chat:
    - Spec/tarea: [ruta o "ninguna aún"]
    - Aprobación: n/a (Nivel 0) | pendiente | ya aprobada (cita la frase del usuario)
    ```
-   - **FAST-TRACK (Nivel 0)**: arreglo sencillo que no merece spec (típicamente ≤ 1 archivo, sin impacto de arquitectura: sin cambios de contrato, modelo de datos, seguridad ni dependencias). Permite edición inmediata explicando el motivo. Al **cerrar**, si aportó decisión o aprendizaje que no deba olvidarse → **una línea mínima** en `MEMORY.md` (Decisión o Aprendizaje).
+   - **FAST-TRACK (Nivel 0)**: arreglo sencillo que no merece spec (típicamente ≤ 1 archivo, sin impacto de arquitectura: sin cambios de contrato, modelo de datos, seguridad ni dependencias). Permite edición inmediata explicando el motivo. Al **cerrar**, si aportó decisión o aprendizaje → **una línea** en `MEMORY.md` (ventana 2–3; si ya hay 3, desplaza la más antigua).
    - **SDD-REQUIRED (Nivel 1)**: lógica de negocio, BD, multi-archivo, duda, o no hay spec y lo merece. **TERMINANTEMENTE PROHIBIDO emitir bloques de código o diffs** en este turno: entra al flujo SDD (spec → plan → tasks → TDD) y pide **aprobación explícita** en cada parada. Aprobación `pendiente` → **DETENTE**, sin herramientas de escritura sobre código.
    - Duda entre Nivel 0 y 1 → Nivel 1.
 4. **Paradas de fase (Nivel 1)**: 🛑 tras crear/actualizar `spec.md`; 🛑 tras `plan.md`; 🛑 tras `tasks.md`. No encadenes la siguiente fase sin OK del usuario.
@@ -126,7 +126,7 @@ CONSULTA DE DISEÑO
 - Código: según `docs/constitution.md`.
 
 ## 4. Fuentes de Contexto (Trinidad)
-- **`MEMORY.md`**: estado, decisiones y aprendizajes. **Entrada obligatoria del anclaje (Turno 0)** — siempre se consulta (lectura corta). No es bitácora de cada cambio; guarda punteros y trampas recientes. El detalle vive en `history/` del módulo.
+- **`MEMORY.md`**: **ventana deslizante** de memoria reciente de trabajo — solo los **últimos 2–3** cambios, decisiones o trampas activas (máx. **~20 líneas**). **Entrada obligatoria del anclaje (Turno 0)**. No es bitácora ni histórico: al añadir una 4.ª entrada, **desplaza** la más antigua. El histórico íntegro vive en `specs/<modulo>/history/`.
 - **`AGENTS.md`**: hechos del proyecto + `## Perfil técnico` + `## Código Compartido` + dominio/límites. Pasada corta en el anclaje. **No** duplicar aquí las secciones 0–2.3 de esta regla.
 - **`docs/constitution.md`**: principios no negociables (prevalecen).
 

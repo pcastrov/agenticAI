@@ -13,8 +13,8 @@ Abre con tu herramienta de lectura:
 ## Delegación a subagentes
 | Entorno | Cómo ejecutar planner / implementer / QA |
 |---------|------------------------------------------|
-| **Nativo** (Cursor `.cursor/agents/`, Claude `.claude/agents/`, OpenCode `.opencode/agents/`) | Invoca el subagente aislado `sdd-planner` / `sdd-implementer` / `sdd-qa-reviewer` (herramienta Task / `@…`). Pásale solo: petición + rutas de `spec.md` / `plan.md` / `tasks.md` / `AGENTS.md` (+ `MEMORY.md` si aplica). Exige **entregable o veredicto corto**; no satures el hilo principal con el razonamiento completo. |
-| **Fallback** (Copilot / Pi) | Lee el rol en `<raíz>/subagents/` en el hilo actual. Recomienda **sesión limpia** antes de `/implement` y antes de `/review`. |
+| **Nativo** (Cursor `.cursor/agents/`, Claude `.claude/agents/`, OpenCode `.opencode/agents/`) | **Delega** cada fase TDD y cada `/review` al subagente aislado `sdd-planner` / `sdd-implementer` / `sdd-qa-reviewer` (Task / `@…`) para no acumular ruido en el hilo principal. Pásale solo: petición + rutas de `spec.md` / `plan.md` / `tasks.md` / `AGENTS.md` (+ `MEMORY.md` si aplica). Exige **entregable o veredicto corto**. |
+| **Fallback** (Copilot / Pi) | Sin aislamiento nativo: recomienda **chat limpio** antes de `/implement` y antes de `/review`; lee el rol en `<raíz>/subagents/` en ese hilo. |
 
 ## Preparación + ANCLAJE
 1. Emite `[ANCLAJE]` (Turno 0) **antes** del triage y de proponer diseño/código.
@@ -47,9 +47,9 @@ Muestra `[TRIAGE SDD]`. Nivel 0 → implementer MODO C. Nivel 1 → fases abajo 
 
 Nunca se acepta debilitar un test existente sin aprobación explícita (`global-sdd` §2.1).
 
-## Higiene de contexto (sesiones limpias)
-- **Tras Fase 5** (`tasks.md` aprobado / QA de plan·tareas OK): recomienda abrir un **hilo limpio** antes de `/implement`. El estado ya está en `spec.md`, `plan.md`, `tasks.md` y `MEMORY.md`; no hace falta reenviar el historial de planificación.
-- **Tras Fase 7** (todas las tareas `- [x]`): recomienda un **hilo limpio** antes de `/review` por la misma razón.
+## Higiene de contexto
+- **Nativo** (Cursor / Claude / OpenCode): la delegación aislada ya limpia el hilo; igual recomienda no reinyectar el chat de planificación al orquestador.
+- **Copilot / Pi**: **Tras Fase 5** → chat limpio antes de `/implement`; **Tras Fase 7** → chat limpio antes de `/review`. El estado vive en `spec.md` / `plan.md` / `tasks.md` / `MEMORY.md`.
 
 ## Transmisión de contexto
 En cada fase: objetivo; petición original; rutas reales en `specs/<NNN>-<id>/` (ej. `specs/001-api-tasks/` — nunca `NNN-...` literal); resultado de la fase anterior; cadencia elegida (si aplica).
