@@ -1,5 +1,32 @@
 # Changelog — SDD Lite
 
+## 3.0.0 — 2026-11-12
+
+SDD Lite Compacto (Full Compacto para 8K–32K). **Cambio mayor.**
+
+### Agregado
+- **`[ANCLAJE]`** corto (Turno 0) antes del Triage; MEMORY activa (≤30 líneas).
+- **Micro-Spec**: 1 HU · ≤5 tareas · `spec.md` ~85 líneas; 2 paradas (Qué → 🛑 → Cómo+Tareas → 🛑) en un solo archivo.
+- **Hosts**: Cursor · Copilot (VS Code) · Claude Code · Pi · OpenCode (instalador 1–5).
+- **Subagentes nativos** donde aplica; Pi/Copilot → `subagents/` + chat limpio.
+- Aislamiento: nativo por Task; fallback → chat limpio + `continúa` (cadencia A).
+- QA: runners silenciosos (`-q` / `--compact` / `--reporter=dot`).
+- GATE compacto si el host auto-carga `global-sdd` (Pi: completo).
+- **Docs**: modelos locales → recomendar Pi/OpenCode; cloud → cualquier host; local + Cursor/Copilot/Claude si GPU >~8 GB.
+
+### Cambiado
+- Topes: `AGENTS.md` ≤45; `MEMORY.md` ≤30; history sin cambios (index ≤30, dominio ≤100).
+- Instaladores alineados a Full (5 hosts) + nota de recomendación local vs cloud.
+- Comandos/subagentes ultra-concisos (≤50 líneas).
+- **Docs de tokens**: rangos en README Lite / kit y comparativa raíz (estimaciones; varían).
+
+### Migración
+1. `/sdd-update` o reinstalar Lite.
+2. Specs viejas: al iterar, divide en Micro-Specs (1 HU / ≤5 tareas) con 2 paradas.
+3. Confirma proyección nativa según host.
+
+---
+
 ## 2.0.5 — 2026-11-05
 
 ### Cambiado

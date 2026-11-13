@@ -1,11 +1,16 @@
 # [Nombre del módulo]
 
-> Plantilla: sustituye por carpeta real (`001-api-tasks`). 🚫 No crees `NNN-...` literal.
+> Carpeta real `001-<id>/`. 🚫 No crees `NNN-...`. **Micro-Spec**: 1 HU · ≤5 tareas · ~85 líneas.
 
-**Módulo**: `001-[id]` | **Estado**: Borrador | Aprobado | **Tope**: ~150 líneas
-Historial: `history/index.md` (solo si hace falta).
+**Módulo**: `001-[id]` | **Estado**: Borrador Qué | Qué OK | Aprobado | **HU**: HU-01
 
-## 1. Spec atómico
+---
+
+## Parte 1 — Qué (Parada 1 → 🛑 OK)
+
+### Objetivo / HU-01
+Como [rol], quiero [objetivo] para [beneficio]. MoSCoW: Must|Should|Could
+
 | Campo | Valor |
 |-------|-------|
 | RF | RF-0N `[Must/Should]` |
@@ -17,34 +22,22 @@ Historial: `history/index.md` (solo si hace falta).
 |----|------|--------|----------|
 | CA-1 | [estado] | [acción] | [resultado verificable] |
 
-## 2. Archivos
-| Acción | Ruta | RF |
-|--------|------|----|
-| Nuevo | `[ruta]` | RF-0N |
-| Modificar | `[ruta]` | RF-0N |
+### Reglas (RN)
+| ID | Regla |
+|----|-------|
+| RN-1 | [si aplica; si no: "ninguna"] |
 
-## 3. Tareas
-- [ ] **T1** — RF-0N — `[archivos]` — Test: `[ruta]` — Hecho cuando: [criterio].
-
-## 4. Fuera de alcance
+### Fuera de alcance
 - [ítem]
 
-## Ejemplo (Few-Shot)
+---
 
-| Campo | Valor |
-|-------|-------|
-| RF | RF-03 `[Must]` |
-| Entradas | `email` (string, body), `password` (string, body) |
-| Salidas | `token` (string, JSON 200) o `error` (string, JSON 401) |
+## Parte 2 — Cómo + Tareas (Parada 2, tras OK del Qué → 🛑 OK)
 
-| ID | DADO | CUANDO | ENTONCES |
-|----|------|--------|----------|
-| CA-1 | usuario existente | POST `/api/login` con credenciales válidas | 200 y `token` |
-| CA-2 | usuario existente | POST `/api/login` con password errónea | 401 y `error` |
+### Diseño técnico
+| Acción | Ruta | RF / contrato |
+|--------|------|---------------|
+| Nuevo/Mod | `[ruta]` | RF-0N — [firma / contrato breve] |
 
-| Acción | Ruta | RF |
-|--------|------|----|
-| Nuevo | `app/Http/Controllers/AuthController.php` | RF-03 |
-| Modificar | `routes/api.php` | RF-03 |
-
-- [ ] **T1** — RF-03 — `AuthController.php` — Test: `tests/Feature/AuthTest.php` — Hecho cuando: CA-1 y CA-2 en verde.
+### Tareas TDD (máx. 5)
+- [ ] **T1** — RF-0N — `[archivos]` — Test: `[ruta]` — Hecho cuando: [CA].

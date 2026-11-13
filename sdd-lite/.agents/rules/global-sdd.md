@@ -1,60 +1,61 @@
 ---
-description: SDD Lite — reglas cortas para modelos locales 8B-14B (16K-32K)
+description: SDD Lite Compacto — ANCLAJE + Micro-Spec para ventanas 8K–32K
 alwaysApply: true
 ---
 
 # SDD Lite
 
-## 0. REGLA ZERO — TRIAGE GATE (Turno 1, obligatorio)
-Aplica aunque el usuario **no** escriba `/sdd` ni `/implement`.
-> OpenCode/Pi leen sobre todo `AGENTS.md`: el GATE debe estar **copiado** ahí (`/sdd-init`). Si falta, no edites código hasta repararlo.
-1. Solo pregunta/análisis → **no** toques archivos.
-2. Si la instrucción implica cambiar código/funcionalidad → emite este bloque **antes** de editar:
+## 0. GATE (antes de editar)
+> Cursor / OpenCode (`instructions`) / Claude·Copilot (puente): `AGENTS.md` lleva **puntero** a §0. **Pi** / chat libre: GATE completo. Si falta, no edites hasta `/sdd-init` o `/sdd-update`.
+> **Hosts:** Lite instala en todos. Con **modelo local** (~8 GB) se recomienda Pi u OpenCode; Cursor/Copilot/Claude van bien con cloud o GPU **> ~8 GB**.
+
+Aplica con o **sin** `/sdd`. Antes de diagnosticar a fondo, proponer o editar:
+
+1. Solo pregunta → **no** toques archivos (tras ANCLAJE si aplica).
+2. **Turno 0 — ANCLAJE** (máx. 3 líneas de bloque; obligatorio):
+   ```
+   [ANCLAJE]
+   - MEMORY: [hallazgo o "nada"] | Spec candidato: [ruta o "ninguna"]
+   - ¿Ya existe?: sí (explicar) | no → Nivel 0 / Nivel 1
+   ```
+3. **Turno 1 — TRIAGE** (si vas a editar):
    ```
    [TRIAGE SDD]
    - Nivel: 0 FAST-TRACK | 1 SDD-REQUIRED
    - Motivo: [1 línea]
    ```
-3. **FAST-TRACK (Nivel 0)**: ≤ 1 archivo, < 15 líneas, sin impacto en BD. Edición directa; motivo en 1 línea.
-4. **SDD-REQUIRED (Nivel 1)**: cualquier otra tarea. **PROHIBIDO generar código en este turno.** Escribe Spec tabular y **espera aprobación**.
-5. Duda 0 vs 1 → Nivel 1.
-6. 🛑 Tras escribir `spec.md` (con sección Tareas) → espera OK. No implementes en el mismo turno.
-7. Antes de la 1.ª tarea: pregunta `[CADENCIA TDD]` A una-a-una | B lote. Sin respuesta → **A**. En A, 🛑 tras cada `- [x]`.
-8. Fallo de `test` / Playwright / `ui_check` → **STOP** + `REPORTE DE FALLO`. No acomodes tests.
+4. **Nivel 0**: ≤1 archivo, <15 líneas, sin impacto en BD. Edición directa. Al cerrar: 1 línea en MEMORY si hubo aprendizaje útil.
+5. **Nivel 1**: **PROHIBIDO** código/diffs en ese turno. Micro-Spec con **2 paradas** (Qué → 🛑 OK → Cómo+Tareas → 🛑 OK).
+6. Duda 0/1 → Nivel 1.
+7. Antes de la 1.ª tarea: `[CADENCIA TDD]` A|B (default **A**). En A, 🛑 tras cada `- [x]`.
+8. Test/UI rojo → **STOP** + `REPORTE DE FALLO`. No acomodes tests.
 
-## 1. Flujo (3 pasos)
-1. **Planear** (`/sdd` o pedido Nivel 1 sin slash): Triage → Spec tabular → 🛑 OK.
-2. **Implementar**: cadencia A/B → TDD; en A una tarea y STOP.
-3. **Cerrar** (`/sdd-archive`): tests OK → `history/<dominio>.md` + fila en `history/index.md`.
+### Topes de contexto (ventanas 8K / 16K / 32K)
+| Archivo | Máx. líneas | Notas |
+|---------|-------------|--------|
+| `AGENTS.md` | 45 | Perfil + estructura + reglas críticas (+ GATE puntero o completo) |
+| `MEMORY.md` | 30 | Estado, decisiones, trampas; 1 línea al cerrar Nivel 0/archive si aporta |
+| `spec.md` | ~85 | **Micro-Spec**: máx. **1 HU** y **5 tareas** por iteración |
 
-## 2. Specs (presupuesto tokens)
+Pedido más grande → divide; propone solo la **primera entrega**.
+
+## 1. Flujo
+1. ANCLAJE → Triage → Nivel 0 o Nivel 1.
+2. Nivel 1: Parada Qué → 🛑 → Parada Cómo+Tareas → 🛑 → cadencia → TDD → `/review` → `/sdd-archive`.
+3. Un solo `spec.md` (sin `plan.md`/`tasks.md`/diagramas). History: `index.md` ≤30 + `<dominio>.md` ≤100.
+
+## 2. Specs
 ```text
-specs/001-api-tasks/     # ejemplo REAL — nunca crees "NNN-..." literal
-├── spec.md              # activo, tabular, máx ~150 líneas
+specs/001-api-tasks/     # real — nunca "NNN-..." literal
+├── spec.md              # Parte 1 Qué | Parte 2 Cómo+Tareas (~85 líneas)
 └── history/
-    ├── index.md         # tabla dominio → shard, máx 30 líneas
-    └── <dominio>.md     # ficha atómica por dominio, máx 100 líneas
+    ├── index.md         # ≤30
+    └── <dominio>.md     # ≤100; condensa si llena
 ```
-- Nombre: `specs/<NNN>-<id-kebab>/` con `<NNN>` = `001`, `002`… (siguiente libre) e id real del módulo. `NNN` en plantillas es placeholder, **no** nombre de carpeta.
-- `/sdd-init` no crea módulos en `specs/`; el nombre real lo ponen `/sdd`, `/architect` o `/retrofit`.
-- Lee solo `spec.md` por defecto.
-- Historial: consulta `history/index.md` y abre **un solo** shard de dominio si hace falta.
-- Shard lleno (100 líneas) → condensa entradas viejas del mismo dominio; no crees archivos extra.
+Lee solo `spec.md` por defecto. Historial: `index` + un shard. `/sdd-init` no crea módulos.
 
-## 3. Tests e integridad
-No ignores el rojo. No debilites tests/E2E/Playwright. Cierre: corregir código | tarea nueva | reabrir plan. Detalle de reporte: subagente implementer.
+## 3. Tests
+No ignores el rojo. No debilites tests. Cierre: código | tarea nueva | replanear. Runners en `/review`: flags compactos (`-q`, `--compact`, `--reporter=dot` si existen).
 
-## 4. Simplicidad
-DRY/KISS/YAGNI solo como pregunta corta al usuario. No refactorices solo.
-
-## 5. UI / MCP
-Navegador apagado al programar. UI → `/ui-check` o skill `on-demand-tools` (CLI). Veredicto ≤5 líneas.
-
-### 5.1 Convenciones de framework (opcionales)
-Si existe una guía en `skills/stack-conventions/references/`, léela antes de implementar. Si la carpeta está vacía, falta el archivo o la skill fue eliminada, asume que no hay convenciones forzadas y usa buenas prácticas estándar del lenguaje. Sin error ni preguntas.
-
-## 6. Idioma
-Usuario y `specs/`: español. Código: según constitution.
-
-## 7. Trinidad
-`AGENTS.md` (Perfil técnico + dominio; sin textos largos), `docs/constitution.md`, `MEMORY.md` (corto).
+## 4–7
+Simplicidad: pregunta corta; no refactor solo. UI: `/ui-check` o `on-demand-tools`. Convenciones opcionales. Idioma: specs ES; código según constitution. Trinidad: AGENTS + constitution + MEMORY (topes §0).

@@ -1,25 +1,22 @@
-# /sdd-init (Lite)
+# /sdd-init (Lite Compacto)
 
-Genera Trinidad liviana para modelos 16K–32K.
+Trinidad para 8K–32K. Topes: `AGENTS.md` ≤45 · `MEMORY.md` ≤30 · constitution ≤12.
 
-## PASO 0 — Lectura obligatoria
-Abre `sdd-kit.md` (debe decir `edition: lite`) y `rules/global-sdd.md` §0.
+## PASO 0
+Lee `sdd-kit.md` (`edition: lite`) + `global-sdd` §0. Detecta `<raíz>` (`.cursor`|`.agents`).
 
-1. Comprueba `sdd-lite` instalado. Detecta la carpeta raíz del framework (`.cursor/` si el host es Cursor, `.agents/` en otro caso) y úsala en toda ruta que escribas en `AGENTS.md`/constitution.
-2. Detecta stack o entrevista corta.
-3. Escribe `## Perfil técnico` (mismas claves que Full).
-4. `docs/constitution.md`: ≤12 líneas (simplicidad, relación spec-código, tests, datos, idioma).
-5. `AGENTS.md`: **primero** el bloque GATE (abajo), luego hechos + Perfil + Código Compartido. OpenCode/Pi leen `AGENTS.md` (no confíes solo en `rules/`). Sin Boost guidelines.
-
-   ```markdown
-   ## Gobernanza SDD (GATE)
-   Detalle: `<raíz>/rules/global-sdd.md`. Aplica **sin** `/sdd`.
-   Antes de editar código/tests: emite `[TRIAGE SDD]` (0 FAST-TRACK | 1 SDD-REQUIRED).
-   Nivel 1 → Spec tabular + 🛑 OK; **prohibido** código en ese turno.
-   Luego `[CADENCIA TDD]` A una-a-una | B lote (default A). Test rojo → REPORTE DE FALLO.
-   ```
-6. Laravel: opcional Boost con `"guidelines": false`, `"mcp": true`. MCP navegador: off (ver `/mcp-mode`).
-7. `MEMORY.md` ≤40 líneas.
+1. Detecta stack o entrevista corta → `## Perfil técnico`.
+2. `docs/constitution.md` ≤12 líneas.
+3. **GATE en `AGENTS.md`** (primera sección):
+   - Auto-carga (Cursor / OpenCode+`instructions` / Claude·Copilot puente) → **puntero**:
+     ```markdown
+     ## Gobernanza SDD (GATE)
+     Antes de editar: ejecuta `<raíz>/rules/global-sdd.md` §0 (`[ANCLAJE]` → `[TRIAGE SDD]`).
+     Aplica con o sin `/sdd`. No dupliques el GATE aquí.
+     ```
+   - Pi / chat libre → GATE completo corto (ANCLAJE 3 líneas + Triage 0/1 + cadencia A|B + REPORTE).
+4. Hechos + Perfil + Código Compartido (dentro del tope 45).
+5. `MEMORY.md` ≤30.
+6. Laravel: Boost opcional `guidelines: false`. MCP UI off.
+7. `stack-*.md` si hay `conventions`. `specs/` vacía; no `NNN-...`.
 8. 🛑 Aprueba antes de escribir.
-9. Copia guías lite de `conventions` a `rules/stack-*.md` (`.mdc` si el host es Cursor) si aplica.
-10. **`specs/`**: no crees módulos de ejemplo ni carpetas `NNN-...`. Solo `specs/` vacía si hace falta. El primer módulo real (`001-<id>/`) lo crean `/sdd`, `/architect` o `/retrofit`.

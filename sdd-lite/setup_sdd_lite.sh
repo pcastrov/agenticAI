@@ -1,7 +1,7 @@
 #!/bin/bash
 # setup_sdd_lite.sh - Instalador de agenticAI SDD-Lite (Mac/Linux)
 # Uso:
-#   bash ruta/a/sdd-full/setup_sdd_lite.sh "/ruta/a/tu-proyecto"
+#   bash ruta/a/sdd-lite/setup_sdd_lite.sh "/ruta/a/tu-proyecto"
 
 set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -11,10 +11,10 @@ show_project_path_help() {
     echo "Debes indicar la ruta del proyecto donde se instalará el kit (carpeta raíz de TU app, no la del ZIP)."
     echo ""
     echo "Ejemplo:"
-    echo '  bash ~/Downloads/agenticAI-main/sdd-full/setup_sdd_lite.sh "/Users/tu/mi-proyecto"'
+    echo '  bash ~/Downloads/agenticAI-main/sdd-lite/setup_sdd_lite.sh "/Users/tu/mi-proyecto"'
     echo ""
     echo "O con ruta relativa:"
-    echo '  bash ./sdd-full/setup_sdd_lite.sh "../mi-proyecto"'
+    echo '  bash ./sdd-lite/setup_sdd_lite.sh "../mi-proyecto"'
 }
 
 PROJECT_PATH="${1:-}"
@@ -34,6 +34,7 @@ echo "Proyecto: $PROJECT_PATH"
 echo "Configurando agenticAI SDD-Lite..."
 echo ""
 echo "¿Qué entorno principal vas a utilizar?"
+echo "(Lite + modelos locales ~8 GB: se recomienda Pi u OpenCode; Cursor/Copilot/Claude OK con cloud o GPU >8 GB)"
 echo "1) Cursor (carpeta .cursor/)"
 echo "2) GitHub Copilot (.github/copilot-instructions.md)"
 echo "3) Claude Code (CLAUDE.md)"
@@ -59,12 +60,49 @@ if [ "$choice" = "1" ]; then
     echo "[+] Reglas convertidas a .mdc (formato de Cursor)."
 fi
 
+# Proyecta subagentes nativos aislados (origen: $ROOT/subagents/; sin duplicar el kit fuente)
+project_native_agents() {
+    local dest="$1"
+    local add_mode="${2:-0}"
+    mkdir -p "$dest"
+    local pair src name srcf
+    for pair in "1-planner:sdd-planner" "2-implementer:sdd-implementer" "3-qa-reviewer:sdd-qa-reviewer"; do
+        src="${pair%%:*}"
+        name="${pair##*:}"
+        srcf="$ROOT/subagents/$src.md"
+        if [ ! -f "$srcf" ]; then
+            echo "[!] Falta $srcf; se omite $name."
+            continue
+        fi
+        if [ "$add_mode" = "1" ]; then
+            awk '
+                BEGIN { fm=0; done=0 }
+                /^---$/ {
+                    if (fm==0) { fm=1; print; next }
+                    if (fm==1 && done==0) { print "mode: subagent"; done=1; fm=2; print; next }
+                }
+                { print }
+            ' "$srcf" > "$dest/$name.md"
+        else
+            cp "$srcf" "$dest/$name.md"
+        fi
+    done
+    echo "[+] Subagentes nativos en $dest/ (sdd-planner, sdd-implementer, sdd-qa-reviewer)."
+}
+
 if [ "$choice" = "1" ]; then RULE_FILE="global-sdd.mdc"; else RULE_FILE="global-sdd.md"; fi
 POINTER="Sigue estrictamente la metodología SDD de \`$ROOT/\`: reglas y Triage en \`$ROOT/rules/$RULE_FILE\`, flujos en \`$ROOT/commands/\`, convenciones en \`$ROOT/skills/\`."
 case $choice in
-    1) echo "[+] Cursor lee $ROOT/ directamente; no se necesita archivo puente." ;;
-    2) mkdir -p .github; printf '%s\n' "# Reglas de AgenticAI SDD-Lite" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado." ;;
-    3) printf '%s\n' "# Instrucciones del Repositorio" "" "$POINTER" > CLAUDE.md; echo "[+] CLAUDE.md generado." ;;
+    1)
+        echo "[+] Cursor lee $ROOT/ directamente; no se necesita archivo puente."
+        project_native_agents "$ROOT/agents" 0
+        ;;
+    2) mkdir -p .github; printf '%s\n' "# Reglas de AgenticAI SDD-Lite" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado."; echo "[+] Copilot: subagentes desde $ROOT/subagents/ (sin carpeta nativa)." ;;
+    3)
+        printf '%s\n' "# Instrucciones del Repositorio" "" "$POINTER" > CLAUDE.md
+        echo "[+] CLAUDE.md generado."
+        project_native_agents ".claude/agents" 0
+        ;;
     4)
         echo "[+] Pi: $ROOT/ instalado. Generando extensión de slash commands..."
         # Solo Pi: registra cada comando de commands/ como slash command (la lógica sigue en los .md)
@@ -98,8 +136,10 @@ EOF
         sed -i.bak "s|__COMMANDS__|$LIST|; s|__ROOT__|$ROOT|" .pi/extensions/sdd-commands.ts && rm -f .pi/extensions/sdd-commands.ts.bak
         echo "[+] Extensión de Pi generada en .pi/extensions/sdd-commands.ts"
         echo "    Comandos registrados: $LIST"
+        echo "[+] Pi: subagentes desde $ROOT/subagents/ (sin carpeta nativa)."
         ;;
     5)
+        # OpenCode: AGENTS.md + opencode.json instructions + .opencode/commands/*.md
         INSTR="$ROOT/rules/global-sdd.md"
         if [ -f opencode.json ] && command -v python3 >/dev/null 2>&1; then
             python3 - "$INSTR" <<'PY'
@@ -137,7 +177,8 @@ EOF
         done
         echo "[+] OpenCode: $ROOT/ + opencode.json instructions → $INSTR"
         echo "[+] Slash commands en .opencode/commands/: $OC_LIST"
-        echo "    Tras /sdd-init, el GATE también queda incrustado en AGENTS.md (obligatorio)."
+        project_native_agents ".opencode/agents" 1
+        echo "    Tras /sdd-init: GATE compacto en AGENTS.md si instructions carga global-sdd."
         ;;
 esac
 

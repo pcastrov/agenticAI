@@ -8,8 +8,13 @@ El mismo flujo aplica si el usuario **no** escribió `/sdd` (ver `rules/global-s
 Abre con tu herramienta de lectura:
 1. `MEMORY.md` (siempre, lectura corta: estado / decisiones / aprendizajes)
 2. `rules/global-sdd.md` §0 (ANCLAJE + TRIAGE, paradas, cadencia) y §2.1–2.3
-3. `subagents/1-planner.md`, `subagents/2-implementer.md`, `subagents/3-qa-reviewer.md` (según la fase)
-4. Plantillas en `skills/sdd-docs-generator/references/` de la fase en curso
+3. Plantillas en `skills/sdd-docs-generator/references/` de la fase en curso (si orquestas tú el contenido)
+
+## Delegación a subagentes
+| Entorno | Cómo ejecutar planner / implementer / QA |
+|---------|------------------------------------------|
+| **Nativo** (Cursor `.cursor/agents/`, Claude `.claude/agents/`, OpenCode `.opencode/agents/`) | **Delega** cada fase TDD y cada `/review` al subagente aislado `sdd-planner` / `sdd-implementer` / `sdd-qa-reviewer` (Task / `@…`) para no acumular ruido en el hilo principal. Pásale solo: petición + rutas de `spec.md` / `plan.md` / `tasks.md` / `AGENTS.md` (+ `MEMORY.md` si aplica). Exige **entregable o veredicto corto**. |
+| **Fallback** (Copilot / Pi) | Sin aislamiento nativo: recomienda **chat limpio** antes de `/implement` y antes de `/review`; lee el rol en `<raíz>/subagents/` en ese hilo. |
 
 ## Preparación + ANCLAJE
 1. Emite `[ANCLAJE]` (Turno 0) **antes** del triage y de proponer diseño/código.
@@ -41,6 +46,10 @@ Muestra `[TRIAGE SDD]`. Nivel 0 → implementer MODO C. Nivel 1 → fases abajo 
 **Prohibido** saltarse las paradas 1 / 3 / 4 / 6 o inventar `tareas_completadas.md`.
 
 Nunca se acepta debilitar un test existente sin aprobación explícita (`global-sdd` §2.1).
+
+## Higiene de contexto
+- **Nativo** (Cursor / Claude / OpenCode): la delegación aislada ya limpia el hilo; igual recomienda no reinyectar el chat de planificación al orquestador.
+- **Copilot / Pi**: **Tras Fase 5** → chat limpio antes de `/implement`; **Tras Fase 7** → chat limpio antes de `/review`. El estado vive en `spec.md` / `plan.md` / `tasks.md` / `MEMORY.md`.
 
 ## Transmisión de contexto
 En cada fase: objetivo; petición original; rutas reales en `specs/<NNN>-<id>/` (ej. `specs/001-api-tasks/` — nunca `NNN-...` literal); resultado de la fase anterior; cadencia elegida (si aplica).

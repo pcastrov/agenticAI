@@ -4,6 +4,30 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 
 ---
 
+## 4.2.0 — 2026-11-12
+
+### Agregado
+- **Subagentes nativos aislados**: frontmatter `name`/`description` en `subagents/` (`sdd-planner`, `sdd-implementer`, `sdd-qa-reviewer`); **sin `model:`** (heredan el del entorno).
+- **Permisos por rol**: planner → solo `specs/**` + `MEMORY.md`; implementer → único con escritura completa de código/tests (TDD y fixes QA); QA → solo lectura + `Bash` (tests/lint/`git diff`/Playwright/DevTools), sin editar archivos.
+- **QA accionable**: si `VEREDICTO: CAMBIOS NECESARIOS`, sección `Diagnóstico y sugerencia de corrección` (archivo, causa raíz, propuesta para `sdd-implementer`) en `3-qa-reviewer.md` y `/review`.
+- Instaladores y `/sdd-update` proyectan a `.cursor/agents/`, `.claude/agents/` y `.opencode/agents/` (este último con `mode: subagent`). Copilot/Pi leen `.agents/subagents/`.
+- Comandos `/sdd`, `/architect`, `/implement`, `/review`: delegan al subagente nativo aislado; fallback recomienda chat limpio.
+
+### Cambiado (tokens; supersede 4.1.1)
+- **Lazy loading `/sdd-init`**: plantillas Trinidad en `references/init-templates.md` (PASO 0).
+- **GATE en `AGENTS.md`**: puntero compacto (3 líneas) si el host auto-carga `global-sdd`; GATE completo solo en Pi / chat libre.
+- **`MEMORY.md` ventana deslizante**: últimos 2–3 cambios/decisiones/trampas (máx. ~20 líneas); al archive/cierre Nivel 0 con 3 entradas → desplaza la más antigua (`history/` conserva el íntegro).
+- **Higiene de contexto**: aislamiento nativo o chat limpio antes de `/implement` y `/review`.
+- **Docs de tokens**: inventarios y rangos actualizados en README raíz, `sdd-full/README.md` y `sdd-kit/README.md` (estimaciones; varían).
+
+### Migración
+1. `/sdd-update` o reinstalar (opciones 1/3/5 regeneran agents nativos).
+2. Cursor/OpenCode/Claude/Copilot: `AGENTS.md` con **GATE compacto**; Pi: GATE completo.
+3. Comprueba `.cursor/agents/` o `.claude/agents/` o `.opencode/agents/` según host.
+4. Recorta `MEMORY.md` del proyecto a ≤3 entradas recientes si creció como bitácora.
+
+---
+
 ## 4.1.0 — 2026-11-12
 
 ### Agregado

@@ -1,12 +1,9 @@
 # /implement — Implementador TDD
 
-## PASO 0 — Lectura obligatoria (ANTES de editar código)
-Usa tu herramienta de lectura de archivos y abre:
-1. `MEMORY.md` (corto) → emite `[ANCLAJE]` si aún no está en el hilo
-2. `subagents/2-implementer.md`
-3. `rules/global-sdd.md` §0 (ANCLAJE + TRIAGE, cadencia TDD) y §2.1
-4. Del módulo candidato (por título, no barrido): `spec.md`, `plan.md` y **`tasks.md`**
-5. Si falta `tasks.md` (Nivel 1) → 🛑 DETENTE. Pide `/architect` MODO 2b (o `/sdd` fase tareas). No improvises tareas.
+## PASO 0 — Lectura / delegación (ANTES de editar código)
+1. Emite `[ANCLAJE]` + `[TRIAGE SDD]` si aún no están en el hilo. Si falta `tasks.md` (Nivel 1) → 🛑 pide `/architect` MODO 2b.
+2. **Nativo** (Cursor / Claude Code / OpenCode): delega **cada tarea TDD** (y cada fix de QA) al subagente **`sdd-implementer`** aislado para no acumular ruido en el hilo principal. Pásale solo: tarea o pedido, rutas `AGENTS.md` + `spec.md`/`plan.md`/`tasks.md`, cadencia A|B (y, si aplica, el bloque `Diagnóstico y sugerencia` del QA). Exige reporte corto (archivos tocados, suite, `- [x]`).
+3. **Fallback** (Copilot / Pi): recomienda **chat limpio** antes de `/implement`; lee `subagents/2-implementer.md` + `global-sdd` §0/§2.1 en ese hilo.
 
 ## Cadencia (obligatoria si hay más de una `- [ ]`)
 Si el usuario aún no eligió, pregunta y **espera**:
@@ -28,4 +25,4 @@ Sin respuesta clara → **A**.
 ## Qué NO haces tú
 - No archives (`/sdd-archive` / planner MODO 6).
 - No crees `history/tareas_completadas.md`.
-- Si todas quedaron `- [x]`: avisa → `/review` y luego `/sdd-archive`.
+- Si todas quedaron `- [x]`: avisa → abre **hilo limpio** para `/review` (estado ya en `spec`/`plan`/`tasks`/`MEMORY`) y luego `/sdd-archive`.

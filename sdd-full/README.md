@@ -2,7 +2,7 @@
 
 Edición para herramientas agénticas avanzadas (**Cursor, Claude Code, GitHub Copilot, Pi, OpenCode**) y modelos frontier (ventanas grandes). Flujo completo: Triage + 8 fases, subagentes, diagramas, propiedades y QA a ciegas.
 
-Versión del paquete: **4.1.0** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía del flujo: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
+Versión del paquete: **4.2.0** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía del flujo: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
 
 No combines con **SDD Lite**. Comparativa Full vs Lite: [README de la raíz](../README.md).
 
@@ -71,15 +71,24 @@ tu-proyecto/
 
 ---
 
-## Subagentes (`subagents/`)
+## Subagentes (`subagents/` → proyección nativa)
 
-| Archivo | Rol |
-|---------|-----|
-| `1-planner.md` | Spec, plan, `tasks.md`, diagramas, trazabilidad, propiedades, archivado en `history/`. **No escribe código de app.** |
-| `2-implementer.md` | Traduce **una** tarea a código con TDD (rojo → verde). Reporta fallos; no debilita tests; no archiva. |
-| `3-qa-reviewer.md` | Audita spec / plan / tareas / implementación. Solo lectura + ejecución de tests. |
+Origen único: `subagents/1-planner.md`, `2-implementer.md`, `3-qa-reviewer.md` (frontmatter `name`: `sdd-planner` / `sdd-implementer` / `sdd-qa-reviewer`).
 
-Los comandos deben **abrir estos archivos** (y las plantillas) con la herramienta de lectura; no basta con mencionarlos.
+| Host | Dónde viven al instalar |
+|------|-------------------------|
+| Cursor | `.cursor/agents/sdd-*.md` (+ copia en `.cursor/subagents/`) |
+| Claude Code | `.claude/agents/sdd-*.md` (+ `.agents/subagents/`) |
+| OpenCode | `.opencode/agents/sdd-*.md` con `mode: subagent` |
+| Copilot / Pi | Solo `<raíz>/subagents/` (sin carpeta nativa) |
+
+| Archivo | Rol | Permisos |
+|---------|-----|----------|
+| `1-planner.md` | Spec, plan, tasks, diagramas, cierre | Escritura solo `specs/**` + `MEMORY.md` |
+| `2-implementer.md` | TDD + fixes de QA; no archiva | Único con escritura completa de código/tests |
+| `3-qa-reviewer.md` | Auditoría a ciegas; Exit Code 0; diagnóstico accionable | Lectura + Bash; **sin** editar archivos |
+
+Sin `model:` fijo (heredan el del entorno). En Cursor/Claude/OpenCode, `/sdd` **delegan** al nativo aislado; en Copilot/Pi → chat limpio antes de `/implement` y `/review`.
 
 ---
 
@@ -115,12 +124,25 @@ Menú del instalador: **1** Cursor · **2** Copilot · **3** Claude Code · **4*
 
 **OpenCode vs Pi (slash commands):** Pi → `.pi/extensions/`. OpenCode → `.opencode/commands/` (no lee `.agents/commands/` como menú). El `/init` de OpenCode es el **nativo** del host; el del kit es **`/sdd-init`**.
 
-**GATE:** Tras `/sdd-init` / `/sdd-update`, **ANCLAJE + Triage** quedan **incrustados al inicio de `AGENTS.md`** (OpenCode/Pi no usan el `alwaysApply` de Cursor). Comprueba que `AGENTS.md` muestre `[ANCLAJE]`.
+**GATE:** Cursor / OpenCode (`instructions`) / Claude·Copilot (puente): **puntero compacto** en `AGENTS.md` a `rules/global-sdd` §0. Pi / chat libre: GATE **completo** con `[ANCLAJE]`. Plantillas: `skills/sdd-docs-generator/references/init-templates.md`.
 
 ### Orden de anclaje (tokens)
 
 `MEMORY` → `AGENTS` → ¿título de carpeta `specs/` encaja? → solo ese módulo → triage → Nivel 0 (código + huella MEMORY) o Nivel 1 (spec → plan → tasks).
 
+**Nativo:** delega `/implement` y `/review` al subagente aislado. **Copilot/Pi:** chat limpio antes de esas fases.
+
+### Presupuesto de tokens (estimación)
+
+> Cifras **orientativas**; varían con tokenizer, specs, diff, tests, MCPs y el system prompt del host (**no** incluido). Detalle comparativo Full vs Lite: [README raíz](../README.md#estimación-de-tokens-orientativa).
+
+| | Estimación |
+|--|------------|
+| Kit en disco (`.agents/` / `.cursor/`) | ~**45.6K** tok. estáticos (no se cargan todos a la vez) |
+| Base fija / turno | ~**5.3–6.7K** (`global-sdd` + `AGENTS` + `MEMORY` + stack) |
+| Feature Nivel 1 (8–14 turnos) | ~**120–260K** acumulados · **~90–130K** con aislamiento / chat limpio en TDD y QA |
+| Nivel 0 (2–4 turnos) | ~**18–35K** |
+
 ## Uso rápido
 
-`/sdd-init` → pedido en lenguaje natural o `/sdd` (**ANCLAJE** luego Triage, con o sin slash) · Paradas Nivel 1: OK de **spec** → OK de **plan** → OK de **tasks** → cadencia TDD (**A** | **B**) → `/review` → `/sdd-archive` · Código existente → `/retrofit` · Actualizar → `/sdd-update` (verificar ANCLAJE en `AGENTS.md`)
+`/sdd-init` → pedido en lenguaje natural o `/sdd` (**ANCLAJE** luego Triage) · Paradas Nivel 1: OK **spec** → OK **plan** → OK **tasks** → (hilo limpio) cadencia TDD → (hilo limpio) `/review` → `/sdd-archive` · `/retrofit` · `/sdd-update`

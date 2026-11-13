@@ -1,39 +1,44 @@
-# SDD Lite — Spec-Driven Development para modelos locales (8B–14B, 16K–32K)
+# SDD Lite Compacto — 8K / 16K / 32K
 
-Copia el contenido de **`sdd-lite/.agents/`** a la raíz del proyecto como **`.cursor/`** (Cursor) o **`.agents/`** (otros): mismo contenido, solo cambia el nombre. No combines con el paquete Full. Todas las rutas internas son relativas.
+Micro-Spec para ventanas cortas. Instala en Cursor, Copilot (VS Code), Claude Code, Pi u OpenCode.
+
+**Recomendación:** modelos **locales** (~8 GB) → **Pi** / **OpenCode**. Modelos **cloud** → cualquier host. Local + Cursor/Copilot/Claude → mejor con GPU **> ~8 GB** (puedes subir contexto).
+
+Copia `sdd-lite/.agents/` → `.cursor/` (Cursor) o `.agents/` (otros). No combines con Full.
 
 ## Instalación
-1. Copia `sdd-lite/.agents/` → `.cursor/` (Cursor) o `.agents/` (otros), o corre `setup_sdd_lite.sh` / `.ps1`.
-2. `/sdd-init` → Trinidad liviana.
-3. Cambios: `/sdd` (Triage) → `/implement` → `/sdd-archive`.
-4. Actualizar: `/sdd-update` (compara `sdd-lite/.agents/` del `source` contra tu carpeta en el sitio).
+1. `setup_sdd_lite.sh` / `.ps1` (menú 1–5).
+2. `/sdd-init` (GATE compacto si el host auto-carga `global-sdd`; Pi: completo).
+3. `/sdd` → 2 paradas Micro-Spec → `/implement` → `/review` → `/sdd-archive`.
+4. `/sdd-update`.
 
-## Presupuesto
-Reglas + spec del módulo ≈ 3–3.5K tokens. Spec ≤150 líneas; índice de historial ≤30; shard de dominio ≤100.
+## Presupuesto (líneas)
+| Pieza | Tope |
+|-------|------|
+| `AGENTS.md` | 45 líneas |
+| `MEMORY.md` | 30 |
+| `spec.md` | ~85 · 1 HU · ≤5 tareas |
+| `history/index.md` | 30 |
+| `history/<dominio>.md` | 100 |
+
+## Tokens (estimación)
+
+> **Estimaciones**; varían. Detalle: README raíz.
+
+| | Tok. est. |
+|--|-----------|
+| Kit `.agents/` en disco | ~7.97K |
+| Base fija / turno | ~1.5–1.6K |
+| Turno + subagente + `spec.md` | ~2–3.5K |
+| Feature Nivel 1 acumulada | ~30–65K |
 
 ## Archivos del paquete
 ```text
-sdd-kit.md
-sdd-kit/README.md
-sdd-kit/CHANGELOG.md
+sdd-kit.md · sdd-kit/README.md · sdd-kit/CHANGELOG.md
 rules/global-sdd.md
-subagents/1-planner.md
-subagents/2-implementer.md
-subagents/3-qa-reviewer.md
-commands/sdd-init.md
-commands/sdd.md
-commands/implement.md
-commands/sdd-archive.md
-commands/sdd-update.md
-commands/ui-check.md
-commands/mcp-mode.md
-commands/architect.md
-commands/review.md
-commands/retrofit.md
-skills/sdd-docs-generator/...
-skills/stack-conventions/...
-skills/on-demand-tools/SKILL.md
+subagents/1-planner.md · 2-implementer.md · 3-qa-reviewer.md
+commands/… · skills/…
 ```
 
 ## Hosts
-Cualquier agente (Cursor, VS Code + Ollama/Copilot, OpenCode, Pi…): preferir MCP navegador off (`/mcp-mode code`) y `/ui-check` o CLI (`on-demand-tools`).
+Nativos: `.cursor/agents/`, `.claude/agents/`, `.opencode/agents/` (`mode: subagent`). Copilot/Pi: `subagents/` + chat limpio entre tareas.
