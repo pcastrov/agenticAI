@@ -22,9 +22,14 @@ Si la extensión instalada no corresponde al host (p. ej. Cursor con `.md`, u ot
 ## Actualización
 1. Lee `sdd-kit.md` de la raíz detectada: versión instalada y `source`.
 2. Si el usuario no indica otra ruta/URL, usa `source`. **Resuelve el origen**:
-   - **Ruta local**: si apunta a la raíz del repo `agenticAI`, usa `…/sdd-full/.agents`. Si ya apunta a `…/sdd-full` o `…/sdd-full/.agents`, úsala.
-   - **URL de Git**: `git clone --depth 1` (o fetch/checkout en caché). Paquete Full = **`sdd-full/.agents/`** dentro del clone. No dejes el clone temporal dentro del proyecto.
-   - Si falta `source`, pregunta ruta o URL.
+   - **Prioridad**: si el usuario pasó una ruta/URL en el mensaje, **esa gana** (sirve para migrar kits cuyo `/sdd-update` todavía es el de `agenticAI`).
+   - **Alias de rename (obligatorio en esta versión)**: si `source` (URL o ruta) contiene `agenticAI` / `AgenticAI`, **sustitúyelo por `stay-on-rails`** antes de clonar o leer. Ej.: `https://github.com/pcastrov/agenticAI` → `https://github.com/pcastrov/stay-on-rails`. Avisa en una línea y, al cerrar (paso 11), persiste el `source` nuevo.
+   - **Fallback si el clone/fetch falla** (404, repo missing): reintenta una vez con `https://github.com/pcastrov/stay-on-rails` y explica el rename. Si también falla, 🛑 pide URL o ruta local.
+   - **Ruta local**: si apunta a la raíz del repo `stay-on-rails` (o carpeta local aún llamada `agenticAI` con este kit), usa `…/sdd-full/.agents`. Si ya apunta a `…/sdd-full` o `…/sdd-full/.agents`, úsala.
+   - **URL de Git**: `git clone --depth 1` (o fetch/checkout en caché) de la URL **ya normalizada**. Paquete Full = **`sdd-full/.agents/`** dentro del clone. No dejes el clone temporal dentro del proyecto.
+   - Si falta `source`, pregunta ruta o URL (preferir `https://github.com/pcastrov/stay-on-rails`).
+
+> **Huevo y gallina:** un proyecto con el comando **viejo** no ejecuta este alias hasta que actualice. Para el primer salto: el usuario debe **indicar la URL nueva** en el mensaje o editar `source` en `sdd-kit.md` (ver README raíz → Migración desde agenticAI).
 3. Versión: primera entrada de `sdd-kit/CHANGELOG.md` del origen.
 4. Si misma versión: informa al día (salvo verificación de los pasos 7–8).
 5. **Sobrescribe ÚNICAMENTE los archivos base del paquete** listados en `sdd-kit/README.md` del origen — `rules/global-sdd.md`, comandos base, subagentes base, `skills/sdd-docs-generator/**` y `skills/stack-conventions/**` del paquete, y templates en `skills/sdd-docs-generator/references/`:
@@ -59,4 +64,4 @@ Si la extensión instalada no corresponde al host (p. ej. Cursor con `.md`, u ot
    - Copilot / Pi: no crean carpeta nativa; leen `<raíz>/subagents/`.
    - No inventes contenido: copia desde el origen del paquete tras el paso 5.
 10. 🛑 Resumen (archivos reemplazados, preservados y omitidos por la protección; correcciones de `AGENTS.md`; proyecciones de agents; migraciones) + confirmación antes de escribir.
-11. Actualiza `version` y `source` en `sdd-kit.md` (deja `source` en la URL pública del repo o la ruta a `sdd-full` usada).
+11. Actualiza `version` y `source` en `sdd-kit.md` (URL pública `https://github.com/pcastrov/stay-on-rails` o la ruta local a `sdd-full` usada; **nunca** dejes `agenticAI` en `source` tras un update exitoso).

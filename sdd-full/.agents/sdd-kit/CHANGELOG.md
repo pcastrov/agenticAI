@@ -7,6 +7,7 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 ## 4.2.0 — 2026-11-12
 
 ### Agregado
+- **Rename del repo**: `agenticAI` → **stay-on-rails**. Esta versión de `/sdd-update` normaliza `source` y hace fallback si el clone de la URL antigua falla. **Primer update** con el comando viejo: pasar `source: https://github.com/pcastrov/stay-on-rails` en el mensaje (o editar `sdd-kit.md`); ver README raíz.
 - **Subagentes nativos aislados**: frontmatter `name`/`description` en `subagents/` (`sdd-planner`, `sdd-implementer`, `sdd-qa-reviewer`); **sin `model:`** (heredan el del entorno).
 - **Permisos por rol**: planner → solo `specs/**` + `MEMORY.md`; implementer → único con escritura completa de código/tests (TDD y fixes QA); QA → solo lectura + `Bash` (tests/lint/`git diff`/Playwright/DevTools), sin editar archivos.
 - **QA accionable**: si `VEREDICTO: CAMBIOS NECESARIOS`, sección `Diagnóstico y sugerencia de corrección` (archivo, causa raíz, propuesta para `sdd-implementer`) en `3-qa-reviewer.md` y `/review`.
@@ -175,7 +176,7 @@ El paquete Full vive en **`sdd-full/`** del repo (junto a `sdd-lite/`), no en la
 - README raíz: solo índice; paquetes en carpetas hermanas.
 
 ### Migración desde 3.5.0
-1. Copia una vez desde `sdd-full/.agents/` (o actualiza `source`/ruta hacia `…/agenticAI/sdd-full`).
+1. Copia una vez desde `sdd-full/.agents/` (o actualiza `source`/ruta hacia `…/stay-on-rails/sdd-full`).
 2. Siguientes `/sdd-update` usan `package_path: sdd-full/.cursor`.
 
 ---
@@ -228,11 +229,11 @@ Dos regímenes (integridad de tests obligatoria vs revisión de diseño sugerida
 Origen público del paquete y `/sdd-update` desde URL de Git.
 
 ### Cambiado
-- **`source` por defecto**: `https://github.com/pcastrov/agenticAI` (repositorio público del kit).
+- **`source` por defecto**: `https://github.com/pcastrov/stay-on-rails` (repositorio público del kit).
 - **`/sdd-update`**: resuelve `source` como ruta local o como URL de Git (`git clone --depth 1` a una carpeta temporal); actualiza también el `source` en `sdd-kit.md` al terminar.
 
 ### Migración desde 3.3.0
-En cada proyecto, edita `.agents/sdd-kit.md` (o `.agents/sdd-kit.md`) y pon `source: https://github.com/pcastrov/agenticAI`, o ejecuta `/sdd-update` indicando esa URL.
+En cada proyecto, edita `.agents/sdd-kit.md` (o `.agents/sdd-kit.md`) y pon `source: https://github.com/pcastrov/stay-on-rails`, o ejecuta `/sdd-update` indicando esa URL.
 
 ---
 

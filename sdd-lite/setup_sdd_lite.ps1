@@ -1,4 +1,4 @@
-# setup_sdd_lite.ps1 - Instalador de agenticAI SDD-Lite (Windows PowerShell)
+# setup_sdd_lite.ps1 - Instalador de stay-on-rails SDD-Lite (Windows PowerShell)
 # Uso:
 #   powershell -ExecutionPolicy Bypass -File ruta\a\sdd-lite\setup_sdd_lite.ps1 -ProjectPath "C:\ruta\a\tu-proyecto"
 # Texto sin tildes a proposito (compatibilidad con PowerShell 5.1).
@@ -17,7 +17,7 @@ function Show-ProjectPathHelp {
     Write-Host 'Debes indicar la ruta del proyecto donde se instalara el kit (carpeta raiz de TU app, no la del ZIP).' -ForegroundColor Red
     Write-Host ''
     Write-Host 'Ejemplo:'
-    Write-Host '  powershell -ExecutionPolicy Bypass -File C:\descargas\agenticAI-main\sdd-lite\setup_sdd_lite.ps1 -ProjectPath "C:\Users\tu\mi-proyecto"'
+    Write-Host '  powershell -ExecutionPolicy Bypass -File C:\descargas\stay-on-rails-main\sdd-lite\setup_sdd_lite.ps1 -ProjectPath "C:\Users\tu\mi-proyecto"'
     Write-Host ''
     Write-Host 'O con ruta relativa:'
     Write-Host '  powershell -ExecutionPolicy Bypass -File .\sdd-lite\setup_sdd_lite.ps1 -ProjectPath "..\mi-proyecto"'
@@ -36,7 +36,7 @@ $ProjectPath = (Resolve-Path -LiteralPath $ProjectPath).Path
 Set-Location -LiteralPath $ProjectPath
 Write-Host "Proyecto: $ProjectPath" -ForegroundColor DarkGray
 
-Write-Host "Configurando agenticAI $EditionLabel..." -ForegroundColor Cyan
+Write-Host "Configurando stay-on-rails $EditionLabel..." -ForegroundColor Cyan
 Write-Host ''
 Write-Host 'Que entorno principal vas a utilizar?'
 Write-Host '(Lite + modelos locales ~8 GB: se recomienda Pi u OpenCode; Cursor/Copilot/Claude OK con cloud o GPU >8 GB)' -ForegroundColor DarkGray
@@ -99,7 +99,7 @@ switch ($choice) {
     }
     '2' {
         New-Item -ItemType Directory -Force -Path '.github' | Out-Null
-        Set-Content -Path '.github/copilot-instructions.md' -Value ("# Reglas de AgenticAI SDD-Lite`n`n" + $pointer) -Encoding UTF8
+        Set-Content -Path '.github/copilot-instructions.md' -Value ("# Reglas de stay-on-rails SDD-Lite`n`n" + $pointer) -Encoding UTF8
         Write-Host '[+] .github/copilot-instructions.md generado.' -ForegroundColor Green
         Write-Host "[+] Copilot: subagentes desde $root/subagents/ (sin carpeta nativa)." -ForegroundColor DarkGray
     }

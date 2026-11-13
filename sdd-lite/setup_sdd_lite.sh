@@ -1,5 +1,5 @@
 #!/bin/bash
-# setup_sdd_lite.sh - Instalador de agenticAI SDD-Lite (Mac/Linux)
+# setup_sdd_lite.sh - Instalador de stay-on-rails SDD-Lite (Mac/Linux)
 # Uso:
 #   bash ruta/a/sdd-lite/setup_sdd_lite.sh "/ruta/a/tu-proyecto"
 
@@ -11,7 +11,7 @@ show_project_path_help() {
     echo "Debes indicar la ruta del proyecto donde se instalará el kit (carpeta raíz de TU app, no la del ZIP)."
     echo ""
     echo "Ejemplo:"
-    echo '  bash ~/Downloads/agenticAI-main/sdd-lite/setup_sdd_lite.sh "/Users/tu/mi-proyecto"'
+    echo '  bash ~/Downloads/stay-on-rails-main/sdd-lite/setup_sdd_lite.sh "/Users/tu/mi-proyecto"'
     echo ""
     echo "O con ruta relativa:"
     echo '  bash ./sdd-lite/setup_sdd_lite.sh "../mi-proyecto"'
@@ -31,7 +31,7 @@ cd "$PROJECT_PATH"
 PROJECT_PATH="$(pwd)"
 echo "Proyecto: $PROJECT_PATH"
 
-echo "Configurando agenticAI SDD-Lite..."
+echo "Configurando stay-on-rails SDD-Lite..."
 echo ""
 echo "¿Qué entorno principal vas a utilizar?"
 echo "(Lite + modelos locales ~8 GB: se recomienda Pi u OpenCode; Cursor/Copilot/Claude OK con cloud o GPU >8 GB)"
@@ -97,7 +97,7 @@ case $choice in
         echo "[+] Cursor lee $ROOT/ directamente; no se necesita archivo puente."
         project_native_agents "$ROOT/agents" 0
         ;;
-    2) mkdir -p .github; printf '%s\n' "# Reglas de AgenticAI SDD-Lite" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado."; echo "[+] Copilot: subagentes desde $ROOT/subagents/ (sin carpeta nativa)." ;;
+    2) mkdir -p .github; printf '%s\n' "# Reglas de stay-on-rails SDD-Lite" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado."; echo "[+] Copilot: subagentes desde $ROOT/subagents/ (sin carpeta nativa)." ;;
     3)
         printf '%s\n' "# Instrucciones del Repositorio" "" "$POINTER" > CLAUDE.md
         echo "[+] CLAUDE.md generado."

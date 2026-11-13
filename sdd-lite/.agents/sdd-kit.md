@@ -2,6 +2,6 @@
 
 - **edition**: lite
 - **version**: 3.0.0
-- **source**: https://github.com/pcastrov/agenticAI
+- **source**: https://github.com/pcastrov/stay-on-rails
 - **package_path**: sdd-lite/.agents
 - **docs**: `sdd-kit/README.md`

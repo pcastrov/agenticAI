@@ -1,10 +1,12 @@
-# SDD Kit
+# stay-on-rails
 
-Kit de **Spec-Driven Development (SDD)** para programar con agentes de IA de forma ordenada: primero el **qué** (spec), luego el **cómo**, después TDD y validación. Ambos kits instalan en Cursor, Claude Code, GitHub Copilot (VS Code), Pi y OpenCode.
+**stay-on-rails** es un framework ligero, declarativo y sin dependencias para desarrollo asistido por agentes de IA bajo Spec-Driven Development (SDD).
 
-**Repositorio**: [github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI) · **Licencia**: [MIT](LICENSE)
+Marco para mantener a tus agentes **sobre rieles**: specs primero, TDD siempre, cero improvisación. Primero el **qué** (spec), luego el **cómo**, después TDD y validación.
 
-Este repo **no** es una app: son **dos ediciones** listas para instalar en tu proyecto. Eliges **una**.
+Este repo **no** es una app: son **dos ediciones** del kit (Full y Lite) listas para instalar en tu proyecto. Eliges **una**. Funciona con Cursor, Claude Code, GitHub Copilot (VS Code), Pi y OpenCode.
+
+**Repositorio**: [https://github.com/pcastrov/stay-on-rails](https://github.com/pcastrov/stay-on-rails) · **Licencia**: [MIT](LICENSE)
 
 ---
 
@@ -42,13 +44,13 @@ DRY/KISS/YAGNI son **consultas** (`CONSULTA DE SIMPLICIDAD`): el agente pregunta
 
 ## Instalación (ZIP + script)
 
-1. **Descarga el ZIP** del repo: [Download ZIP](https://github.com/pcastrov/agenticAI/archive/refs/heads/main.zip) (o *Code → Download ZIP* en GitHub) y descomprímelo en cualquier carpeta. Quedará `agenticAI-main/` con `sdd-full/` y `sdd-lite/`.
+1. **Descarga el ZIP** del repo: [https://github.com/pcastrov/stay-on-rails/archive/refs/heads/main.zip](https://github.com/pcastrov/stay-on-rails/archive/refs/heads/main.zip) (o *Code → Download ZIP* en GitHub) y descomprímelo en cualquier carpeta. Quedará `stay-on-rails-main/` con `sdd-full/` y `sdd-lite/`.
 2. **Ejecuta el instalador** pasando la **ruta de tu proyecto** (carpeta raíz de tu app, no la del ZIP). Si la omites, el script se detiene y muestra un ejemplo.
 
 | Edición | Windows (PowerShell) | Mac / Linux |
 |---------|----------------------|-------------|
-| **Full** | `powershell -ExecutionPolicy Bypass -File C:\ruta\agenticAI-main\sdd-full\setup_sdd_full.ps1 -ProjectPath "C:\Users\tu\mi-proyecto"` | `bash /ruta/agenticAI-main/sdd-full/setup_sdd_full.sh "/Users/tu/mi-proyecto"` |
-| **Lite** | `powershell -ExecutionPolicy Bypass -File C:\ruta\agenticAI-main\sdd-lite\setup_sdd_lite.ps1 -ProjectPath "C:\Users\tu\mi-proyecto"` | `bash /ruta/agenticAI-main/sdd-lite/setup_sdd_lite.sh "/Users/tu/mi-proyecto"` |
+| **Full** | `powershell -ExecutionPolicy Bypass -File C:\ruta\stay-on-rails-main\sdd-full\setup_sdd_full.ps1 -ProjectPath "C:\Users\tu\mi-proyecto"` | `bash /ruta/stay-on-rails-main/sdd-full/setup_sdd_full.sh "/Users/tu/mi-proyecto"` |
+| **Lite** | `powershell -ExecutionPolicy Bypass -File C:\ruta\stay-on-rails-main\sdd-lite\setup_sdd_lite.ps1 -ProjectPath "C:\Users\tu\mi-proyecto"` | `bash /ruta/stay-on-rails-main/sdd-lite/setup_sdd_lite.sh "/Users/tu/mi-proyecto"` |
 
 En PowerShell también vale el primer argumento sin nombre: `.\setup_sdd_full.ps1 "C:\Users\tu\mi-proyecto"`.
 
@@ -67,12 +69,27 @@ El script hace tres cosas (en este orden):
 
 En el chat: `/sdd-update`. Detecta tu carpeta (`.cursor/` o `.agents/`) y actualiza **en el sitio**, sin renombrarla. Solo sobrescribe archivos base del paquete (reglas, comandos, plantillas). **Nunca toca** tus skills ni restaura guías de framework que borraste. Corrige en `AGENTS.md` las rutas al framework según tu herramienta (Full 4.1+: verifica que el GATE muestre **`[ANCLAJE]`** sin borrar el dominio) y, si tus specs tienen un `history.md` antiguo, te **pregunta** si migrarlo a `history/index.md` + `history/<dominio>.md`.
 
+#### Migración desde `agenticAI` (kits ya instalados)
+
+El `/sdd-update` **viejo** (aún en tu proyecto) **no** conoce el rename: lee `source` de `sdd-kit.md` y puede intentar `…/agenticAI`. Para el **primer** update haz **una** de estas (luego el comando nuevo ya normaliza solo):
+
+1. **Recomendado** — indícale la URL nueva en el mismo mensaje:
+   ```text
+   /sdd-update
+   Usa como source: https://github.com/pcastrov/stay-on-rails
+   ```
+   (El comando viejo ya acepta “si el usuario indica otra ruta/URL, úsala”.)
+2. O edita a mano `.agents/sdd-kit.md` / `.cursor/sdd-kit.md`: cambia `source` a `https://github.com/pcastrov/stay-on-rails` y luego `/sdd-update`.
+3. Si ya renombraste el repo en GitHub, a veces el clone de la URL antigua **redirige** sola; no dependas de eso si falla.
+
+Tras ese primer update exitoso, `sdd-kit.md` y `/sdd-update` quedan en **stay-on-rails**.
+
 ---
 
 ## Organización del repositorio
 
 ```text
-agenticAI/
+stay-on-rails/
 ├── README.md
 ├── LICENSE
 ├── sdd-full/

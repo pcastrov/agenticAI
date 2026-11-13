@@ -7,6 +7,7 @@ SDD Lite Compacto (Full Compacto para 8K–32K). **Cambio mayor.**
 ### Agregado
 - **`[ANCLAJE]`** corto (Turno 0) antes del Triage; MEMORY activa (≤30 líneas).
 - **Micro-Spec**: 1 HU · ≤5 tareas · `spec.md` ~85 líneas; 2 paradas (Qué → 🛑 → Cómo+Tareas → 🛑) en un solo archivo.
+- **Rename del repo**: `agenticAI` → **stay-on-rails**. `/sdd-update` normaliza `source` antiguo y lo guarda en `sdd-kit.md`.
 - **Hosts**: Cursor · Copilot (VS Code) · Claude Code · Pi · OpenCode (instalador 1–5).
 - **Subagentes nativos** donde aplica; Pi/Copilot → `subagents/` + chat limpio.
 - Aislamiento: nativo por Task; fallback → chat limpio + `continúa` (cadencia A).
