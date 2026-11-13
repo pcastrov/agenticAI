@@ -22,7 +22,7 @@ Si la extensión instalada no corresponde al host (p. ej. Cursor con `.md`, u ot
 ## Actualización
 1. Lee `sdd-kit.md` de la raíz detectada: versión instalada y `source`.
 2. Si el usuario no indica otra ruta/URL, usa `source`. **Resuelve el origen**:
-   - **Ruta local**: si apunta a la raíz del repo `agenticAI`, usa `…/sdd-full/.agents`. Si ya apunta a `…/sdd-full` o `…/sdd-full/.agents`, úsala.
+   - **Ruta local**: si apunta a la raíz del repo `stay-on-rails`, usa `…/sdd-full/.agents`. Si ya apunta a `…/sdd-full` o `…/sdd-full/.agents`, úsala.
    - **URL de Git**: `git clone --depth 1` (o fetch/checkout en caché). Paquete Full = **`sdd-full/.agents/`** dentro del clone. No dejes el clone temporal dentro del proyecto.
    - Si falta `source`, pregunta ruta o URL.
 3. Versión: primera entrada de `sdd-kit/CHANGELOG.md` del origen.

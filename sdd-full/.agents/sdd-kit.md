@@ -2,6 +2,6 @@
 
 - **edition**: full
 - **version**: 4.2.0
-- **source**: https://github.com/pcastrov/agenticAI
+- **source**: https://github.com/pcastrov/stay-on-rails
 - **package_path**: sdd-full/.agents
 - **docs**: `sdd-kit/README.md` (uso del flujo) y `sdd-kit/CHANGELOG.md` (versiones y migraciones)

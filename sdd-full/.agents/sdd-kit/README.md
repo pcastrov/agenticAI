@@ -1,4 +1,6 @@
-# SDD Kit — Spec-Driven Development para agentes de IA
+# SDD Kit Full — stay-on-rails
+
+**stay-on-rails**: framework ligero, declarativo y sin dependencias para desarrollo asistido por agentes de IA bajo Spec-Driven Development (SDD).
 
 Flujo de trabajo portátil para que agentes de IA (Cursor, Claude Code, GitHub Copilot, Pi, OpenCode…) desarrollen software guiados por especificaciones: primero el **qué** y el **por qué** (`spec.md`), luego el **cómo** (`plan.md`), después el **paso a paso** (`tasks.md`), implementación con **TDD estricto** y validación QA en cada etapa.
 
@@ -16,10 +18,10 @@ Todo el paquete vive en **una carpeta raíz** cuyo nombre depende de tu herramie
 
 ## Instalación en un proyecto
 
-Origen: [github.com/pcastrov/agenticAI](https://github.com/pcastrov/agenticAI) → **`sdd-full/`**.
+Origen: [github.com/pcastrov/stay-on-rails](https://github.com/pcastrov/stay-on-rails) → **`sdd-full/`**.
 
 1. Copia el contenido de **`sdd-full/.agents/`** a la raíz de tu proyecto como **`.cursor/`** (Cursor) o **`.agents/`** (otros), o ejecuta `setup_sdd_full.sh` / `setup_sdd_full.ps1`, que eligen el nombre y crean el puente que haga falta. No mezcles con Lite.
-2. En `sdd-kit.md`: `source: https://github.com/pcastrov/agenticAI` y `package_path: sdd-full/.agents` (o ruta local a `…/sdd-full`).
+2. En `sdd-kit.md`: `source: https://github.com/pcastrov/stay-on-rails` y `package_path: sdd-full/.agents` (o ruta local a `…/sdd-full`).
 3. Ejecuta `/sdd-init` → `AGENTS.md`, `docs/constitution.md`, `MEMORY.md`.
 4. Código existente → `/retrofit`. Cambios → `/sdd`.
 5. Actualizar: `/sdd-update` (compara **`sdd-full/.agents/`** del clone contra tu carpeta en el sitio, `.cursor/` o `.agents/`).

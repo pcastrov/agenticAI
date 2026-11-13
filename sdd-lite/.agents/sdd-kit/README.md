@@ -1,6 +1,6 @@
-# SDD Lite Compacto — 8K / 16K / 32K
+# SDD Lite Compacto — stay-on-rails (8K / 16K / 32K)
 
-Micro-Spec para ventanas cortas. Instala en Cursor, Copilot (VS Code), Claude Code, Pi u OpenCode.
+**stay-on-rails**: framework ligero, declarativo y sin dependencias para desarrollo asistido por agentes de IA bajo SDD. Esta edición es la compacta (Micro-Spec) para ventanas cortas. Instala en Cursor, Copilot (VS Code), Claude Code, Pi u OpenCode.
 
 **Recomendación:** modelos **locales** (~8 GB) → **Pi** / **OpenCode**. Modelos **cloud** → cualquier host. Local + Cursor/Copilot/Claude → mejor con GPU **> ~8 GB** (puedes subir contexto).
 

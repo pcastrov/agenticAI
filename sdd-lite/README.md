@@ -1,6 +1,6 @@
-# SDD Lite Compacto (v3.0.0)
+# SDD Lite Compacto (v3.0.0) — stay-on-rails
 
-Edición compacta (Micro-Spec, topes bajos) para ventanas **8K / 16K / 32K**. Misma familia de hosts que Full; **recomendación** según si el modelo es local o no.
+Edición Lite de **stay-on-rails** (framework SDD ligero, declarativo y sin dependencias). Compacta (Micro-Spec, topes bajos) para ventanas **8K / 16K / 32K**. Misma familia de hosts que Full; **recomendación** según si el modelo es local o no.
 
 - GPU tipica de diseño ~8 GB · modelos locales **8B–14B** cuantizados (Ollama)
 - Micro-Specs + MEMORY activa + 2 paradas (Qué / Cómo) + aislamiento de contexto

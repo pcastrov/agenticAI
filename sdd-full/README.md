@@ -1,6 +1,6 @@
-# SDD Full
+# SDD Full — stay-on-rails
 
-Edición para herramientas agénticas avanzadas (**Cursor, Claude Code, GitHub Copilot, Pi, OpenCode**) y modelos frontier (ventanas grandes). Flujo completo: Triage + 8 fases, subagentes, diagramas, propiedades y QA a ciegas.
+Edición Full de **stay-on-rails** (framework SDD ligero, declarativo y sin dependencias). Para herramientas agénticas avanzadas (**Cursor, Claude Code, GitHub Copilot, Pi, OpenCode**) y modelos frontier (ventanas grandes). Flujo completo: Triage + 8 fases, subagentes, diagramas, propiedades y QA a ciegas.
 
 Versión del paquete: **4.2.0** — ver [`.agents/sdd-kit.md`](.agents/sdd-kit.md) · Guía del flujo: [`.agents/sdd-kit/README.md`](.agents/sdd-kit/README.md) · [CHANGELOG](.agents/sdd-kit/CHANGELOG.md)
 

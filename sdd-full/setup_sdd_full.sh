@@ -1,5 +1,5 @@
 #!/bin/bash
-# setup_sdd_full.sh - Instalador de agenticAI SDD-Full (Mac/Linux)
+# setup_sdd_full.sh - Instalador de stay-on-rails SDD-Full (Mac/Linux)
 # Uso:
 #   bash ruta/a/sdd-full/setup_sdd_full.sh "/ruta/a/tu-proyecto"
 
@@ -11,7 +11,7 @@ show_project_path_help() {
     echo "Debes indicar la ruta del proyecto donde se instalará el kit (carpeta raíz de TU app, no la del ZIP)."
     echo ""
     echo "Ejemplo:"
-    echo '  bash ~/Downloads/agenticAI-main/sdd-full/setup_sdd_full.sh "/Users/tu/mi-proyecto"'
+    echo '  bash ~/Downloads/stay-on-rails-main/sdd-full/setup_sdd_full.sh "/Users/tu/mi-proyecto"'
     echo ""
     echo "O con ruta relativa:"
     echo '  bash ./sdd-full/setup_sdd_full.sh "../mi-proyecto"'
@@ -31,7 +31,7 @@ cd "$PROJECT_PATH"
 PROJECT_PATH="$(pwd)"
 echo "Proyecto: $PROJECT_PATH"
 
-echo "Configurando agenticAI SDD-Full..."
+echo "Configurando stay-on-rails SDD-Full..."
 echo ""
 echo "¿Qué entorno principal vas a utilizar?"
 echo "1) Cursor (carpeta .cursor/)"
@@ -96,7 +96,7 @@ case $choice in
         echo "[+] Cursor lee $ROOT/ directamente; no se necesita archivo puente."
         project_native_agents "$ROOT/agents" 0
         ;;
-    2) mkdir -p .github; printf '%s\n' "# Reglas de AgenticAI SDD-Full" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado."; echo "[+] Copilot: subagentes desde $ROOT/subagents/ (sin carpeta nativa)." ;;
+    2) mkdir -p .github; printf '%s\n' "# Reglas de stay-on-rails SDD-Full" "" "$POINTER" > .github/copilot-instructions.md; echo "[+] .github/copilot-instructions.md generado."; echo "[+] Copilot: subagentes desde $ROOT/subagents/ (sin carpeta nativa)." ;;
     3)
         printf '%s\n' "# Instrucciones del Repositorio" "" "$POINTER" > CLAUDE.md
         echo "[+] CLAUDE.md generado."

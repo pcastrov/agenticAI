@@ -175,7 +175,7 @@ El paquete Full vive en **`sdd-full/`** del repo (junto a `sdd-lite/`), no en la
 - README raíz: solo índice; paquetes en carpetas hermanas.
 
 ### Migración desde 3.5.0
-1. Copia una vez desde `sdd-full/.agents/` (o actualiza `source`/ruta hacia `…/agenticAI/sdd-full`).
+1. Copia una vez desde `sdd-full/.agents/` (o actualiza `source`/ruta hacia `…/stay-on-rails/sdd-full`).
 2. Siguientes `/sdd-update` usan `package_path: sdd-full/.cursor`.
 
 ---
@@ -228,11 +228,11 @@ Dos regímenes (integridad de tests obligatoria vs revisión de diseño sugerida
 Origen público del paquete y `/sdd-update` desde URL de Git.
 
 ### Cambiado
-- **`source` por defecto**: `https://github.com/pcastrov/agenticAI` (repositorio público del kit).
+- **`source` por defecto**: `https://github.com/pcastrov/stay-on-rails` (repositorio público del kit).
 - **`/sdd-update`**: resuelve `source` como ruta local o como URL de Git (`git clone --depth 1` a una carpeta temporal); actualiza también el `source` en `sdd-kit.md` al terminar.
 
 ### Migración desde 3.3.0
-En cada proyecto, edita `.agents/sdd-kit.md` (o `.agents/sdd-kit.md`) y pon `source: https://github.com/pcastrov/agenticAI`, o ejecuta `/sdd-update` indicando esa URL.
+En cada proyecto, edita `.agents/sdd-kit.md` (o `.agents/sdd-kit.md`) y pon `source: https://github.com/pcastrov/stay-on-rails`, o ejecuta `/sdd-update` indicando esa URL.
 
 ---
 
