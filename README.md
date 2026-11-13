@@ -69,7 +69,20 @@ El script hace tres cosas (en este orden):
 
 En el chat: `/sdd-update`. Detecta tu carpeta (`.cursor/` o `.agents/`) y actualiza **en el sitio**, sin renombrarla. Solo sobrescribe archivos base del paquete (reglas, comandos, plantillas). **Nunca toca** tus skills ni restaura guías de framework que borraste. Corrige en `AGENTS.md` las rutas al framework según tu herramienta (Full 4.1+: verifica que el GATE muestre **`[ANCLAJE]`** sin borrar el dominio) y, si tus specs tienen un `history.md` antiguo, te **pregunta** si migrarlo a `history/index.md` + `history/<dominio>.md`.
 
-Si tu `sdd-kit.md` aún tiene `source: …/agenticAI`, `/sdd-update` lo **migra solo** a `…/stay-on-rails` (GitHub también redirige la URL antigua tras renombrar el repo).
+#### Migración desde `agenticAI` (kits ya instalados)
+
+El `/sdd-update` **viejo** (aún en tu proyecto) **no** conoce el rename: lee `source` de `sdd-kit.md` y puede intentar `…/agenticAI`. Para el **primer** update haz **una** de estas (luego el comando nuevo ya normaliza solo):
+
+1. **Recomendado** — indícale la URL nueva en el mismo mensaje:
+   ```text
+   /sdd-update
+   Usa como source: https://github.com/pcastrov/stay-on-rails
+   ```
+   (El comando viejo ya acepta “si el usuario indica otra ruta/URL, úsala”.)
+2. O edita a mano `.agents/sdd-kit.md` / `.cursor/sdd-kit.md`: cambia `source` a `https://github.com/pcastrov/stay-on-rails` y luego `/sdd-update`.
+3. Si ya renombraste el repo en GitHub, a veces el clone de la URL antigua **redirige** sola; no dependas de eso si falla.
+
+Tras ese primer update exitoso, `sdd-kit.md` y `/sdd-update` quedan en **stay-on-rails**.
 
 ---
 
