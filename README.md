@@ -69,6 +69,8 @@ El script hace tres cosas (en este orden):
 
 En el chat: `/sdd-update`. Detecta tu carpeta (`.cursor/` o `.agents/`) y actualiza **en el sitio**, sin renombrarla. Solo sobrescribe archivos base del paquete (reglas, comandos, plantillas). **Nunca toca** tus skills ni restaura guías de framework que borraste. Corrige en `AGENTS.md` las rutas al framework según tu herramienta (Full 4.1+: verifica que el GATE muestre **`[ANCLAJE]`** sin borrar el dominio) y, si tus specs tienen un `history.md` antiguo, te **pregunta** si migrarlo a `history/index.md` + `history/<dominio>.md`.
 
+Si tu `sdd-kit.md` aún tiene `source: …/agenticAI`, `/sdd-update` lo **migra solo** a `…/stay-on-rails` (GitHub también redirige la URL antigua tras renombrar el repo).
+
 ---
 
 ## Organización del repositorio

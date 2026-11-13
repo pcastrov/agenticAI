@@ -7,6 +7,7 @@ Formato: la primera entrada es la versión vigente del paquete (la que lee `/sdd
 ## 4.2.0 — 2026-11-12
 
 ### Agregado
+- **Rename del repo**: `agenticAI` → **stay-on-rails**. `/sdd-update` normaliza `source` antiguo (`…/agenticAI`) a `…/stay-on-rails` y lo persiste en `sdd-kit.md`.
 - **Subagentes nativos aislados**: frontmatter `name`/`description` en `subagents/` (`sdd-planner`, `sdd-implementer`, `sdd-qa-reviewer`); **sin `model:`** (heredan el del entorno).
 - **Permisos por rol**: planner → solo `specs/**` + `MEMORY.md`; implementer → único con escritura completa de código/tests (TDD y fixes QA); QA → solo lectura + `Bash` (tests/lint/`git diff`/Playwright/DevTools), sin editar archivos.
 - **QA accionable**: si `VEREDICTO: CAMBIOS NECESARIOS`, sección `Diagnóstico y sugerencia de corrección` (archivo, causa raíz, propuesta para `sdd-implementer`) en `3-qa-reviewer.md` y `/review`.
